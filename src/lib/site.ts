@@ -1,0 +1,45 @@
+export const siteConfig = {
+  nameAr: "الكبائن الفاخرة",
+  nameEn: "Luxury Cabins",
+  legalName: "مؤسسة الكبائن الفاخرة للمقاولات العامة",
+  commercialRegister: "7054759621",
+  tagline: "تأجير · بيع · تصنيع الوحدات المتنقلة",
+  description:
+    "مؤسسة سعودية متخصصة في تأجير وبيع وتصنيع الكبائن والوحدات المتنقلة، بخدمة تغطي جميع مناطق المملكة مع تركيز على المدن الرئيسية.",
+  phone: "+966500962580",
+  phoneDisplay: "050 096 2580",
+  whatsapp: "966500962580",
+  email: "info@luxurycabins.sa",
+  address: "الرياض، المملكة العربية السعودية",
+  addressDetail: "الرياض - الرياض",
+  cities: [
+    "الرياض",
+    "جدة",
+    "مكة المكرمة",
+    "المدينة المنورة",
+    "الدمام",
+    "الخبر",
+    "الجبيل",
+    "تبوك",
+    "أبها",
+    "القصيم",
+    "حائل",
+  ],
+  social: {
+    twitter: "",
+    instagram: "",
+    linkedin: "",
+    facebook: "",
+  },
+} as const;
+
+export const navLinks = [
+  { href: "/", label: "الرئيسية" },
+  { href: "/about", label: "من نحن" },
+  { href: "/services", label: "الخدمات" },
+  { href: "/rental", label: "التأجير" },
+  { href: "/manufacturing", label: "البيع والتصنيع" },
+  { href: "/projects", label: "المشاريع" },
+  { href: "/faq", label: "الأسئلة الشائعة" },
+  { href: "/contact", label: "اتصل بنا" },
+] as const;

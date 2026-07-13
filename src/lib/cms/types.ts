@@ -1,0 +1,178 @@
+export type NavLink = { href: string; label: string };
+
+export type ServiceItem = {
+  id: string;
+  title: string;
+  short: string;
+  href: string;
+  image: string;
+};
+
+export type ProcessStep = {
+  step: string;
+  title: string;
+  description: string;
+};
+
+export type CatalogProduct = {
+  id: string;
+  title: string;
+  shortDescription: string;
+  description: string;
+  priceLabel: string;
+  priceNote: string;
+  specs: string[];
+  images: string[];
+};
+
+export type RentalCategory = {
+  id: string;
+  title: string;
+  shortDescription: string;
+  description: string;
+  specs: string[];
+  images: string[];
+  whatsappMessage: string;
+};
+
+export type ProjectItem = {
+  title: string;
+  location: string;
+  category: string;
+  image: string;
+};
+
+export type ClientItem = {
+  name: string;
+  nameEn: string;
+  sector: string;
+};
+
+export type FaqItem = { q: string; a: string };
+
+export type StatItem = { value: string; label: string };
+
+export type SiteInfo = {
+  nameAr: string;
+  nameEn: string;
+  legalName: string;
+  commercialRegister: string;
+  tagline: string;
+  description: string;
+  phone: string;
+  phoneDisplay: string;
+  whatsapp: string;
+  email: string;
+  address: string;
+  addressDetail: string;
+  cities: string[];
+  social: {
+    instagram: string;
+    facebook: string;
+    twitter: string;
+    linkedin: string;
+  };
+};
+
+export type HomeContent = {
+  heroTitle: string;
+  heroSubtitle: string;
+  heroCta: string;
+  heroImage: string;
+  servicesEyebrow: string;
+  servicesTitle: string;
+  servicesTitleLine2: string;
+  manufacturingBandTitle: string;
+  manufacturingBandText: string;
+  visionTitle: string;
+  visionBody: string;
+  visionCta: string;
+  visionImage: string;
+  processEyebrow: string;
+  processTitle: string;
+  processSubtitle: string;
+  contactTitle: string;
+  contactSubtitle: string;
+  ctaBandTitle: string;
+  ctaBandButton: string;
+};
+
+export type CmsData = {
+  site: SiteInfo;
+  navLinks: NavLink[];
+  home: HomeContent;
+  services: ServiceItem[];
+  processSteps: ProcessStep[];
+  catalogProducts: CatalogProduct[];
+  rentalCategories: RentalCategory[];
+  manufacturingExtras: string[];
+  projects: ProjectItem[];
+  sampleClients: ClientItem[];
+  faqs: FaqItem[];
+  aboutStats: StatItem[];
+  about: {
+    heroTitle: string;
+    heroDescription: string;
+    whoTitle: string;
+    whoBody1: string;
+    whoBody2: string;
+    visionTitle: string;
+    visionBody: string;
+    missionTitle: string;
+    missionBody: string;
+    valuesTitle: string;
+    values: string[];
+  };
+  rentalPage: {
+    heroDescription: string;
+    sectionTitle: string;
+    sectionBody: string;
+    bullets: string[];
+    catalogTitle: string;
+    catalogBody: string;
+    ctaTitle: string;
+    ctaBody: string;
+  };
+  manufacturingPage: {
+    heroTitle: string;
+    heroDescription: string;
+    introEyebrow: string;
+    introTitle: string;
+    introBody: string;
+    highlights: string[];
+    catalogEyebrow: string;
+    catalogBadge: string;
+    catalogTitle: string;
+    catalogBody: string;
+    extrasEyebrow: string;
+    extrasTitle: string;
+    ctaEyebrow: string;
+    ctaTitle: string;
+    ctaBody: string;
+  };
+  footer: {
+    servicesTitle: string;
+    companyTitle: string;
+    newsletterTitle: string;
+    newsletterBody: string;
+    newsletterPlaceholder: string;
+    newsletterButton: string;
+    serviceLinks: NavLink[];
+    companyLinks: NavLink[];
+  };
+  updatedAt: string;
+};
+
+export type AnalyticsDay = {
+  date: string;
+  views: number;
+  visitors: number;
+};
+
+export type AnalyticsData = {
+  totalViews: number;
+  totalVisitors: number;
+  pages: Record<string, number>;
+  daily: AnalyticsDay[];
+  recent: { path: string; at: string; visitorId: string }[];
+};
