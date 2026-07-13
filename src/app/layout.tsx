@@ -31,7 +31,13 @@ const cairo = Cairo({
 const siteUrl = "https://luxurycabins.sa";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const cms = await readCms();
+  let cms;
+  try {
+    cms = await readCms();
+  } catch {
+    const { getDefaultCms } = await import("@/lib/cms/defaults");
+    cms = getDefaultCms();
+  }
   return {
     metadataBase: new URL(siteUrl),
     title: {

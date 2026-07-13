@@ -23,6 +23,10 @@ export async function POST(req: Request) {
     });
   }
 
-  await trackPageView(pathName, visitorId);
+  try {
+    await trackPageView(pathName, visitorId);
+  } catch {
+    /* analytics is best-effort on read-only hosts (e.g. Cloudflare Workers) */
+  }
   return res;
 }

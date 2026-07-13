@@ -59,19 +59,22 @@ export const enCmsOverlay: DeepPartial<CmsData> = {
   },
   services: [
     {
-      id: "toilets",
-      title: "Mobile toilets",
-      short: "Multiple options and sizes of mobile toilets for projects and events.",
+      id: "sales-manufacturing",
+      title: "Sales & manufacturing",
+      short:
+        "Ready-to-own units and custom manufacturing by size and specs: houses, rooms, barracks, caravans, and offices.",
     },
     {
-      id: "offices",
-      title: "Mobile offices & rooms",
-      short: "Practical, professional finish offices and multi-use rooms.",
+      id: "mobile-units",
+      title: "Mobile unit rental",
+      short:
+        "Premium ready-to-operate mobile units for projects and events — with supply, installation, and support during the rental period.",
     },
     {
-      id: "other",
-      title: "Other services",
-      short: "Supporting logistics services for site and project operations.",
+      id: "european-tents",
+      title: "European tent rental",
+      short:
+        "Elegant European tents for occasions, exhibitions, and events — flexible sizes and professional on-site installation.",
     },
   ],
   processSteps: [
@@ -293,8 +296,7 @@ export const enCmsOverlay: DeepPartial<CmsData> = {
   rentalPage: {
     heroDescription:
       "Flexible rental solutions for projects and events with efficiency and reliability — serving all needs and occasions.",
-    sectionTitle:
-      "Flexible rental solutions for projects and events with efficiency and reliability — serving all needs and occasions.",
+    sectionTitle: "Mobile units and European tents for your project",
     sectionBody:
       "Practical and elegant rental solutions for projects, events, and private occasions: from ready-to-operate mobile units to premium European tents — with logistics support, supply, and installation in major cities.",
     bullets: [

@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { AnimatedMedia } from "@/components/AnimatedMedia";
 import { useLocalizedCms } from "@/components/CmsProvider";
@@ -58,27 +57,6 @@ export function ServicesSection() {
             </motion.article>
           ))}
         </div>
-
-        <motion.div
-          className="mt-5"
-          initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.45, delay: 0.2 }}
-        >
-          <Link
-            href="/manufacturing"
-            className="card-frame group flex items-center justify-between gap-4 overflow-hidden p-7 transition hover:-translate-y-0.5"
-          >
-            <div>
-              <h3 className="text-xl font-extrabold text-[#0f0f0f] transition group-hover:text-[var(--gold)]">
-                {home.manufacturingBandTitle}
-              </h3>
-              <p className="mt-2 text-sm text-[#777]">{home.manufacturingBandText}</p>
-            </div>
-            <ArrowLeft className="h-5 w-5 text-[var(--gold)] transition group-hover:-translate-x-1" />
-          </Link>
-        </motion.div>
       </div>
     </section>
   );

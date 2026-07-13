@@ -96,7 +96,7 @@ export function ManufacturingPageClient() {
             </h2>
             <p className="mt-4 leading-8 text-white/70">{manufacturingPage.ctaBody}</p>
           </div>
-          <div className="bg-white">
+          <div className="min-w-0 overflow-hidden bg-white">
             <ContactForm title={t.manufacturingFormTitle} />
           </div>
         </div>

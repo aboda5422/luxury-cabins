@@ -25,6 +25,7 @@ import {
   Database,
   FileText,
   House,
+  ImagePlus,
   Info,
   LoaderCircle,
   LogOut,
@@ -41,6 +42,7 @@ import {
   Users2,
   Wrench,
   Boxes,
+  X,
 } from "lucide-react";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLocale } from "@/components/LocaleProvider";
@@ -257,23 +259,38 @@ function Field({
   );
 }
 
+async function uploadAdminImage(file: File): Promise<string> {
+  const body = new FormData();
+  body.append("file", file);
+  const res = await fetch("/api/admin/upload", { method: "POST", body });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(data?.error || "تعذّر رفع الصورة");
+  }
+  if (!data?.url) throw new Error("تعذّر رفع الصورة");
+  return data.url as string;
+}
+
 function ImageUploadField({
   label,
   value,
   onChange,
-  fallback = "/images/cover-hero.webp",
-  aspectClass = "aspect-[21/9]",
+  fallback = "",
+  aspectClass = "aspect-[16/10]",
+  className = "md:col-span-2",
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   fallback?: string;
   aspectClass?: string;
+  className?: string;
 }) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const preview = value?.trim() || fallback;
+  const hasImage = Boolean(preview);
 
   async function onFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -283,64 +300,158 @@ function ImageUploadField({
     setUploading(true);
     setError("");
     try {
-      const body = new FormData();
-      body.append("file", file);
-      const res = await fetch("/api/admin/upload", { method: "POST", body });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        setError(data?.error || "تعذّر رفع الصورة");
-        return;
-      }
-      if (data?.url) onChange(data.url);
-    } catch {
-      setError("تعذّر الاتصال بخادم الرفع");
+      onChange(await uploadAdminImage(file));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "تعذّر رفع الصورة");
     } finally {
       setUploading(false);
     }
   }
 
   return (
-    <div className="md:col-span-2">
+    <div className={className}>
       <span className="mb-2 block text-sm font-bold text-[#1e1e1e]">{label}</span>
       <div className="overflow-hidden rounded-2xl border border-[#d9d1c0] bg-white">
-        <div className={`relative ${aspectClass} bg-[#f4f1ea]`}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={preview}
-            alt={label}
-            className="h-full w-full object-cover"
-          />
-        </div>
-        <div className="flex flex-wrap items-center gap-3 border-t border-[#efe8da] px-4 py-3">
-          <input
-            ref={inputRef}
-            type="file"
-            accept="image/jpeg,image/png,image/webp,image/gif"
-            className="hidden"
-            onChange={onFileChange}
-          />
+        <button
+          type="button"
+          disabled={uploading}
+          onClick={() => inputRef.current?.click()}
+          className={`group relative flex w-full ${aspectClass} items-center justify-center bg-[#f7f4ef] transition hover:bg-[#f0ebe3] disabled:cursor-not-allowed disabled:opacity-70`}
+        >
+          {hasImage ? (
+            <>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={preview} alt={label} className="absolute inset-0 h-full w-full object-cover" />
+              <span className="absolute inset-0 bg-black/0 transition group-hover:bg-black/35" />
+              <span className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white/95 text-[#111] shadow-lg opacity-90 transition group-hover:opacity-100">
+                {uploading ? (
+                  <LoaderCircle className="h-5 w-5 animate-spin" />
+                ) : (
+                  <Upload className="h-5 w-5" />
+                )}
+              </span>
+              <span className="absolute bottom-3 start-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-black/70 px-3 py-1.5 text-xs font-bold text-white">
+                {uploading ? (
+                  <LoaderCircle className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <ImagePlus className="h-3.5 w-3.5" />
+                )}
+                {uploading ? "جارٍ الرفع..." : "تغيير الصورة"}
+              </span>
+            </>
+          ) : (
+            <span className="flex flex-col items-center gap-2 text-[#666]">
+              <span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-dashed border-[#cfc5b4] bg-white text-[#111]">
+                {uploading ? (
+                  <LoaderCircle className="h-6 w-6 animate-spin" />
+                ) : (
+                  <ImagePlus className="h-6 w-6" />
+                )}
+              </span>
+              <span className="text-sm font-bold">
+                {uploading ? "جارٍ الرفع..." : "تحميل صورة"}
+              </span>
+            </span>
+          )}
+        </button>
+        <input
+          ref={inputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/webp,image/gif"
+          className="hidden"
+          onChange={onFileChange}
+        />
+        {error ? (
+          <p className="border-t border-red-100 bg-red-50 px-4 py-2 text-sm text-red-700">{error}</p>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function ImageGalleryField({
+  label,
+  values,
+  onChange,
+  className = "md:col-span-2",
+}: {
+  label: string;
+  values: string[];
+  onChange: (values: string[]) => void;
+  className?: string;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const images = values.filter(Boolean);
+
+  async function onFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files || []);
+    e.target.value = "";
+    if (!files.length) return;
+
+    setUploading(true);
+    setError("");
+    try {
+      const uploaded: string[] = [];
+      for (const file of files) {
+        uploaded.push(await uploadAdminImage(file));
+      }
+      onChange([...images, ...uploaded]);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "تعذّر رفع الصورة");
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  return (
+    <div className={className}>
+      <span className="mb-2 block text-sm font-bold text-[#1e1e1e]">{label}</span>
+      <div className="rounded-2xl border border-[#d9d1c0] bg-white p-3">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+          {images.map((src, index) => (
+            <div
+              key={`${src}-${index}`}
+              className="group relative aspect-square overflow-hidden rounded-xl border border-[#efe8da] bg-[#f7f4ef]"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={src} alt="" className="h-full w-full object-cover" />
+              <button
+                type="button"
+                onClick={() => onChange(images.filter((_, i) => i !== index))}
+                className="absolute end-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-black/70 text-white opacity-0 transition group-hover:opacity-100"
+                aria-label="حذف الصورة"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          ))}
           <button
             type="button"
             disabled={uploading}
             onClick={() => inputRef.current?.click()}
-            className="inline-flex items-center gap-2 rounded-2xl bg-[#111] px-4 py-2.5 text-sm font-bold text-white transition hover:bg-[#222] disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex aspect-square flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-[#cfc5b4] bg-[#faf8f4] text-[#555] transition hover:border-[#ffb400] hover:bg-[#fff8e8] disabled:cursor-not-allowed disabled:opacity-60"
           >
             {uploading ? (
-              <LoaderCircle className="h-4 w-4 animate-spin" />
+              <LoaderCircle className="h-6 w-6 animate-spin" />
             ) : (
-              <Upload className="h-4 w-4" />
+              <ImagePlus className="h-6 w-6" />
             )}
-            {uploading ? "جارٍ الرفع..." : "تحميل صورة جديدة"}
+            <span className="px-2 text-center text-xs font-bold">
+              {uploading ? "جارٍ الرفع..." : "تحميل صور"}
+            </span>
           </button>
-          <p className="text-xs text-[#777]" dir="ltr">
-            {preview}
-          </p>
         </div>
-        {error ? (
-          <p className="border-t border-red-100 bg-red-50 px-4 py-2 text-sm text-red-700">
-            {error}
-          </p>
-        ) : null}
+        <input
+          ref={inputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/webp,image/gif"
+          multiple
+          className="hidden"
+          onChange={onFileChange}
+        />
+        {error ? <p className="mt-3 text-sm text-red-700">{error}</p> : null}
       </div>
     </div>
   );
@@ -1094,6 +1205,8 @@ export function AdminApp() {
             label="صورة الهيرو"
             value={cms.home.heroImage || "/images/cover-hero.webp"}
             onChange={(value) => applyCms((draft) => void (draft.home.heroImage = value))}
+            fallback="/images/cover-hero.webp"
+            aspectClass="aspect-[21/9]"
           />
           <Field
             label="عنوان الخدمات"
@@ -1204,7 +1317,7 @@ export function AdminApp() {
       >
         <ObjectListEditor
           title="قائمة الخدمات"
-          description="كل خدمة تحتوي على عنوان ووصف مختصر ورابط وصورة."
+          description="كل خدمة تحتوي على عنوان ووصف مختصر ورابط، مع تحميل صورة."
           items={cms.services}
           onChange={(items) => applyCms((draft) => void (draft.services = items))}
           createItem={initialService}
@@ -1223,11 +1336,12 @@ export function AdminApp() {
                 onChange={(short) => update({ ...item, short })}
               />
               <Field label="الرابط" value={item.href} onChange={(href) => update({ ...item, href })} />
-              <Field
+              <ImageUploadField
                 label="الصورة"
                 value={item.image}
                 onChange={(image) => update({ ...item, image })}
-                placeholder="/images/service.jpg"
+                aspectClass="aspect-[4/3]"
+                className="md:col-span-2"
               />
             </div>
           )}
@@ -1276,7 +1390,7 @@ export function AdminApp() {
       >
         <ObjectListEditor
           title="منتجات المتجر"
-          description="أضف المنتج، عدل النصوص، ثم ضع المواصفات والصور كل واحدة في سطر."
+          description="أضف المنتج، عدّل النصوص، ثم ارفع الصور واضبط المواصفات."
           items={cms.catalogProducts}
           onChange={(items) => applyCms((draft) => void (draft.catalogProducts = items))}
           createItem={initialCatalogProduct}
@@ -1317,12 +1431,10 @@ export function AdminApp() {
                 rows={5}
                 placeholder={"سطر لكل مواصفة"}
               />
-              <TextareaField
+              <ImageGalleryField
                 label="الصور"
-                value={toLines(item.images)}
-                onChange={(value) => update({ ...item, images: fromLines(value) })}
-                rows={5}
-                placeholder={"سطر لكل صورة"}
+                values={item.images}
+                onChange={(images) => update({ ...item, images })}
               />
             </div>
           )}
@@ -1395,7 +1507,7 @@ export function AdminApp() {
         >
           <ObjectListEditor
             title="فئات التأجير"
-            description="كل فئة يمكن تعديلها بالكامل مع المواصفات والصور."
+            description="كل فئة يمكن تعديلها بالكامل مع المواصفات ورفع الصور."
             items={cms.rentalCategories}
             onChange={(items) => applyCms((draft) => void (draft.rentalCategories = items))}
             createItem={initialRentalCategory}
@@ -1430,11 +1542,10 @@ export function AdminApp() {
                   onChange={(value) => update({ ...item, specs: fromLines(value) })}
                   rows={5}
                 />
-                <TextareaField
+                <ImageGalleryField
                   label="الصور"
-                  value={toLines(item.images)}
-                  onChange={(value) => update({ ...item, images: fromLines(value) })}
-                  rows={5}
+                  values={item.images}
+                  onChange={(images) => update({ ...item, images })}
                 />
               </div>
             )}
@@ -1607,11 +1718,12 @@ export function AdminApp() {
                 value={item.category}
                 onChange={(category) => update({ ...item, category })}
               />
-              <Field
+              <ImageUploadField
                 label="الصورة"
                 value={item.image}
                 onChange={(image) => update({ ...item, image })}
-                placeholder="/images/project.jpg"
+                aspectClass="aspect-[4/3]"
+                className="md:col-span-2"
               />
             </div>
           )}
@@ -1972,7 +2084,7 @@ export function AdminApp() {
       <main className="min-w-0 flex-1">
         <div className="mx-auto max-w-7xl px-4 py-6 md:px-6 lg:px-8">
           <header className="mb-6 rounded-[2rem] border border-[#e4dbc9] bg-white p-5 shadow-[0_20px_50px_-35px_rgba(15,15,15,0.2)]">
-            <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
                 <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#8e6b10]">
                   {t.admin.panel}
@@ -1984,31 +2096,19 @@ export function AdminApp() {
                     {t.admin.lastUpdate}{" "}
                     {cms.updatedAt ? formatDate(cms.updatedAt, dateLocale) : "—"}
                   </span>
-                  <span className="inline-flex items-center gap-2 rounded-full bg-[#f4f1ea] px-3 py-2 font-medium text-[#555]">
-                    <ShieldCheck className="h-4 w-4" />
-                    {t.admin.status} {dirty ? t.admin.dirty : t.admin.synced}
-                  </span>
                 </div>
               </div>
-              <div className="flex flex-wrap items-center gap-3">
-                <button
-                  type="button"
-                  onClick={handleReloadCms}
-                  className="inline-flex items-center gap-2 rounded-2xl border border-[#e3d7c0] bg-white px-4 py-3 text-sm font-bold text-[#1a1a1a] transition hover:border-[#ffb400] hover:text-[#b27a00]"
-                >
-                  <RefreshCw className="h-4 w-4" />
-                  {t.admin.refreshData}
-                </button>
-                <button
-                  type="button"
-                  onClick={saveCms}
-                  disabled={saving || !dirty}
-                  className="inline-flex items-center gap-2 rounded-2xl bg-[#ffb400] px-5 py-3 text-sm font-black text-[#121212] transition hover:bg-[#ffc62b] disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  {saving ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-                  {t.admin.save}
-                </button>
-              </div>
+              <a
+                href="/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#f4f1ea] px-3 py-2 text-sm font-medium text-[#555] transition hover:bg-[#ffb400]/20 hover:text-[#8a6611]"
+                title={t.admin.viewSite}
+                aria-label={t.admin.viewSite}
+              >
+                <House className="h-4 w-4" />
+                {t.admin.viewSite}
+              </a>
             </div>
           </header>
 

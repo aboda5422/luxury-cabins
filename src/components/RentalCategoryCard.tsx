@@ -1,8 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import { useCallback, useState } from "react";
+import { ExternalLink } from "lucide-react";
 import { useLocalizedCms } from "@/components/CmsProvider";
+import { RentalRequestModal } from "@/components/ContactForm";
 import { useLocale } from "@/components/LocaleProvider";
+import { ProductShareButton } from "@/components/ProductShareButton";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { useImageSlider } from "@/hooks/useImageSlider";
 import type { RentalCategory } from "@/lib/cms/types";
@@ -11,9 +15,14 @@ type Props = {
   category: RentalCategory;
 };
 
+const pillBase =
+  "inline-flex items-center justify-center gap-2 rounded-full border border-[#e8e4de] px-5 py-2.5 text-sm font-medium transition-[color,background-color] duration-150";
+
 export function RentalCategoryCard({ category }: Props) {
   const { site } = useLocalizedCms();
   const { t } = useLocale();
+  const [requestOpen, setRequestOpen] = useState(false);
+  const closeRequest = useCallback(() => setRequestOpen(false), []);
   const images = category.images.filter(Boolean);
   const total = images.length;
   const { index, swipeHandlers } = useImageSlider(total, 3800);
@@ -23,7 +32,7 @@ export function RentalCategoryCard({ category }: Props) {
   )}`;
 
   return (
-    <article className="luxe-card flex h-full flex-col overflow-hidden bg-white">
+    <article className="luxe-card luxe-card--static flex h-full flex-col overflow-hidden bg-white">
       <div
         className="relative aspect-[16/10] touch-pan-y overflow-hidden bg-[#efebe6]"
         dir="ltr"
@@ -76,16 +85,39 @@ export function RentalCategoryCard({ category }: Props) {
           ))}
         </ul>
 
-        <a
-          href={waHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-auto flex items-center justify-center gap-2 bg-[#25D366] px-4 py-3.5 text-sm font-extrabold text-white transition hover:bg-[#1ebe57]"
-        >
-          <WhatsAppIcon className="h-5 w-5" />
-          {t.contactWhatsApp}
-        </a>
+        <div className="mt-auto flex flex-wrap gap-3 pt-6">
+          <ProductShareButton
+            title={category.title}
+            text={category.shortDescription}
+            url="/rental"
+            label={t.share}
+            className={`${pillBase} bg-white text-[#555] hover:bg-[#faf8f4] hover:text-[var(--gold)]`}
+          />
+          <a
+            href={waHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-[#25D366] px-5 py-2.5 text-sm font-medium text-white transition-[background-color] duration-150 hover:bg-[#1ebe57]"
+          >
+            <WhatsAppIcon className="h-3.5 w-3.5" />
+            {t.whatsapp}
+          </a>
+          <button
+            type="button"
+            onClick={() => setRequestOpen(true)}
+            className={`${pillBase} bg-white text-[#555] hover:bg-[#faf8f4] hover:text-[var(--gold)]`}
+          >
+            <ExternalLink size={15} />
+            {t.rentalRequest}
+          </button>
+        </div>
       </div>
+
+      <RentalRequestModal
+        open={requestOpen}
+        onClose={closeRequest}
+        categoryTitle={category.title}
+      />
     </article>
   );
 }

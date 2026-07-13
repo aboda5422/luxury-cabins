@@ -40,7 +40,7 @@ export function getDefaultCms(): CmsData {
       heroTitle: "الأولى في تأجير وبيع وتصنيع الوحدات المتنقلة",
       heroSubtitle: "وحدات متنقلة - خيام أوروبية - بيع وتصنيع حسب الطلب",
       heroCta: "استكشف حلولنا",
-      heroImage: "/images/cover-hero.webp",
+      heroImage: "/images/cms/hero-home.jpg",
       servicesEyebrow: "حلولنا المتكاملة",
       servicesTitle: "حلول متكاملة لتصنيع وبيع وتأجير الوحدات المتنقلة",
       servicesTitleLine2: "(وحدات متنقلة – خيام أوروبية)",
@@ -50,7 +50,7 @@ export function getDefaultCms(): CmsData {
       visionBody:
         "رؤيتنا أن نكون الشركة الرائدة في توفير حلول الوحدات المتنقلة عبر التأجير والبيع والتصنيع في المملكة العربية السعودية. نحن معروفون بالتزامنا بالجودة والابتكار. لا نهدف إلى تصنيع وحدات رخيصة بل وحدات عالية الجودة بطابع احترافي، مع التوسع المستمر لخدمة عملائنا وضمان نجاح مشاريعهم.",
       visionCta: "اتصل بنا الآن",
-      visionImage: "/images/vision-side.jpg",
+      visionImage: "/images/cms/vision-side.jpg",
       processEyebrow: "منهجية احترافية... تنفذ بمعايير عالمية",
       processTitle: "رحلة تنفيذ مشروعك",
       processSubtitle:
@@ -104,8 +104,7 @@ export function getDefaultCms(): CmsData {
     rentalPage: {
       heroDescription:
         "حلول تأجير مرنة للمشاريع والفعاليات بكفاءة واعتمادية، يخدم كافة الاحتياجات والمناسبات.",
-      sectionTitle:
-        "حلول تأجير مرنة للمشاريع والفعاليات بكفاءة واعتمادية، يخدم كافة الاحتياجات والمناسبات.",
+      sectionTitle: "وحدات متنقلة وخيام أوروبية لمشروعك",
       sectionBody:
         "نقدّم حلول تأجير عملية وأنيقة للمشاريع والفعاليات والمناسبات الخاصة: من الوحدات المتنقلة الجاهزة للتشغيل، إلى الخيام الأوروبية الفاخرة — مع دعم لوجستي وتوريد وتركيب في المدن الرئيسية.",
       bullets: [

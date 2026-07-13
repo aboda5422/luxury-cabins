@@ -176,8 +176,8 @@ export function ServicesPageClient() {
             </h2>
             <p className="mt-4 leading-8 text-[#777]">{home.contactSubtitle}</p>
           </div>
-          <div className="card-frame bg-white">
-            <ContactForm compact />
+          <div className="card-frame min-w-0 overflow-hidden bg-white">
+            <ContactForm compact hideHeader />
           </div>
         </div>
       </section>

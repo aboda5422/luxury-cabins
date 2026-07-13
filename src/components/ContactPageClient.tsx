@@ -36,8 +36,8 @@ export function ContactPageClient() {
                 referrerPolicy="no-referrer-when-downgrade"
               />
             </div>
-            <div className="card-frame bg-white">
-              <ContactForm />
+            <div className="card-frame min-w-0 overflow-hidden bg-white">
+              <ContactForm title={t.contactPageTitle} />
             </div>
           </div>
         </div>

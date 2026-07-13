@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import type { FormEvent } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLocale } from "@/components/LocaleProvider";
 
@@ -20,6 +21,7 @@ export default function AdminLoginPage() {
   const { t } = useLocale();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -115,17 +117,32 @@ export default function AdminLoginPage() {
             />
           </label>
 
-          <label className="block">
+          <div className="block">
             <span className="mb-2 block text-sm font-bold text-[#333]">{t.password}</span>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="input-field w-full"
-              placeholder={t.password}
-              autoComplete="current-password"
-            />
-          </label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="input-field w-full pe-12"
+                placeholder={t.password}
+                autoComplete="current-password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                className="absolute top-1/2 end-3 -translate-y-1/2 rounded-md p-1.5 text-[#777] transition hover:bg-[#f4f1ea] hover:text-[#111]"
+                aria-label={showPassword ? "إخفاء كلمة المرور" : "عرض كلمة المرور"}
+                title={showPassword ? "إخفاء كلمة المرور" : "عرض كلمة المرور"}
+              >
+                {showPassword ? (
+                  <EyeOff className="h-5 w-5" strokeWidth={1.75} />
+                ) : (
+                  <Eye className="h-5 w-5" strokeWidth={1.75} />
+                )}
+              </button>
+            </div>
+          </div>
 
           <label className="flex cursor-pointer items-center gap-2 select-none">
             <input

@@ -1,24 +1,27 @@
 export const services = [
   {
-    id: "toilets",
-    title: "دورات مياه متنقلة",
-    short: "خيارات متعددة وأحجام مختلفة من دورات المياه المتنقلة للمشاريع والفعاليات.",
-    href: "/rental",
-    image: "/images/service-toilets.jpg",
+    id: "sales-manufacturing",
+    title: "البيع والتصنيع",
+    short:
+      "وحدات جاهزة للتمليك وتصنيع حسب المقاسات والمواصفات: بيوت وغرف وبركسات وكرفانات ومكاتب.",
+    href: "/manufacturing",
+    image: "/images/cms/service-sales.jpg",
   },
   {
-    id: "offices",
-    title: "مكاتب وغرف متنقلة",
-    short: "خيارات متعددة من المكاتب والغرف متعددة الاستخدام بتشطيب عملي واحترافي.",
-    href: "/rental",
-    image: "/images/cabin-5.jpg",
+    id: "mobile-units",
+    title: "إيجار الوحدات المتنقلة",
+    short:
+      "وحدات متنقلة فاخرة جاهزة للتشغيل للمشاريع والفعاليات — مع توريد وتركيب ودعم أثناء فترة التأجير.",
+    href: "/rental#mobile-units",
+    image: "/images/cms/service-units.jpg",
   },
   {
-    id: "other",
-    title: "خدمات أخرى",
-    short: "مجموعة من الخدمات اللوجستية المساندة لتشغيل المواقع والمشاريع.",
-    href: "/contact",
-    image: "/images/service-logistics.jpg",
+    id: "european-tents",
+    title: "إيجار الخيام الأوروبية",
+    short:
+      "خيام أوروبية أنيقة للمناسبات والمعارض والفعاليات — مساحات مرنة وتركيب احترافي في الموقع.",
+    href: "/rental#european-tents",
+    image: "/images/cms/service-tents.jpg",
   },
 ] as const;
 
@@ -205,7 +208,12 @@ export const rentalCategories = [
       "/images/rental/units/unit-5.jpg",
       "/images/rental/units/unit-6.jpg",
       "/images/rental/units/unit-8.jpg",
-      "/images/rental/units/unit-7.jpg",
+      "/images/rental/units/unit-9.jpg",
+      "/images/rental/units/unit-10.jpg",
+      "/images/rental/units/unit-11.jpg",
+      "/images/rental/units/unit-12.jpg",
+      "/images/rental/units/unit-13.jpg",
+      "/images/rental/units/unit-14.jpg",
     ],
     whatsappMessage:
       "السلام عليكم، أرغب في الاستفسار عن تأجير الوحدات المتنقلة.",
@@ -224,14 +232,9 @@ export const rentalCategories = [
       "تركيب وتفكيك باحترافية في الموقع",
     ],
     images: [
-      "/images/rental/tents/tent-1.jpg",
-      "/images/rental/tents/tent-2.jpg",
-      "/images/rental/tents/tent-3.jpg",
       "/images/rental/tents/tent-4.jpg",
-      "/images/rental/tents/tent-5.jpg",
-      "/images/rental/tents/tent-6.jpg",
-      "/images/rental/tents/tent-7.jpg",
-      "/images/rental/tents/tent-8.jpg",
+      "/images/rental/tents/tent-9.jpg",
+      "/images/rental/tents/tent-10.jpg",
     ],
     whatsappMessage:
       "السلام عليكم، أرغب في الاستفسار عن تأجير الخيام الأوروبية.",

@@ -1,13 +1,29 @@
 import Link from "next/link";
+import { BackLink } from "@/components/BackLink";
 
 type Props = {
   eyebrow?: string;
   title: string;
   description?: string;
   breadcrumbs?: { label: string; href?: string }[];
+  /** Override back target (defaults to first breadcrumb href or home) */
+  backHref?: string;
+  backLabel?: string;
+  showBack?: boolean;
 };
 
-export function PageHero({ eyebrow, title, description, breadcrumbs }: Props) {
+export function PageHero({
+  eyebrow,
+  title,
+  description,
+  breadcrumbs,
+  backHref,
+  backLabel,
+  showBack = true,
+}: Props) {
+  const parentCrumb = breadcrumbs?.find((item) => item.href);
+  const resolvedBackHref = backHref || parentCrumb?.href || "/";
+
   return (
     <section className="relative overflow-hidden pt-[72px] text-white md:pt-[100px]">
       <div
@@ -16,10 +32,16 @@ export function PageHero({ eyebrow, title, description, breadcrumbs }: Props) {
       />
       <div className="absolute inset-0 bg-black/55" />
       <div className="container-site relative py-16 md:py-20">
+        {showBack ? (
+          <div className="mb-6">
+            <BackLink href={resolvedBackHref} label={backLabel} tone="dark" />
+          </div>
+        ) : null}
+
         {breadcrumbs && (
           <nav className="mb-5 flex flex-wrap items-center gap-2 text-sm text-white/60">
             {breadcrumbs.map((item, i) => (
-              <span key={item.label} className="inline-flex items-center gap-2">
+              <span key={`${item.label}-${i}`} className="inline-flex items-center gap-2">
                 {i > 0 && <span>/</span>}
                 {item.href ? (
                   <Link href={item.href} className="hover:text-[var(--gold)]">

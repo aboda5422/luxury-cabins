@@ -8,6 +8,7 @@ import { Menu, X } from "lucide-react";
 import { useLocalizedCms } from "@/components/CmsProvider";
 import { useLocale } from "@/components/LocaleProvider";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { SiteSearch } from "@/components/SiteSearch";
 
 export function Header() {
   const { site, navLinks } = useLocalizedCms();
@@ -62,14 +63,16 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 lg:flex">
+        <div className="hidden items-center gap-2 xl:flex">
+          <SiteSearch />
           <LanguageSwitcher />
           <Link href="/contact" className="btn-primary text-[15px] font-black md:px-7 md:py-3.5">
             {t.requestQuote}
           </Link>
         </div>
 
-        <div className="flex items-center gap-2 xl:hidden">
+        <div className="flex items-center gap-1 xl:hidden">
+          <SiteSearch />
           <LanguageSwitcher compact />
           <button
             type="button"

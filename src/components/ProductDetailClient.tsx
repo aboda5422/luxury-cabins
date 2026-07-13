@@ -1,10 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import { ArrowLeft, CheckCircle2, Mail } from "lucide-react";
+import { useCallback, useState } from "react";
+import { CheckCircle2, ExternalLink } from "lucide-react";
+import { BackLink } from "@/components/BackLink";
 import { ProductGallery } from "@/components/ProductGallery";
 import { ProductShareButton } from "@/components/ProductShareButton";
-import { ContactForm } from "@/components/ContactForm";
+import { RequestFormModal } from "@/components/ContactForm";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { useLocalizedCms } from "@/components/CmsProvider";
 import { useLocale } from "@/components/LocaleProvider";
@@ -16,29 +17,20 @@ type Props = {
 export function ProductDetailClient({ productId }: Props) {
   const { catalogProducts, site } = useLocalizedCms();
   const { t } = useLocale();
+  const [quoteOpen, setQuoteOpen] = useState(false);
+  const closeQuote = useCallback(() => setQuoteOpen(false), []);
   const product = catalogProducts.find((p) => p.id === productId);
   if (!product) return null;
 
+  const requestLabel = `${t.askProduct} ${product.title}`.trim();
   const waLink = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
     `${t.waProductQuote} ${product.title}`,
   )}`;
 
-  const mailLink = `mailto:${site.email}?subject=${encodeURIComponent(
-    `${t.mailSubjectPrefix} ${product.title}`,
-  )}&body=${encodeURIComponent(
-    `${t.mailBodyIntro} ${product.title}\n\n${product.shortDescription}`,
-  )}`;
-
   return (
-    <section className="section-pad bg-[#F7F4F0] pt-28 md:pt-36">
+    <section className="bg-[#F7F4F0] pb-16 pt-[6.5rem] md:pb-24 md:pt-[8.5rem]">
       <div className="container-site">
-        <Link
-          href="/manufacturing"
-          className="mb-8 inline-flex items-center gap-2 text-sm text-[#777] transition hover:text-[#0f0f0f]"
-        >
-          <ArrowLeft size={14} />
-          {t.backToProducts}
-        </Link>
+        <BackLink href="/manufacturing" label={t.backToProducts} className="mb-8" />
 
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-14">
           <ProductGallery images={product.images} title={product.title} />
@@ -64,6 +56,13 @@ export function ProductDetailClient({ productId }: Props) {
             </ul>
 
             <div className="mt-8 flex flex-wrap gap-3">
+              <ProductShareButton
+                title={product.title}
+                text={product.shortDescription}
+                url={`/manufacturing/${product.id}`}
+                label={t.share}
+                className="border-[#e8e4de] bg-white px-5 py-2.5 text-[#555]"
+              />
               <a
                 href={waLink}
                 target="_blank"
@@ -73,29 +72,26 @@ export function ProductDetailClient({ productId }: Props) {
                 <WhatsAppIcon className="h-3.5 w-3.5" />
                 {t.whatsapp}
               </a>
-              <a
-                href={mailLink}
-                className="inline-flex items-center gap-2 rounded-full border border-[#e8e4de] bg-white px-5 py-2.5 text-sm font-medium text-[#555] transition hover:text-[var(--gold)]"
-                aria-label={t.email}
+              <button
+                type="button"
+                onClick={() => setQuoteOpen(true)}
+                className="inline-flex max-w-full items-center gap-2 rounded-full border border-[#e8e4de] bg-white px-5 py-2.5 text-sm font-medium text-[#555] transition hover:bg-[#faf8f4] hover:text-[var(--gold)]"
               >
-                <Mail size={15} />
-                {t.email}
-              </a>
-              <ProductShareButton
-                title={product.title}
-                text={product.shortDescription}
-                url={`/manufacturing/${product.id}`}
-                label={t.share}
-                className="border-[#e8e4de] bg-white px-5 py-2.5 text-[#555]"
-              />
-            </div>
-
-            <div className="luxe-card mt-10 overflow-hidden bg-white p-6">
-              <ContactForm title={`${t.askProduct} ${product.title}`} />
+                <ExternalLink size={15} className="shrink-0" />
+                <span className="truncate">{requestLabel}</span>
+              </button>
             </div>
           </div>
         </div>
       </div>
+
+      <RequestFormModal
+        open={quoteOpen}
+        onClose={closeQuote}
+        title={requestLabel}
+        intro={t.quoteRequestIntro.replace("{title}", product.title)}
+        consultationType={requestLabel}
+      />
     </section>
   );
 }

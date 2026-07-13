@@ -122,6 +122,14 @@ body {
   box-shadow: 0 18px 50px -12px color-mix(in srgb, var(--gold) 35%, transparent);
 }
 
+/* بطاقات بلا رفع عند التمرير (أزرار أسفلها + نوافذ منبثقة) */
+.luxe-card.luxe-card--static {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.luxe-card.luxe-card--static:hover {
+  transform: none;
+}
+
 .btn-primary {
   display: inline-flex;
   align-items: center;

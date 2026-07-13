@@ -18,7 +18,7 @@ export function RentalPageClient() {
   return (
     <>
       <PageHero
-        eyebrow={rentalLabel}
+        eyebrow={t.rentalEyebrow}
         title={rentalLabel}
         description={rentalPage.heroDescription}
         breadcrumbs={[{ label: t.home, href: "/" }, { label: rentalLabel }]}
@@ -26,8 +26,7 @@ export function RentalPageClient() {
 
       <section className="section-pad bg-white">
         <div className="container-site max-w-3xl text-center md:text-start">
-          <p className="eyebrow">{t.rentalEyebrow}</p>
-          <h2 className="heading-display mt-3 text-3xl md:text-4xl">
+          <h2 className="heading-display text-3xl md:text-4xl">
             {rentalPage.sectionTitle}
           </h2>
           <p className="mt-5 leading-8 text-[#777]">{rentalPage.sectionBody}</p>
@@ -54,7 +53,9 @@ export function RentalPageClient() {
 
           <div className="grid gap-6 lg:grid-cols-2">
             {rentalCategories.map((category) => (
-              <RentalCategoryCard key={category.id} category={category} />
+              <div key={category.id} id={category.id} className="scroll-mt-28 md:scroll-mt-36">
+                <RentalCategoryCard category={category} />
+              </div>
             ))}
           </div>
         </div>
@@ -73,7 +74,7 @@ export function RentalPageClient() {
             href={generalWa}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-3.5 text-sm font-extrabold text-white transition hover:bg-[#1ebe57]"
+            className="btn-primary shrink-0 gap-2.5 px-8 py-3.5 text-sm"
           >
             <WhatsAppIcon className="h-5 w-5" />
             {t.whatsappNow}
