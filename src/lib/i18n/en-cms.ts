@@ -36,7 +36,6 @@ export const enCmsOverlay: DeepPartial<CmsData> = {
     heroTitle: "Leading in rental, sales, and manufacturing of mobile units",
     heroSubtitle: "Mobile units · European tents · Custom manufacturing",
     heroCta: "Explore our solutions",
-    heroImage: "/images/cover-hero.webp",
     servicesEyebrow: "Integrated solutions",
     servicesTitle: "Integrated solutions for manufacturing, sales, and rental of mobile units",
     servicesTitleLine2: "(Mobile units – European tents)",
@@ -46,7 +45,6 @@ export const enCmsOverlay: DeepPartial<CmsData> = {
     visionBody:
       "Our vision is to be the leading provider of mobile unit solutions through rental, sales, and manufacturing in Saudi Arabia. We are known for quality and innovation — delivering professional-grade units, not cheap alternatives — while expanding to serve clients and ensure project success.",
     visionCta: "Contact us now",
-    visionImage: "/images/vision-side.jpg",
     processEyebrow: "A professional methodology… executed to world-class standards",
     processTitle: "Your project delivery journey",
     processSubtitle:

@@ -8,21 +8,6 @@ import { ContactForm } from "@/components/ContactForm";
 import { useLocalizedCms } from "@/components/CmsProvider";
 import { useLocale } from "@/components/LocaleProvider";
 
-const cards = [
-  {
-    href: "/rental",
-    image: "/images/rental/units/unit-2.jpg",
-    titleKey: "servicesCardRentalTitle" as const,
-    bodyKey: "servicesCardRentalBody" as const,
-  },
-  {
-    href: "/manufacturing",
-    image: "/images/cabin-1.jpg",
-    titleKey: "servicesCardSalesTitle" as const,
-    bodyKey: "servicesCardSalesBody" as const,
-  },
-];
-
 const whyItems = [
   {
     icon: Award,
@@ -47,8 +32,30 @@ const whyItems = [
 ];
 
 export function ServicesPageClient() {
-  const { home, site, pageHeroImages } = useLocalizedCms();
+  const { home, site, pageHeroImages, services } = useLocalizedCms();
   const { t } = useLocale();
+
+  const rentalImage =
+    services.find((s) => s.href.includes("/rental"))?.image ||
+    "/images/rental/units/unit-2.jpg";
+  const manufacturingImage =
+    services.find((s) => s.href.includes("/manufacturing"))?.image ||
+    "/images/cabin-1.jpg";
+
+  const cards = [
+    {
+      href: "/rental",
+      image: rentalImage,
+      titleKey: "servicesCardRentalTitle" as const,
+      bodyKey: "servicesCardRentalBody" as const,
+    },
+    {
+      href: "/manufacturing",
+      image: manufacturingImage,
+      titleKey: "servicesCardSalesTitle" as const,
+      bodyKey: "servicesCardSalesBody" as const,
+    },
+  ];
 
   return (
     <>
@@ -87,6 +94,7 @@ export function ServicesPageClient() {
                     fill
                     sizes="(max-width:768px) 100vw, 50vw"
                     className="object-cover transition duration-700 group-hover:scale-105"
+                    unoptimized={card.image.startsWith("http")}
                   />
                 </div>
                 <div className="p-7 md:p-8">

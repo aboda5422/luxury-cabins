@@ -52,11 +52,12 @@ export function ManufacturingPageClient() {
           </div>
           <div className="relative aspect-[4/3] overflow-hidden bg-[#f5f5f5]">
             <Image
-              src="/images/cabin-1.jpg"
+              src={manufacturingPage.introImage || "/images/cabin-1.jpg"}
               alt={manufacturingPage.heroTitle}
               fill
               className="object-cover"
               sizes="(max-width:1024px) 100vw, 50vw"
+              unoptimized={Boolean(manufacturingPage.introImage?.startsWith("http"))}
             />
           </div>
         </div>

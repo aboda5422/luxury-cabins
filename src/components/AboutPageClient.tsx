@@ -36,11 +36,12 @@ export function AboutPageClient() {
           </div>
           <div className="relative aspect-[4/3] overflow-hidden">
             <Image
-              src="/images/cabin-2.jpg"
+              src={about.sideImage || "/images/cabin-2.jpg"}
               alt={about.whoTitle}
               fill
               className="object-cover"
               sizes="(max-width:1024px) 100vw, 50vw"
+              unoptimized={Boolean(about.sideImage?.startsWith("http"))}
             />
           </div>
         </div>

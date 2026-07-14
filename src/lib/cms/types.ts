@@ -127,6 +127,7 @@ export type CmsData = {
     whoTitle: string;
     whoBody1: string;
     whoBody2: string;
+    sideImage: string;
     visionTitle: string;
     visionBody: string;
     missionTitle: string;
@@ -150,6 +151,7 @@ export type CmsData = {
     introEyebrow: string;
     introTitle: string;
     introBody: string;
+    introImage: string;
     highlights: string[];
     catalogEyebrow: string;
     catalogBadge: string;

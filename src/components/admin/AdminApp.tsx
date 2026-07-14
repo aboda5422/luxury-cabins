@@ -40,7 +40,6 @@ import {
   ShieldCheck,
   Sparkles,
   Trash2,
-  Upload,
   Users2,
   Wrench,
   Boxes,
@@ -289,8 +288,9 @@ function ImageUploadField({
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const preview = value?.trim() || fallback;
-  const hasImage = Boolean(preview);
+  const customValue = value?.trim() || "";
+  const hasImage = Boolean(customValue);
+  const preview = customValue;
 
   async function onFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -324,18 +324,11 @@ function ImageUploadField({
               />
               <button
                 type="button"
-                disabled={uploading}
-                onClick={() => inputRef.current?.click()}
-                className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 bg-black/0 text-white opacity-0 transition group-hover:bg-black/45 group-hover:opacity-100 disabled:cursor-not-allowed"
+                onClick={() => onChange("")}
+                className="absolute end-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-black/70 text-white shadow-sm transition hover:bg-black"
+                aria-label="حذف الصورة"
               >
-                {uploading ? (
-                  <LoaderCircle className="h-5 w-5 animate-spin" />
-                ) : (
-                  <Upload className="h-5 w-5" />
-                )}
-                <span className="text-xs font-bold">
-                  {uploading ? "جارٍ الرفع..." : "تغيير"}
-                </span>
+                <X className="h-3.5 w-3.5" />
               </button>
             </div>
           ) : null}
@@ -351,7 +344,7 @@ function ImageUploadField({
               <ImagePlus className="h-6 w-6" />
             )}
             <span className="px-2 text-center text-xs font-bold">
-              {uploading ? "جارٍ الرفع..." : hasImage ? "استبدال" : "تحميل صورة"}
+              {uploading ? "جارٍ الرفع..." : "تحميل صورة"}
             </span>
           </button>
         </div>
@@ -419,7 +412,7 @@ function ImageGalleryField({
               <button
                 type="button"
                 onClick={() => onChange(images.filter((_, i) => i !== index))}
-                className="absolute end-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-black/70 text-white opacity-0 transition group-hover:opacity-100"
+                className="absolute end-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-black/70 text-white shadow-sm transition hover:bg-black"
                 aria-label="حذف الصورة"
               >
                 <X className="h-3.5 w-3.5" />
@@ -1254,7 +1247,7 @@ export function AdminApp() {
           />
           <ImageUploadField
             label="صورة الهيرو"
-            value={cms.home.heroImage || "/images/cover-hero.webp"}
+            value={cms.home.heroImage || ""}
             onChange={(value) => applyCmsAndSave((draft) => void (draft.home.heroImage = value))}
             fallback="/images/cover-hero.webp"
           />
@@ -1270,7 +1263,7 @@ export function AdminApp() {
           />
           <ImageUploadField
             label="صورة قسم الرؤية"
-            value={cms.home.visionImage || "/images/vision-side.jpg"}
+            value={cms.home.visionImage || ""}
             fallback="/images/vision-side.jpg"
             onChange={(value) => applyCmsAndSave((draft) => void (draft.home.visionImage = value))}
           />
@@ -1640,6 +1633,16 @@ export function AdminApp() {
               fallback="/images/cover-hero.webp"
             />
           </div>
+          <div className="mb-6">
+            <ImageUploadField
+              label="صورة قسم البيع والتصنيع (جانب النص)"
+              value={cms.manufacturingPage.introImage || ""}
+              onChange={(value) =>
+                applyCmsAndSave((draft) => void (draft.manufacturingPage.introImage = value))
+              }
+              fallback="/images/cabin-1.jpg"
+            />
+          </div>
           <div className="grid gap-4 md:grid-cols-2">
             <Field
               label="عنوان الهيرو"
@@ -1896,6 +1899,16 @@ export function AdminApp() {
                 applyCmsAndSave((draft) => void (draft.pageHeroImages.about = value))
               }
               fallback="/images/cover-hero.webp"
+            />
+          </div>
+          <div className="mb-6">
+            <ImageUploadField
+              label="صورة قسم من نحن (جانب النص)"
+              value={cms.about.sideImage || ""}
+              onChange={(value) =>
+                applyCmsAndSave((draft) => void (draft.about.sideImage = value))
+              }
+              fallback="/images/cabin-2.jpg"
             />
           </div>
           <div className="grid gap-4 md:grid-cols-2">

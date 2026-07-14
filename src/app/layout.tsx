@@ -41,16 +41,62 @@ export async function generateMetadata(): Promise<Metadata> {
     const { getDefaultCms } = await import("@/lib/cms/defaults");
     cms = getDefaultCms();
   }
+
+  const title = `${cms.site.nameAr} | ${cms.site.nameEn} — تأجير وبيع وتصنيع الوحدات المتنقلة`;
+  const description = cms.site.description;
+  const ogImage = "/og.jpg";
+
   return {
     metadataBase: new URL(siteUrl),
     title: {
-      default: `${cms.site.nameAr} | ${cms.site.nameEn} — تأجير وبيع وتصنيع الوحدات المتنقلة`,
+      default: title,
       template: `%s | ${cms.site.nameAr}`,
     },
-    description: cms.site.description,
+    description,
+    applicationName: cms.site.nameAr,
+    keywords: [
+      "كبائن",
+      "وحدات متنقلة",
+      "تأجير كبائن",
+      "تصنيع كبائن",
+      "بركسات",
+      "كرفانات",
+      "Luxury Cabins",
+      "السعودية",
+    ],
+    authors: [{ name: cms.site.legalName || cms.site.nameAr }],
+    creator: cms.site.nameAr,
+    publisher: cms.site.nameAr,
     icons: {
-      icon: "/logo/favicon.png",
-      apple: "/logo/logo-icon.png",
+      icon: [
+        { url: "/logo/favicon.ico", sizes: "any" },
+        { url: "/logo/favicon.png", type: "image/png" },
+      ],
+      apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+      shortcut: "/logo/favicon.ico",
+    },
+    openGraph: {
+      type: "website",
+      locale: "ar_SA",
+      url: siteUrl,
+      siteName: `${cms.site.nameAr} | ${cms.site.nameEn}`,
+      title,
+      description,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: `${cms.site.nameAr} — ${cms.site.tagline}`,
+          type: "image/jpeg",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
     },
   };
 }

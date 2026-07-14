@@ -28,12 +28,13 @@ export function PageHero({
   const parentCrumb = breadcrumbs?.find((item) => item.href);
   const resolvedBackHref = backHref || parentCrumb?.href || "/";
   const bg = backgroundImage?.trim() || DEFAULT_HERO_BG;
+  const bgUrl = `url("${bg.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}")`;
 
   return (
     <section className="relative overflow-hidden pt-[72px] text-white md:pt-[100px]">
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${bg})` }}
+        style={{ backgroundImage: bgUrl }}
       />
       <div className="absolute inset-0 bg-black/55" />
       <div className="container-site relative py-16 md:py-20">
