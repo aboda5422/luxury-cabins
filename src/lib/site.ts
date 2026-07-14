@@ -9,7 +9,7 @@ export const siteConfig = {
   phone: "+966500962580",
   phoneDisplay: "050 096 2580",
   whatsapp: "966500962580",
-  email: "info@luxurycabins.sa",
+  email: "info@luxurycabins.com.sa",
   address: "الرياض، المملكة العربية السعودية",
   addressDetail: "الرياض - الرياض",
   cities: [

@@ -1,7 +1,6 @@
-import { promises as fs } from "fs";
-import path from "path";
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/cms/auth";
+import { getSupabaseAdmin, getSupabasePublicUrl } from "@/lib/supabase/admin";
 
 export const runtime = "nodejs";
 
@@ -43,12 +42,30 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "حجم الصورة أكبر من 8MB" }, { status: 400 });
   }
 
+  const supabase = getSupabaseAdmin();
+  if (!supabase) {
+    return NextResponse.json(
+      { error: "Supabase غير مضبوط. أضف مفاتيح البيئة ثم أعد التشغيل." },
+      { status: 503 },
+    );
+  }
+
   const buf = Buffer.from(await file.arrayBuffer());
   const ext = EXT[file.type] || "jpg";
   const name = `img-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-  const dir = path.join(process.cwd(), "public", "uploads");
-  await fs.mkdir(dir, { recursive: true });
-  await fs.writeFile(path.join(dir, name), buf);
 
-  return NextResponse.json({ url: `/uploads/${name}` });
+  const { error } = await supabase.storage.from("uploads").upload(name, buf, {
+    contentType: file.type,
+    upsert: false,
+  });
+
+  if (error) {
+    return NextResponse.json(
+      { error: `فشل رفع الصورة: ${error.message}` },
+      { status: 500 },
+    );
+  }
+
+  const publicUrl = getSupabasePublicUrl(name);
+  return NextResponse.json({ url: publicUrl || `/uploads/${name}` });
 }

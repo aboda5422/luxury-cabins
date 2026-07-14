@@ -24,9 +24,12 @@ export function ServicesSection() {
           <p className="eyebrow">{home.servicesEyebrow}</p>
           <h2 className="heading-display mt-2 text-[1.7rem] leading-[1.55] md:text-[1.95rem] md:leading-[1.5]">
             {home.servicesTitle}
-            <br className="hidden sm:block" />
-            <span className="mt-1 inline-block">{home.servicesTitleLine2}</span>
           </h2>
+          {home.servicesTitleLine2 ? (
+            <p className="mt-3 max-w-3xl text-base leading-8 text-[#555] md:text-[1.05rem]">
+              {home.servicesTitleLine2}
+            </p>
+          ) : null}
         </motion.div>
 
         <div className="grid gap-5 md:grid-cols-3">

@@ -28,7 +28,7 @@ const cairo = Cairo({
   weight: ["600", "700", "800", "900"],
 });
 
-const siteUrl = "https://luxurycabins.sa";
+const siteUrl = "https://luxurycabins.com.sa";
 
 export async function generateMetadata(): Promise<Metadata> {
   let cms;

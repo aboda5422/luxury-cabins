@@ -29,8 +29,10 @@ import {
   Info,
   LoaderCircle,
   LogOut,
+  Menu,
   MousePointerClick,
   Package2,
+  PanelRightClose,
   PencilLine,
   Plus,
   RefreshCw,
@@ -745,6 +747,7 @@ export function AdminApp() {
   const [cmsError, setCmsError] = useState("");
   const [analyticsError, setAnalyticsError] = useState("");
   const [toast, setToast] = useState<Toast | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const dirty = useMemo(() => {
     if (!cms || !initialCms) return false;
@@ -1080,6 +1083,14 @@ export function AdminApp() {
             value={cms.site.tagline}
             onChange={(value) => applyCms((draft) => void (draft.site.tagline = value))}
           />
+          <div className="md:col-span-2">
+            <TextareaField
+              label="وصف الشركة (يظهر في الفوتر)"
+              value={cms.site.description}
+              onChange={(value) => applyCms((draft) => void (draft.site.description = value))}
+              rows={4}
+            />
+          </div>
           <Field
             label="الهاتف"
             value={cms.site.phone}
@@ -1183,7 +1194,7 @@ export function AdminApp() {
     return (
       <SectionCard
         title="الصفحة الرئيسية"
-        description="نصوص البطل والخدمات والـ CTA الأساسية في الصفحة الرئيسية."
+        description="نصوص البطل والرؤية والـ CTA وخطوات العمل في الصفحة الرئيسية."
       >
         <div className="grid gap-4 md:grid-cols-2">
           <Field
@@ -1207,35 +1218,6 @@ export function AdminApp() {
             onChange={(value) => applyCms((draft) => void (draft.home.heroImage = value))}
             fallback="/images/cover-hero.webp"
             aspectClass="aspect-[21/9]"
-          />
-          <Field
-            label="عنوان الخدمات"
-            value={cms.home.servicesTitle}
-            onChange={(value) => applyCms((draft) => void (draft.home.servicesTitle = value))}
-          />
-          <Field
-            label="السطر الثاني للخدمات"
-            value={cms.home.servicesTitleLine2}
-            onChange={(value) => applyCms((draft) => void (draft.home.servicesTitleLine2 = value))}
-          />
-          <Field
-            label="بداية قسم الخدمات"
-            value={cms.home.servicesEyebrow}
-            onChange={(value) => applyCms((draft) => void (draft.home.servicesEyebrow = value))}
-          />
-          <Field
-            label="عنوان البيع والتصنيع"
-            value={cms.home.manufacturingBandTitle}
-            onChange={(value) =>
-              applyCms((draft) => void (draft.home.manufacturingBandTitle = value))
-            }
-          />
-          <Field
-            label="نص البيع والتصنيع"
-            value={cms.home.manufacturingBandText}
-            onChange={(value) =>
-              applyCms((draft) => void (draft.home.manufacturingBandText = value))
-            }
           />
           <Field
             label="عنوان الرؤية"
@@ -1313,8 +1295,27 @@ export function AdminApp() {
     return (
       <SectionCard
         title="الخدمات"
-        description="تحرير بطاقات الخدمات الظاهرة في الصفحة الرئيسية وباقي الصفحات."
+        description="عناوين قسم الخدمات في الصفحة الرئيسية وبطاقات الخدمات."
       >
+        <div className="mb-6 grid gap-4 md:grid-cols-2">
+          <Field
+            label="بداية قسم الخدمات"
+            value={cms.home.servicesEyebrow}
+            onChange={(value) => applyCms((draft) => void (draft.home.servicesEyebrow = value))}
+          />
+          <Field
+            label="عنوان الخدمات"
+            value={cms.home.servicesTitle}
+            onChange={(value) => applyCms((draft) => void (draft.home.servicesTitle = value))}
+          />
+          <div className="md:col-span-2">
+            <Field
+              label="السطر الثاني للخدمات"
+              value={cms.home.servicesTitleLine2}
+              onChange={(value) => applyCms((draft) => void (draft.home.servicesTitleLine2 = value))}
+            />
+          </div>
+        </div>
         <ObjectListEditor
           title="قائمة الخدمات"
           description="كل خدمة تحتوي على عنوان ووصف مختصر ورابط، مع تحميل صورة."
@@ -2035,51 +2036,74 @@ export function AdminApp() {
 
   return (
     <div className="flex min-h-screen bg-[#f1ece4] text-[#131313]">
-      <aside className="sticky top-0 flex h-screen w-80 shrink-0 flex-col overflow-hidden border-l border-[#e0d7c4] bg-[#111111] px-4 py-5 text-white shadow-[0_25px_70px_-35px_rgba(0,0,0,0.65)]">
-        <div className="rounded-[1.75rem] border border-white/10 bg-gradient-to-b from-white/10 to-white/5 p-4">
-          <div className="mb-3 flex justify-end">
-            <LanguageSwitcher />
-          </div>
-          <h1 className="text-2xl font-black leading-tight">
-            Luxury Cabins
-            <span className="mt-2 block text-[#ffb400]">Admin Dashboard</span>
-          </h1>
-          <p className="mt-3 text-sm leading-7 text-white/65">{t.admin.brandSub}</p>
-        </div>
-
-        <nav className="mt-5 flex-1 space-y-1 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-          {sidebarItems.map((item) => {
-            const Icon = item.icon;
-            const active = activeTab === item.id;
-            return (
+      {sidebarOpen ? (
+        <aside className="sticky top-0 flex h-screen w-80 shrink-0 flex-col overflow-hidden border-l border-[#e0d7c4] bg-[#111111] px-4 py-5 text-white shadow-[0_25px_70px_-35px_rgba(0,0,0,0.65)]">
+          <div className="rounded-[1.75rem] border border-white/10 bg-gradient-to-b from-white/10 to-white/5 p-4">
+            <div className="mb-3 flex items-center justify-between gap-2">
               <button
-                key={item.id}
                 type="button"
-                onClick={() => setActiveTab(item.id)}
-                className={[
-                  "flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-right text-sm font-bold transition",
-                  active
-                    ? "bg-[#ffb400] text-[#111111] shadow-[0_12px_35px_-18px_rgba(255,180,0,0.95)]"
-                    : "text-white/75 hover:bg-white/8 hover:text-white",
-                ].join(" ")}
+                onClick={() => setSidebarOpen(false)}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/80 transition hover:bg-white/10 hover:text-white"
+                title={locale === "en" ? "Hide sidebar" : "إخفاء القائمة"}
+                aria-label={locale === "en" ? "Hide sidebar" : "إخفاء القائمة"}
               >
-                <Icon className="h-4 w-4 shrink-0" />
-                <span className="min-w-0 flex-1">{t.admin.tabs[item.id]}</span>
+                <PanelRightClose className="h-4 w-4" />
               </button>
-            );
-          })}
-        </nav>
+              <LanguageSwitcher />
+            </div>
+            <h1 className="text-2xl font-black leading-tight">
+              Luxury Cabins
+              <span className="mt-2 block text-[#ffb400]">Admin Dashboard</span>
+            </h1>
+            <p className="mt-3 text-sm leading-7 text-white/65">{t.admin.brandSub}</p>
+          </div>
 
-        <button
-          type="button"
-          onClick={logout}
-          disabled={loggingOut}
-          className="mt-3 inline-flex items-center justify-center gap-2 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm font-bold text-red-200 transition hover:bg-red-500/20 disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          {loggingOut ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <LogOut className="h-4 w-4" />}
-          {t.admin.logout}
-        </button>
-      </aside>
+          <nav className="mt-5 flex-1 space-y-1 overflow-y-auto pe-1 [scrollbar-width:thin] [scrollbar-color:#555_transparent] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#555]">
+            {sidebarItems.map((item) => {
+              const Icon = item.icon;
+              const active = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => setActiveTab(item.id)}
+                  className={[
+                    "flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-right text-sm font-bold transition",
+                    active
+                      ? "bg-[#ffb400] text-[#111111] shadow-[0_12px_35px_-18px_rgba(255,180,0,0.95)]"
+                      : "text-white/75 hover:bg-white/8 hover:text-white",
+                  ].join(" ")}
+                >
+                  <Icon className="h-4 w-4 shrink-0" />
+                  <span className="min-w-0 flex-1">{t.admin.tabs[item.id]}</span>
+                </button>
+              );
+            })}
+          </nav>
+
+          <button
+            type="button"
+            onClick={logout}
+            disabled={loggingOut}
+            className="mt-3 inline-flex items-center justify-center gap-2 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm font-bold text-red-200 transition hover:bg-red-500/20 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {loggingOut ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <LogOut className="h-4 w-4" />}
+            {t.admin.logout}
+          </button>
+        </aside>
+      ) : (
+        <div className="sticky top-0 z-20 flex h-screen w-14 shrink-0 flex-col items-center border-l border-[#e0d7c4] bg-[#111111] py-5">
+          <button
+            type="button"
+            onClick={() => setSidebarOpen(true)}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[#ffb400] text-[#111] shadow-[0_12px_30px_-16px_rgba(255,180,0,0.95)] transition hover:brightness-105"
+            title={locale === "en" ? "Show sidebar" : "إظهار القائمة"}
+            aria-label={locale === "en" ? "Show sidebar" : "إظهار القائمة"}
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+        </div>
+      )}
 
       <main className="min-w-0 flex-1">
         <div className="mx-auto max-w-7xl px-4 py-6 md:px-6 lg:px-8">

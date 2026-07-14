@@ -2,10 +2,13 @@ import { promises as fs } from "fs";
 import path from "path";
 import { getDefaultCms } from "./defaults";
 import type { AnalyticsData, CmsData, NavLink } from "./types";
+import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/admin";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const CMS_FILE = path.join(DATA_DIR, "cms.json");
 const ANALYTICS_FILE = path.join(DATA_DIR, "analytics.json");
+const CMS_ROW_ID = "main";
+const ANALYTICS_ROW_ID = "main";
 
 function ensureServicesNav(links: NavLink[]): NavLink[] {
   if (links.some((l) => l.href === "/services")) return links;
@@ -86,9 +89,94 @@ async function readBundledCms(): Promise<Partial<CmsData> | null> {
   }
 }
 
-/** Cloudflare Workers (and similar) have no writable local filesystem. */
+async function readCmsFromSupabase(): Promise<CmsData | null> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return null;
+
+  const { data, error } = await supabase
+    .from("cms_state")
+    .select("data")
+    .eq("id", CMS_ROW_ID)
+    .maybeSingle();
+
+  if (error) {
+    console.warn("[cms] supabase readCms:", error.message);
+    return null;
+  }
+
+  if (data?.data) {
+    return mergeCms(getDefaultCms(), data.data as Partial<CmsData>);
+  }
+
+  // First run: seed from bundled snapshot so Workers have content immediately.
+  const bundled = (await readBundledCms()) || {};
+  const seeded = mergeCms(getDefaultCms(), bundled);
+  seeded.updatedAt = new Date().toISOString();
+  await writeCmsToSupabase(seeded);
+  return seeded;
+}
+
+async function writeCmsToSupabase(next: CmsData): Promise<boolean> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return false;
+
+  const { error } = await supabase.from("cms_state").upsert({
+    id: CMS_ROW_ID,
+    data: next,
+    updated_at: next.updatedAt,
+  });
+
+  if (error) {
+    console.warn("[cms] supabase writeCms:", error.message);
+    return false;
+  }
+  return true;
+}
+
+async function readAnalyticsFromSupabase(): Promise<AnalyticsData | null> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return null;
+
+  const { data, error } = await supabase
+    .from("analytics_state")
+    .select("data")
+    .eq("id", ANALYTICS_ROW_ID)
+    .maybeSingle();
+
+  if (error) {
+    console.warn("[cms] supabase readAnalytics:", error.message);
+    return null;
+  }
+  if (!data?.data) return null;
+  return { ...emptyAnalytics(), ...(data.data as AnalyticsData) };
+}
+
+async function writeAnalyticsToSupabase(data: AnalyticsData): Promise<boolean> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return false;
+
+  const { error } = await supabase.from("analytics_state").upsert({
+    id: ANALYTICS_ROW_ID,
+    data,
+    updated_at: new Date().toISOString(),
+  });
+
+  if (error) {
+    console.warn("[cms] supabase writeAnalytics:", error.message);
+    return false;
+  }
+  return true;
+}
+
+/** Prefer Supabase on Workers; fall back to local/bundled files. */
 export async function readCms(): Promise<CmsData> {
   const defaults = getDefaultCms();
+
+  if (isSupabaseConfigured()) {
+    const remote = await readCmsFromSupabase();
+    if (remote) return remote;
+  }
+
   try {
     await tryMkdir();
     const raw = await fs.readFile(CMS_FILE, "utf8");
@@ -102,6 +190,12 @@ export async function readCms(): Promise<CmsData> {
 
 export async function writeCms(data: CmsData): Promise<CmsData> {
   const next = { ...data, updatedAt: new Date().toISOString() };
+
+  if (isSupabaseConfigured()) {
+    const ok = await writeCmsToSupabase(next);
+    if (ok) return next;
+  }
+
   try {
     if (!(await tryMkdir())) return next;
     await fs.writeFile(CMS_FILE, JSON.stringify(next, null, 2), "utf8");
@@ -122,6 +216,11 @@ export function emptyAnalytics(): AnalyticsData {
 }
 
 export async function readAnalytics(): Promise<AnalyticsData> {
+  if (isSupabaseConfigured()) {
+    const remote = await readAnalyticsFromSupabase();
+    if (remote) return remote;
+  }
+
   try {
     await tryMkdir();
     const raw = await fs.readFile(ANALYTICS_FILE, "utf8");
@@ -132,6 +231,11 @@ export async function readAnalytics(): Promise<AnalyticsData> {
 }
 
 export async function writeAnalytics(data: AnalyticsData): Promise<void> {
+  if (isSupabaseConfigured()) {
+    const ok = await writeAnalyticsToSupabase(data);
+    if (ok) return;
+  }
+
   try {
     if (!(await tryMkdir())) return;
     await fs.writeFile(ANALYTICS_FILE, JSON.stringify(data, null, 2), "utf8");

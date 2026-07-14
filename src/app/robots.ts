@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://luxurycabins.sa/sitemap.xml",
+    sitemap: "https://luxurycabins.com.sa/sitemap.xml",
   };
 }
