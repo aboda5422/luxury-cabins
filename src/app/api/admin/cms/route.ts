@@ -5,7 +5,11 @@ import type { CmsData } from "@/lib/cms/types";
 
 export async function GET() {
   const cms = await readCms();
-  return NextResponse.json(cms);
+  return NextResponse.json(cms, {
+    headers: {
+      "Cache-Control": "no-store, max-age=0",
+    },
+  });
 }
 
 export async function PUT(req: Request) {

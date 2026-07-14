@@ -316,7 +316,12 @@ function ImageUploadField({
           {hasImage ? (
             <div className="group relative aspect-square overflow-hidden rounded-xl border border-[#efe8da] bg-[#f7f4ef]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={preview} alt={label} className="h-full w-full object-cover" />
+              <img
+                key={preview}
+                src={preview}
+                alt={label}
+                className="h-full w-full object-cover"
+              />
               <button
                 type="button"
                 disabled={uploading}
@@ -770,12 +775,73 @@ export function AdminApp() {
     setToast({ kind, message });
   };
 
+  const persistCms = async (payload: CmsData) => {
+    setSaving(true);
+    try {
+      const res = await fetch("/api/admin/cms", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      const data = (await res.json().catch(() => null)) as CmsData | { error?: string } | null;
+
+      if (res.status === 401) {
+        router.replace("/admin/login");
+        return false;
+      }
+
+      if (!res.ok || !data || "error" in data) {
+        throw new Error((data && "error" in data && data.error) || "تعذر حفظ التغييرات");
+      }
+
+      const saved = data as CmsData;
+      setCms(saved);
+      setInitialCms(clone(saved));
+      showToast("success", "تم الحفظ بنجاح");
+      return true;
+    } catch (error) {
+      showToast("error", error instanceof Error ? error.message : "تعذر حفظ التغييرات");
+      return false;
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  /** Update then immediately persist — for image uploads. */
+  const applyCmsAndSave = (mutator: (draft: CmsData) => void) => {
+    setCms((current) => {
+      if (!current) return current;
+      const next = clone(current);
+      if (!next.pageHeroImages) {
+        next.pageHeroImages = {
+          services: "/images/cover-hero.webp",
+          about: "/images/cover-hero.webp",
+          rental: "/images/cover-hero.webp",
+          manufacturing: "/images/cover-hero.webp",
+          projects: "/images/cover-hero.webp",
+          contact: "/images/cover-hero.webp",
+          faq: "/images/cover-hero.webp",
+        };
+      }
+      mutator(next);
+      void persistCms(next);
+      return next;
+    });
+  };
+
   const loadCms = async () => {
     setLoadingCms(true);
     setCmsError("");
     try {
       const res = await fetch("/api/admin/cms", { cache: "no-store" });
       const data = (await res.json().catch(() => null)) as CmsData | null;
+
+      if (res.status === 401) {
+        router.replace("/admin/login");
+        return;
+      }
 
       if (!res.ok || !data) {
         throw new Error("تعذر تحميل بيانات CMS");
@@ -828,36 +894,7 @@ export function AdminApp() {
 
   const saveCms = async () => {
     if (!cms) return;
-
-    setSaving(true);
-    try {
-      const res = await fetch("/api/admin/cms", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(cms),
-      });
-      const data = (await res.json().catch(() => null)) as CmsData | { error?: string } | null;
-
-      if (res.status === 401) {
-        router.replace("/admin/login");
-        return;
-      }
-
-      if (!res.ok || !data || "error" in data) {
-        throw new Error((data && "error" in data && data.error) || "تعذر حفظ التغييرات");
-      }
-
-      const saved = data as CmsData;
-      setCms(saved);
-      setInitialCms(clone(saved));
-      showToast("success", "تم الحفظ بنجاح");
-    } catch (error) {
-      showToast("error", error instanceof Error ? error.message : "تعذر حفظ التغييرات");
-    } finally {
-      setSaving(false);
-    }
+    await persistCms(cms);
   };
 
   const logout = async () => {
@@ -1218,7 +1255,7 @@ export function AdminApp() {
           <ImageUploadField
             label="صورة الهيرو"
             value={cms.home.heroImage || "/images/cover-hero.webp"}
-            onChange={(value) => applyCms((draft) => void (draft.home.heroImage = value))}
+            onChange={(value) => applyCmsAndSave((draft) => void (draft.home.heroImage = value))}
             fallback="/images/cover-hero.webp"
           />
           <Field
@@ -1235,7 +1272,7 @@ export function AdminApp() {
             label="صورة قسم الرؤية"
             value={cms.home.visionImage || "/images/vision-side.jpg"}
             fallback="/images/vision-side.jpg"
-            onChange={(value) => applyCms((draft) => void (draft.home.visionImage = value))}
+            onChange={(value) => applyCmsAndSave((draft) => void (draft.home.visionImage = value))}
           />
           <Field
             label="بداية خطوات العمل"
@@ -1279,7 +1316,7 @@ export function AdminApp() {
               label="صورة هيرو صفحة اتصل بنا"
               value={cms.pageHeroImages.contact}
               onChange={(value) =>
-                applyCms((draft) => void (draft.pageHeroImages.contact = value))
+                applyCmsAndSave((draft) => void (draft.pageHeroImages.contact = value))
               }
               fallback="/images/cover-hero.webp"
             />
@@ -1313,7 +1350,7 @@ export function AdminApp() {
             label="صورة هيرو صفحة الخدمات"
             value={cms.pageHeroImages.services}
             onChange={(value) =>
-              applyCms((draft) => void (draft.pageHeroImages.services = value))
+              applyCmsAndSave((draft) => void (draft.pageHeroImages.services = value))
             }
             fallback="/images/cover-hero.webp"
           />
@@ -1476,7 +1513,7 @@ export function AdminApp() {
               label="صورة هيرو صفحة التأجير"
               value={cms.pageHeroImages.rental}
               onChange={(value) =>
-                applyCms((draft) => void (draft.pageHeroImages.rental = value))
+                applyCmsAndSave((draft) => void (draft.pageHeroImages.rental = value))
               }
               fallback="/images/cover-hero.webp"
             />
@@ -1598,7 +1635,7 @@ export function AdminApp() {
               label="صورة هيرو صفحة البيع والتصنيع"
               value={cms.pageHeroImages.manufacturing}
               onChange={(value) =>
-                applyCms((draft) => void (draft.pageHeroImages.manufacturing = value))
+                applyCmsAndSave((draft) => void (draft.pageHeroImages.manufacturing = value))
               }
               fallback="/images/cover-hero.webp"
             />
@@ -1739,7 +1776,7 @@ export function AdminApp() {
             label="صورة هيرو صفحة المشاريع"
             value={cms.pageHeroImages.projects}
             onChange={(value) =>
-              applyCms((draft) => void (draft.pageHeroImages.projects = value))
+              applyCmsAndSave((draft) => void (draft.pageHeroImages.projects = value))
             }
             fallback="/images/cover-hero.webp"
           />
@@ -1819,7 +1856,7 @@ export function AdminApp() {
           <ImageUploadField
             label="صورة هيرو صفحة الأسئلة الشائعة"
             value={cms.pageHeroImages.faq}
-            onChange={(value) => applyCms((draft) => void (draft.pageHeroImages.faq = value))}
+            onChange={(value) => applyCmsAndSave((draft) => void (draft.pageHeroImages.faq = value))}
             fallback="/images/cover-hero.webp"
           />
         </div>
@@ -1856,7 +1893,7 @@ export function AdminApp() {
               label="صورة هيرو صفحة من نحن"
               value={cms.pageHeroImages.about}
               onChange={(value) =>
-                applyCms((draft) => void (draft.pageHeroImages.about = value))
+                applyCmsAndSave((draft) => void (draft.pageHeroImages.about = value))
               }
               fallback="/images/cover-hero.webp"
             />

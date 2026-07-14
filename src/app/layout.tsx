@@ -14,6 +14,9 @@ import {
 } from "@/lib/i18n/config";
 import "./globals.css";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const noto = Noto_Sans_Arabic({
   subsets: ["arabic", "latin"],
   variable: "--font-noto",
