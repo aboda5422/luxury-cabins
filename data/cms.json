@@ -295,40 +295,112 @@
   ],
   "projects": [
     {
-      "title": "توريد وحدات تشغيل لموقع ميداني",
-      "location": "الرياض",
-      "category": "تأجير",
-      "image": "/images/vision-side.jpg"
-    },
-    {
-      "title": "توريد دورات مياه متنقلة",
-      "location": "جدة",
-      "category": "تأجير",
-      "image": "/images/service-toilets.jpg"
-    },
-    {
-      "title": "مكاتب وغرف متنقلة لمشروع",
-      "location": "الدمام",
-      "category": "تأجير",
-      "image": "/images/cabin-5.jpg"
-    },
-    {
-      "title": "وحدات لوجستية وخدمات مساندة",
-      "location": "الجبيل",
-      "category": "خدمات",
-      "image": "/images/service-logistics.jpg"
-    },
-    {
-      "title": "تصنيع غرف جاهزة",
+      "title": "وحدة مكتبية بواجهة زخرفية بيضاء",
       "location": "الرياض",
       "category": "تصنيع",
-      "image": "/images/cabin-1.jpg"
+      "image": "/images/projects/project-01.png"
     },
     {
-      "title": "بيع بركسات ومكاتب جاهزة",
-      "location": "الخبر",
-      "category": "بيع",
-      "image": "/images/cabin-3.jpg"
+      "title": "حاوية مودرن بألواح هندسية",
+      "location": "الرياض",
+      "category": "تصنيع",
+      "image": "/images/projects/project-02.png"
+    },
+    {
+      "title": "مكتب متنقل بواجهة مشربية",
+      "location": "الرياض",
+      "category": "تصنيع",
+      "image": "/images/projects/project-03.png"
+    },
+    {
+      "title": "كبائن حاويات بواجهات زخرفية",
+      "location": "الرياض",
+      "category": "تصنيع",
+      "image": "/images/projects/project-04.png"
+    },
+    {
+      "title": "كبائن صناعية بألواح مشربية بيضاء",
+      "location": "الرياض",
+      "category": "تصنيع",
+      "image": "/images/projects/project-05.png"
+    },
+    {
+      "title": "تصميم داخلي لدورات مياه فاخرة",
+      "location": "الرياض",
+      "category": "تشطيب",
+      "image": "/images/projects/project-06.png"
+    },
+    {
+      "title": "تجهيز مغاسل ودورات مياه حديثة",
+      "location": "الرياض",
+      "category": "تشطيب",
+      "image": "/images/projects/project-07.png"
+    },
+    {
+      "title": "دورات مياه تجارية بتشطيب راقٍ",
+      "location": "الرياض",
+      "category": "تشطيب",
+      "image": "/images/projects/project-08.png"
+    },
+    {
+      "title": "كبائن متنقلة بتشطيب خشبي ورمادي",
+      "location": "الرياض",
+      "category": "تصنيع",
+      "image": "/images/projects/project-09.png"
+    },
+    {
+      "title": "تجهيز مكاتب متنقلة داخلية",
+      "location": "الرياض",
+      "category": "تجهيز",
+      "image": "/images/projects/project-10.png"
+    },
+    {
+      "title": "وحدة مكتبية عصرية بواجهة خشبية",
+      "location": "الرياض",
+      "category": "تصنيع",
+      "image": "/images/projects/project-11.png"
+    },
+    {
+      "title": "عرض كبائن فاخرة بتشطيبات متعددة",
+      "location": "الرياض",
+      "category": "تصنيع",
+      "image": "/images/projects/project-12.png"
+    },
+    {
+      "title": "حاوية فاخرة بإضاءة وواجهات زخرفية",
+      "location": "الرياض",
+      "category": "تصنيع",
+      "image": "/images/projects/project-13.png"
+    },
+    {
+      "title": "تحويل حاوية لمكتب فاخر",
+      "location": "الرياض",
+      "category": "تصنيع",
+      "image": "/images/projects/project-14.png"
+    },
+    {
+      "title": "وحدات دورات مياه متنقلة على شاحنة",
+      "location": "الرياض",
+      "category": "تأجير",
+      "image": "/images/projects/project-15.png"
+    },
+    {
+      "title": "كبائن فاخرة متنقلة للفعاليات",
+      "location": "الرياض",
+      "category": "تأجير",
+      "image": "/images/projects/project-16.png"
+    },
+    {
+      "title": "شاحنة كبائن فاخرة للفعاليات",
+      "location": "الرياض",
+      "category": "تأجير",
+      "image": "/images/projects/project-17.png"
+    },
+    {
+      "title": "كرفان فاخر بتصميم مشربية",
+      "location": "الرياض",
+      "category": "تصنيع",
+      "image": "/images/projects/project-18.png"
     }
   ],
   "sampleClients": [
@@ -517,5 +589,5 @@
       }
     ]
   },
-  "updatedAt": "2026-07-13T22:28:54.616Z"
+  "updatedAt": "2026-07-14T22:18:48.695Z"
 }

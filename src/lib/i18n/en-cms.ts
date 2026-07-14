@@ -197,34 +197,94 @@ export const enCmsOverlay: DeepPartial<CmsData> = {
   ],
   projects: [
     {
-      title: "Supply of operating units for a field site",
-      location: "Riyadh",
-      category: "Rental",
-    },
-    {
-      title: "Supply of mobile toilets",
-      location: "Jeddah",
-      category: "Rental",
-    },
-    {
-      title: "Mobile offices and rooms for a project",
-      location: "Dammam",
-      category: "Rental",
-    },
-    {
-      title: "Logistics units and support services",
-      location: "Jubail",
-      category: "Services",
-    },
-    {
-      title: "Manufacturing ready rooms",
+      title: "Office unit with white decorative facade",
       location: "Riyadh",
       category: "Manufacturing",
     },
     {
-      title: "Sale of barracks and ready offices",
-      location: "Khobar",
-      category: "Sales",
+      title: "Modern container with geometric panels",
+      location: "Riyadh",
+      category: "Manufacturing",
+    },
+    {
+      title: "Mobile office with mashrabiya facade",
+      location: "Riyadh",
+      category: "Manufacturing",
+    },
+    {
+      title: "Container cabins with decorative facades",
+      location: "Riyadh",
+      category: "Manufacturing",
+    },
+    {
+      title: "Industrial cabin with white mashrabiya panels",
+      location: "Riyadh",
+      category: "Manufacturing",
+    },
+    {
+      title: "Luxury restroom interior design",
+      location: "Riyadh",
+      category: "Finishing",
+    },
+    {
+      title: "Modern vanity and restroom fit-out",
+      location: "Riyadh",
+      category: "Finishing",
+    },
+    {
+      title: "Premium commercial restroom finishing",
+      location: "Riyadh",
+      category: "Finishing",
+    },
+    {
+      title: "Mobile cabins in wood and grey finishes",
+      location: "Riyadh",
+      category: "Manufacturing",
+    },
+    {
+      title: "Interior fit-out for mobile offices",
+      location: "Riyadh",
+      category: "Fit-out",
+    },
+    {
+      title: "Modern prefabricated office unit",
+      location: "Riyadh",
+      category: "Manufacturing",
+    },
+    {
+      title: "Luxury cabins with multiple finishes",
+      location: "Riyadh",
+      category: "Manufacturing",
+    },
+    {
+      title: "Luxury container with lit decorative panels",
+      location: "Riyadh",
+      category: "Manufacturing",
+    },
+    {
+      title: "Container conversion into a luxury office",
+      location: "Riyadh",
+      category: "Manufacturing",
+    },
+    {
+      title: "Truck-mounted mobile restroom units",
+      location: "Riyadh",
+      category: "Rental",
+    },
+    {
+      title: "Luxury mobile cabins for events",
+      location: "Riyadh",
+      category: "Rental",
+    },
+    {
+      title: "Luxury Cabins event truck units",
+      location: "Riyadh",
+      category: "Rental",
+    },
+    {
+      title: "Luxury caravan with mashrabiya design",
+      location: "Riyadh",
+      category: "Manufacturing",
     },
   ],
   sampleClients: [
