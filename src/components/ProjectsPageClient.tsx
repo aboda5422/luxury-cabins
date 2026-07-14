@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { PageHero } from "@/components/PageHero";
 import { ClientsGrid } from "@/components/ClientsGrid";
 import { useLocalizedCms } from "@/components/CmsProvider";
@@ -37,12 +36,12 @@ export function ProjectsPageClient() {
                 className="group overflow-hidden border border-[#eee] bg-[#F8F8F8]"
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
-                  <Image
+                  {/* CMS images may be absolute Supabase URLs; native img avoids deploy-gated remotePatterns. */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={project.image}
                     alt={`${project.title} - ${project.location}`}
-                    fill
-                    className="object-cover transition duration-700 group-hover:scale-105"
-                    sizes="(max-width:768px) 100vw, 33vw"
+                    className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
                   />
                   <span className="absolute top-3 right-3 bg-[var(--gold)] px-3 py-1 text-xs font-bold text-[#0f0f0f]">
                     {project.category}
