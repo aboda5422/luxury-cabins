@@ -8,7 +8,7 @@ import { useLocale } from "@/components/LocaleProvider";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 
 export function RentalPageClient() {
-  const { rentalPage, rentalCategories, site, navLinks } = useLocalizedCms();
+  const { rentalPage, rentalCategories, site, navLinks, pageHeroImages } = useLocalizedCms();
   const { t } = useLocale();
 
   const generalWa = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(t.waRentalGeneral)}`;
@@ -21,6 +21,7 @@ export function RentalPageClient() {
         eyebrow={t.rentalEyebrow}
         title={rentalLabel}
         description={rentalPage.heroDescription}
+        backgroundImage={pageHeroImages.rental}
         breadcrumbs={[{ label: t.home, href: "/" }, { label: rentalLabel }]}
       />
 

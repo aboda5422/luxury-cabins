@@ -10,7 +10,10 @@ type Props = {
   backHref?: string;
   backLabel?: string;
   showBack?: boolean;
+  backgroundImage?: string;
 };
+
+const DEFAULT_HERO_BG = "/images/cover-hero.webp";
 
 export function PageHero({
   eyebrow,
@@ -20,15 +23,17 @@ export function PageHero({
   backHref,
   backLabel,
   showBack = true,
+  backgroundImage,
 }: Props) {
   const parentCrumb = breadcrumbs?.find((item) => item.href);
   const resolvedBackHref = backHref || parentCrumb?.href || "/";
+  const bg = backgroundImage?.trim() || DEFAULT_HERO_BG;
 
   return (
     <section className="relative overflow-hidden pt-[72px] text-white md:pt-[100px]">
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/cover-hero.webp)" }}
+        style={{ backgroundImage: `url(${bg})` }}
       />
       <div className="absolute inset-0 bg-black/55" />
       <div className="container-site relative py-16 md:py-20">

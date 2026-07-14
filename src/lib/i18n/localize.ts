@@ -38,6 +38,10 @@ export function localizeCms(cms: CmsData, locale: Locale): CmsData {
         }))
       : cms.navLinks,
     home: { ...cms.home, ...(o.home || {}) },
+    pageHeroImages: {
+      ...cms.pageHeroImages,
+      ...(o.pageHeroImages || {}),
+    },
     services: mergeById(cms.services, o.services),
     processSteps: mergeByIndex(cms.processSteps, o.processSteps),
     catalogProducts: mergeById(cms.catalogProducts, o.catalogProducts).map((p) => ({

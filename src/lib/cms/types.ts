@@ -97,10 +97,21 @@ export type HomeContent = {
   ctaBandButton: string;
 };
 
+export type PageHeroImages = {
+  services: string;
+  about: string;
+  rental: string;
+  manufacturing: string;
+  projects: string;
+  contact: string;
+  faq: string;
+};
+
 export type CmsData = {
   site: SiteInfo;
   navLinks: NavLink[];
   home: HomeContent;
+  pageHeroImages: PageHeroImages;
   services: ServiceItem[];
   processSteps: ProcessStep[];
   catalogProducts: CatalogProduct[];

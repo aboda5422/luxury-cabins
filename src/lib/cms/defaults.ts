@@ -36,6 +36,15 @@ export function getDefaultCms(): CmsData {
       },
     },
     navLinks: navLinks.map((l) => ({ ...l })),
+    pageHeroImages: {
+      services: "/images/cover-hero.webp",
+      about: "/images/cover-hero.webp",
+      rental: "/images/cover-hero.webp",
+      manufacturing: "/images/cover-hero.webp",
+      projects: "/images/cover-hero.webp",
+      contact: "/images/cover-hero.webp",
+      faq: "/images/cover-hero.webp",
+    },
     home: {
       heroTitle: "الأولى في تأجير وبيع وتصنيع الوحدات المتنقلة",
       heroSubtitle: "وحدات متنقلة - خيام أوروبية - بيع وتصنيع حسب الطلب",

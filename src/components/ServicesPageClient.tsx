@@ -47,7 +47,7 @@ const whyItems = [
 ];
 
 export function ServicesPageClient() {
-  const { home, site } = useLocalizedCms();
+  const { home, site, pageHeroImages } = useLocalizedCms();
   const { t } = useLocale();
 
   return (
@@ -56,6 +56,7 @@ export function ServicesPageClient() {
         eyebrow={t.servicesPageEyebrow}
         title={t.servicesPageTitle}
         description={t.servicesPageHeroDesc}
+        backgroundImage={pageHeroImages.services}
         breadcrumbs={[
           { label: t.home, href: "/" },
           { label: t.servicesPageTitle },

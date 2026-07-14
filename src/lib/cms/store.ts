@@ -36,6 +36,10 @@ function mergeCms(defaults: CmsData, parsed: Partial<CmsData>): CmsData {
         : defaults.site.cities,
     },
     home: { ...defaults.home, ...(parsed.home || {}) },
+    pageHeroImages: {
+      ...defaults.pageHeroImages,
+      ...(parsed.pageHeroImages || {}),
+    },
     about: { ...defaults.about, ...(parsed.about || {}) },
     rentalPage: { ...defaults.rentalPage, ...(parsed.rentalPage || {}) },
     manufacturingPage: {

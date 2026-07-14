@@ -7,7 +7,7 @@ import { useLocalizedCms } from "@/components/CmsProvider";
 import { useLocale } from "@/components/LocaleProvider";
 
 export function ContactPageClient() {
-  const { home } = useLocalizedCms();
+  const { home, pageHeroImages } = useLocalizedCms();
   const { t } = useLocale();
 
   return (
@@ -16,6 +16,7 @@ export function ContactPageClient() {
         eyebrow={t.contactPageEyebrow}
         title={t.contactPageTitle}
         description={home.contactSubtitle}
+        backgroundImage={pageHeroImages.contact}
         breadcrumbs={[
           { label: t.home, href: "/" },
           { label: t.contactPageEyebrow },

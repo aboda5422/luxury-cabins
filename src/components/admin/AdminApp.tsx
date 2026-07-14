@@ -278,14 +278,12 @@ function ImageUploadField({
   value,
   onChange,
   fallback = "",
-  aspectClass = "aspect-[16/10]",
-  className = "md:col-span-2",
+  className = "",
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   fallback?: string;
-  aspectClass?: string;
   className?: string;
 }) {
   const [uploading, setUploading] = useState(false);
@@ -313,49 +311,45 @@ function ImageUploadField({
   return (
     <div className={className}>
       <span className="mb-2 block text-sm font-bold text-[#1e1e1e]">{label}</span>
-      <div className="overflow-hidden rounded-2xl border border-[#d9d1c0] bg-white">
-        <button
-          type="button"
-          disabled={uploading}
-          onClick={() => inputRef.current?.click()}
-          className={`group relative flex w-full ${aspectClass} items-center justify-center bg-[#f7f4ef] transition hover:bg-[#f0ebe3] disabled:cursor-not-allowed disabled:opacity-70`}
-        >
+      <div className="rounded-2xl border border-[#d9d1c0] bg-white p-3">
+        <div className="grid max-w-md grid-cols-2 gap-3 sm:grid-cols-3">
           {hasImage ? (
-            <>
+            <div className="group relative aspect-square overflow-hidden rounded-xl border border-[#efe8da] bg-[#f7f4ef]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={preview} alt={label} className="absolute inset-0 h-full w-full object-cover" />
-              <span className="absolute inset-0 bg-black/0 transition group-hover:bg-black/35" />
-              <span className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white/95 text-[#111] shadow-lg opacity-90 transition group-hover:opacity-100">
+              <img src={preview} alt={label} className="h-full w-full object-cover" />
+              <button
+                type="button"
+                disabled={uploading}
+                onClick={() => inputRef.current?.click()}
+                className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 bg-black/0 text-white opacity-0 transition group-hover:bg-black/45 group-hover:opacity-100 disabled:cursor-not-allowed"
+              >
                 {uploading ? (
                   <LoaderCircle className="h-5 w-5 animate-spin" />
                 ) : (
                   <Upload className="h-5 w-5" />
                 )}
-              </span>
-              <span className="absolute bottom-3 start-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-black/70 px-3 py-1.5 text-xs font-bold text-white">
-                {uploading ? (
-                  <LoaderCircle className="h-3.5 w-3.5 animate-spin" />
-                ) : (
-                  <ImagePlus className="h-3.5 w-3.5" />
-                )}
-                {uploading ? "جارٍ الرفع..." : "تغيير الصورة"}
-              </span>
-            </>
-          ) : (
-            <span className="flex flex-col items-center gap-2 text-[#666]">
-              <span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-dashed border-[#cfc5b4] bg-white text-[#111]">
-                {uploading ? (
-                  <LoaderCircle className="h-6 w-6 animate-spin" />
-                ) : (
-                  <ImagePlus className="h-6 w-6" />
-                )}
-              </span>
-              <span className="text-sm font-bold">
-                {uploading ? "جارٍ الرفع..." : "تحميل صورة"}
-              </span>
+                <span className="text-xs font-bold">
+                  {uploading ? "جارٍ الرفع..." : "تغيير"}
+                </span>
+              </button>
+            </div>
+          ) : null}
+          <button
+            type="button"
+            disabled={uploading}
+            onClick={() => inputRef.current?.click()}
+            className="flex aspect-square flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-[#cfc5b4] bg-[#faf8f4] text-[#555] transition hover:border-[#ffb400] hover:bg-[#fff8e8] disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {uploading ? (
+              <LoaderCircle className="h-6 w-6 animate-spin" />
+            ) : (
+              <ImagePlus className="h-6 w-6" />
+            )}
+            <span className="px-2 text-center text-xs font-bold">
+              {uploading ? "جارٍ الرفع..." : hasImage ? "استبدال" : "تحميل صورة"}
             </span>
-          )}
-        </button>
+          </button>
+        </div>
         <input
           ref={inputRef}
           type="file"
@@ -363,9 +357,7 @@ function ImageUploadField({
           className="hidden"
           onChange={onFileChange}
         />
-        {error ? (
-          <p className="border-t border-red-100 bg-red-50 px-4 py-2 text-sm text-red-700">{error}</p>
-        ) : null}
+        {error ? <p className="mt-3 text-sm text-red-700">{error}</p> : null}
       </div>
     </div>
   );
@@ -758,6 +750,17 @@ export function AdminApp() {
     setCms((current) => {
       if (!current) return current;
       const next = clone(current);
+      if (!next.pageHeroImages) {
+        next.pageHeroImages = {
+          services: "/images/cover-hero.webp",
+          about: "/images/cover-hero.webp",
+          rental: "/images/cover-hero.webp",
+          manufacturing: "/images/cover-hero.webp",
+          projects: "/images/cover-hero.webp",
+          contact: "/images/cover-hero.webp",
+          faq: "/images/cover-hero.webp",
+        };
+      }
       mutator(next);
       return next;
     });
@@ -1217,7 +1220,6 @@ export function AdminApp() {
             value={cms.home.heroImage || "/images/cover-hero.webp"}
             onChange={(value) => applyCms((draft) => void (draft.home.heroImage = value))}
             fallback="/images/cover-hero.webp"
-            aspectClass="aspect-[21/9]"
           />
           <Field
             label="عنوان الرؤية"
@@ -1233,7 +1235,6 @@ export function AdminApp() {
             label="صورة قسم الرؤية"
             value={cms.home.visionImage || "/images/vision-side.jpg"}
             fallback="/images/vision-side.jpg"
-            aspectClass="aspect-[3/4] max-w-sm"
             onChange={(value) => applyCms((draft) => void (draft.home.visionImage = value))}
           />
           <Field
@@ -1273,6 +1274,16 @@ export function AdminApp() {
             onChange={(value) => applyCms((draft) => void (draft.home.contactSubtitle = value))}
             rows={4}
           />
+          <div className="md:col-span-2">
+            <ImageUploadField
+              label="صورة هيرو صفحة اتصل بنا"
+              value={cms.pageHeroImages.contact}
+              onChange={(value) =>
+                applyCms((draft) => void (draft.pageHeroImages.contact = value))
+              }
+              fallback="/images/cover-hero.webp"
+            />
+          </div>
           <TextareaField
             label="شريط الدعوة"
             value={cms.home.ctaBandTitle}
@@ -1297,6 +1308,16 @@ export function AdminApp() {
         title="الخدمات"
         description="عناوين قسم الخدمات في الصفحة الرئيسية وبطاقات الخدمات."
       >
+        <div className="mb-6">
+          <ImageUploadField
+            label="صورة هيرو صفحة الخدمات"
+            value={cms.pageHeroImages.services}
+            onChange={(value) =>
+              applyCms((draft) => void (draft.pageHeroImages.services = value))
+            }
+            fallback="/images/cover-hero.webp"
+          />
+        </div>
         <div className="mb-6 grid gap-4 md:grid-cols-2">
           <Field
             label="بداية قسم الخدمات"
@@ -1341,8 +1362,6 @@ export function AdminApp() {
                 label="الصورة"
                 value={item.image}
                 onChange={(image) => update({ ...item, image })}
-                aspectClass="aspect-[4/3]"
-                className="md:col-span-2"
               />
             </div>
           )}
@@ -1452,6 +1471,16 @@ export function AdminApp() {
           title="التأجير"
           description="تعديل محتوى صفحة التأجير مع الفئات المتاحة للموقع."
         >
+          <div className="mb-6">
+            <ImageUploadField
+              label="صورة هيرو صفحة التأجير"
+              value={cms.pageHeroImages.rental}
+              onChange={(value) =>
+                applyCms((draft) => void (draft.pageHeroImages.rental = value))
+              }
+              fallback="/images/cover-hero.webp"
+            />
+          </div>
           <div className="grid gap-4 md:grid-cols-2">
             <Field
               label="وصف الهيرو"
@@ -1564,6 +1593,16 @@ export function AdminApp() {
           title="البيع والتصنيع"
           description="التحكم بمحتوى صفحة البيع والتصنيع والملحقات الخاصة بها."
         >
+          <div className="mb-6">
+            <ImageUploadField
+              label="صورة هيرو صفحة البيع والتصنيع"
+              value={cms.pageHeroImages.manufacturing}
+              onChange={(value) =>
+                applyCms((draft) => void (draft.pageHeroImages.manufacturing = value))
+              }
+              fallback="/images/cover-hero.webp"
+            />
+          </div>
           <div className="grid gap-4 md:grid-cols-2">
             <Field
               label="عنوان الهيرو"
@@ -1695,6 +1734,16 @@ export function AdminApp() {
         title="المشاريع"
         description="إدارة معرض المشاريع مع الموقع والتصنيف والصور."
       >
+        <div className="mb-6">
+          <ImageUploadField
+            label="صورة هيرو صفحة المشاريع"
+            value={cms.pageHeroImages.projects}
+            onChange={(value) =>
+              applyCms((draft) => void (draft.pageHeroImages.projects = value))
+            }
+            fallback="/images/cover-hero.webp"
+          />
+        </div>
         <ObjectListEditor
           title="المشاريع"
           description="أضف مشاريع جديدة أو حدّث المشاريع الحالية."
@@ -1723,8 +1772,6 @@ export function AdminApp() {
                 label="الصورة"
                 value={item.image}
                 onChange={(image) => update({ ...item, image })}
-                aspectClass="aspect-[4/3]"
-                className="md:col-span-2"
               />
             </div>
           )}
@@ -1768,6 +1815,14 @@ export function AdminApp() {
     if (!cms) return null;
     return (
       <SectionCard title="الأسئلة الشائعة" description="تحرير أسئلة وأجوبة الموقع.">
+        <div className="mb-6">
+          <ImageUploadField
+            label="صورة هيرو صفحة الأسئلة الشائعة"
+            value={cms.pageHeroImages.faq}
+            onChange={(value) => applyCms((draft) => void (draft.pageHeroImages.faq = value))}
+            fallback="/images/cover-hero.webp"
+          />
+        </div>
         <ObjectListEditor
           title="الأسئلة الشائعة"
           description="يمكنك إضافة أو تعديل أو حذف أي سؤال."
@@ -1796,6 +1851,16 @@ export function AdminApp() {
     return (
       <div className="space-y-6">
         <SectionCard title="من نحن" description="تحرير محتوى صفحة من نحن وقيم الشركة وإحصاءاتها.">
+          <div className="mb-6">
+            <ImageUploadField
+              label="صورة هيرو صفحة من نحن"
+              value={cms.pageHeroImages.about}
+              onChange={(value) =>
+                applyCms((draft) => void (draft.pageHeroImages.about = value))
+              }
+              fallback="/images/cover-hero.webp"
+            />
+          </div>
           <div className="grid gap-4 md:grid-cols-2">
             <Field
               label="عنوان الصفحة"

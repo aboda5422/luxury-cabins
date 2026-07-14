@@ -2,9 +2,11 @@
 
 import { PageHero } from "@/components/PageHero";
 import { FaqList } from "@/components/FaqList";
+import { useLocalizedCms } from "@/components/CmsProvider";
 import { useLocale } from "@/components/LocaleProvider";
 
 export function FaqPageClient() {
+  const { pageHeroImages } = useLocalizedCms();
   const { t } = useLocale();
 
   return (
@@ -13,6 +15,7 @@ export function FaqPageClient() {
         eyebrow={t.faqEyebrow}
         title={t.faqTitle}
         description={t.faqDescription}
+        backgroundImage={pageHeroImages.faq}
         breadcrumbs={[{ label: t.home, href: "/" }, { label: t.faqEyebrow }]}
       />
 

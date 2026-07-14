@@ -7,7 +7,7 @@ import { useLocalizedCms } from "@/components/CmsProvider";
 import { useLocale } from "@/components/LocaleProvider";
 
 export function AboutPageClient() {
-  const { about, aboutStats, site } = useLocalizedCms();
+  const { about, aboutStats, site, pageHeroImages } = useLocalizedCms();
   const { t } = useLocale();
 
   return (
@@ -16,6 +16,7 @@ export function AboutPageClient() {
         eyebrow={t.aboutEyebrow}
         title={about.heroTitle}
         description={about.heroDescription}
+        backgroundImage={pageHeroImages.about}
         breadcrumbs={[{ label: t.home, href: "/" }, { label: t.aboutEyebrow }]}
       />
 

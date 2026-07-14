@@ -88,6 +88,15 @@
     "ctaBandTitle": "لنصنع معًا مشروعًا يواكب أعلى معايير الجودة والتميز.",
     "ctaBandButton": "اتصل بنا الآن"
   },
+  "pageHeroImages": {
+    "services": "/images/cover-hero.webp",
+    "about": "/images/cover-hero.webp",
+    "rental": "/images/cover-hero.webp",
+    "manufacturing": "/images/cover-hero.webp",
+    "projects": "/images/cover-hero.webp",
+    "contact": "/images/cover-hero.webp",
+    "faq": "/images/cover-hero.webp"
+  },
   "services": [
     {
       "id": "sales-manufacturing",

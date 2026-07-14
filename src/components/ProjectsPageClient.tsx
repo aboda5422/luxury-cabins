@@ -7,7 +7,7 @@ import { useLocalizedCms } from "@/components/CmsProvider";
 import { useLocale } from "@/components/LocaleProvider";
 
 export function ProjectsPageClient() {
-  const { projects, navLinks } = useLocalizedCms();
+  const { projects, navLinks, pageHeroImages } = useLocalizedCms();
   const { t } = useLocale();
   const projectsLabel =
     navLinks.find((l) => l.href === "/projects")?.label || t.projectsEyebrow;
@@ -18,6 +18,7 @@ export function ProjectsPageClient() {
         eyebrow={t.projectsEyebrow}
         title={t.projectsTitle}
         description={t.projectsDesc}
+        backgroundImage={pageHeroImages.projects}
         breadcrumbs={[{ label: t.home, href: "/" }, { label: projectsLabel }]}
       />
 

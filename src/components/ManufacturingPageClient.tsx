@@ -11,7 +11,7 @@ import { useLocale } from "@/components/LocaleProvider";
 const highlightIcons = [Award, Ruler, Clock];
 
 export function ManufacturingPageClient() {
-  const { manufacturingPage, manufacturingExtras, navLinks } = useLocalizedCms();
+  const { manufacturingPage, manufacturingExtras, navLinks, pageHeroImages } = useLocalizedCms();
   const { t } = useLocale();
 
   const pageLabel =
@@ -23,6 +23,7 @@ export function ManufacturingPageClient() {
         eyebrow={pageLabel}
         title={manufacturingPage.heroTitle}
         description={manufacturingPage.heroDescription}
+        backgroundImage={pageHeroImages.manufacturing}
         breadcrumbs={[{ label: t.home, href: "/" }, { label: pageLabel }]}
       />
 
