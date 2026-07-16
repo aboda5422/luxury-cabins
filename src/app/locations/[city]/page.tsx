@@ -6,7 +6,7 @@ import { CtaBand } from "@/components/CtaBand";
 import {
   SEO_CITIES,
   cityDescriptionAr,
-  cityPathAr,
+  cityTitleAr,
   cityPath,
   getCityBySlug,
 } from "@/lib/seo/cities";

@@ -293,7 +293,7 @@ function ImageUploadField({
   const inputRef = useRef<HTMLInputElement>(null);
   const customValue = value?.trim() || "";
   const hasImage = Boolean(customValue);
-  const preview = customValue;
+  const preview = customValue || fallback;
 
   async function onFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
