@@ -46,6 +46,7 @@ export default async function LocationsIndexPage() {
       <PageHero
         title="نخدم مشاريعكم في مدن المملكة"
         description="صفحات مخصصة لكل مدينة رئيسية لمساعدتكم في الوصول سريعاً إلى حلول التأجير والبيع والتصنيع الأقرب لموقع مشروعكم."
+        backgroundImage={cms.pageHeroImages.locations}
         breadcrumbs={[
           { label: "الرئيسية", href: "/" },
           { label: "المدن" },

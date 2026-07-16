@@ -132,6 +132,7 @@ export default async function CityLocationPage({ params }: Props) {
         eyebrow={city.regionAr || undefined}
         title={title}
         description={description}
+        backgroundImage={city.heroImage || cms.pageHeroImages.locations}
         breadcrumbs={[
           { label: "الرئيسية", href: "/" },
           { label: "المدن", href: "/locations" },

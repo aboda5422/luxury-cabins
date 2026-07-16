@@ -45,6 +45,18 @@ function mergeCms(defaults: CmsData, parsed: Partial<CmsData>): CmsData {
       ...defaults.manufacturingPage,
       ...(parsed.manufacturingPage || {}),
     },
+    contactPage: {
+      ...defaults.contactPage,
+      ...(parsed.contactPage || {}),
+      heroTitle:
+        parsed.contactPage?.heroTitle ||
+        parsed.home?.contactTitle ||
+        defaults.contactPage.heroTitle,
+      heroDescription:
+        parsed.contactPage?.heroDescription ||
+        parsed.home?.contactSubtitle ||
+        defaults.contactPage.heroDescription,
+    },
     footer: { ...defaults.footer, ...(parsed.footer || {}) },
     navLinks: ensureServicesNav(
       parsed.navLinks?.length ? parsed.navLinks : defaults.navLinks,
@@ -72,10 +84,35 @@ function mergeCms(defaults: CmsData, parsed: Partial<CmsData>): CmsData {
       }));
       const defaultsHaveLogos = defaults.sampleClients.some((c) => c.logo);
       const incomingHasLogos = Boolean(incoming?.some((c) => c.logo));
-      if (!incoming?.length || (defaultsHaveLogos && !incomingHasLogos)) {
-        return defaults.sampleClients;
+      let clients =
+        !incoming?.length || (defaultsHaveLogos && !incomingHasLogos)
+          ? defaults.sampleClients
+          : incoming;
+
+      const hasKidana = clients.some(
+        (c) =>
+          c.name === "كدانة" ||
+          c.nameEn?.toUpperCase() === "KIDANA" ||
+          c.logo?.includes("partner-24"),
+      );
+      if (!hasKidana) {
+        const kidana = defaults.sampleClients.find(
+          (c) => c.name === "كدانة" || c.nameEn?.toUpperCase() === "KIDANA",
+        ) || {
+          name: "كدانة",
+          nameEn: "KIDANA",
+          sector: "عقارات وتطوير",
+          logo: "/images/clients/partner-24.png",
+        };
+        const cultureIdx = clients.findIndex(
+          (c) => c.name === "وزارة الثقافة" || c.nameEn === "Ministry of Culture",
+        );
+        clients = [...clients];
+        if (cultureIdx >= 0) clients.splice(cultureIdx + 1, 0, { ...kidana });
+        else clients.push({ ...kidana });
       }
-      return incoming;
+
+      return clients;
     })(),
     faqs: parsed.faqs?.length ? parsed.faqs : defaults.faqs,
     aboutStats: parsed.aboutStats?.length

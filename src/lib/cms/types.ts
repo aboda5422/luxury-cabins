@@ -56,6 +56,7 @@ export type ServiceCity = {
   regionAr: string;
   regionEn: string;
   priority: "primary" | "secondary";
+  heroImage?: string;
 };
 
 export type FaqItem = { q: string; a: string };
@@ -115,6 +116,7 @@ export type PageHeroImages = {
   projects: string;
   contact: string;
   faq: string;
+  locations: string;
 };
 
 export type CmsData = {
@@ -172,6 +174,13 @@ export type CmsData = {
     ctaEyebrow: string;
     ctaTitle: string;
     ctaBody: string;
+  };
+  contactPage: {
+    heroEyebrow: string;
+    heroTitle: string;
+    heroDescription: string;
+    formTitle: string;
+    mapEmbedUrl: string;
   };
   footer: {
     servicesTitle: string;

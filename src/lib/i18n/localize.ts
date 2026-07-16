@@ -84,6 +84,10 @@ export function localizeCms(cms: CmsData, locale: Locale): CmsData {
         ? [...o.manufacturingPage.highlights]
         : cms.manufacturingPage.highlights,
     },
+    contactPage: {
+      ...cms.contactPage,
+      ...(o.contactPage || {}),
+    },
     footer: {
       ...cms.footer,
       ...(o.footer || {}),

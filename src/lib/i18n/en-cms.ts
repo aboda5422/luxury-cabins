@@ -280,6 +280,7 @@ export const enCmsOverlay: DeepPartial<CmsData> = {
     { name: "Sela", sector: "Events" },
     { name: "Misk Foundation", sector: "Foundation" },
     { name: "Ministry of Culture", sector: "Government" },
+    { name: "KIDANA", sector: "Real Estate & Development" },
     { name: "MUFEED", sector: "Technology" },
     { name: "KFUPM", sector: "Education" },
     { name: "Tamimi", sector: "Business" },
@@ -388,6 +389,14 @@ export const enCmsOverlay: DeepPartial<CmsData> = {
     ctaEyebrow: "Request a quote",
     ctaTitle: "Buy ready or manufacture to order",
     ctaBody: "Send your requirements and we will respond with a clear sales or manufacturing quote.",
+  },
+  contactPage: {
+    heroEyebrow: "Contact",
+    heroTitle: "Contact us now",
+    heroDescription:
+      "Our specialist team puts its expertise at your service with professional solutions that meet your project requirements at the highest quality standards.",
+    formTitle: "Send your consultation",
+    mapEmbedUrl: "https://www.google.com/maps?q=Riyadh,Saudi+Arabia&output=embed",
   },
   footer: {
     servicesTitle: "Services",

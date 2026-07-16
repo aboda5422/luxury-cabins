@@ -45,6 +45,7 @@ export function getDefaultCms(): CmsData {
       projects: "/images/cover-hero.webp",
       contact: "/images/cover-hero.webp",
       faq: "/images/cover-hero.webp",
+      locations: "/images/projects/project-01.png",
     },
     home: {
       heroTitle: "الأولى في تأجير وبيع وتصنيع الوحدات المتنقلة",
@@ -149,6 +150,14 @@ export function getDefaultCms(): CmsData {
       ctaEyebrow: "اطلب عرضاً",
       ctaTitle: "شراء جاهز أو تصنيع حسب الطلب",
       ctaBody: "أرسل تفاصيل احتياجك وسنعود إليك بعرض واضح للبيع أو التصنيع.",
+    },
+    contactPage: {
+      heroEyebrow: "اتصل بنا",
+      heroTitle: "اتصل بنا الآن",
+      heroDescription:
+        "يضع فريقنا المتخصص خبراته بين يديكم لتقديم حلول احترافية تلبي متطلبات مشاريعكم بأعلى معايير الجودة.",
+      formTitle: "أرسل استشارتك",
+      mapEmbedUrl: "https://www.google.com/maps?q=Riyadh,Saudi+Arabia&output=embed",
     },
     footer: {
       servicesTitle: "خدماتنا",

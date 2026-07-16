@@ -35,6 +35,7 @@ import {
   Package2,
   PanelRightClose,
   PencilLine,
+  Phone,
   Plus,
   RefreshCw,
   Save,
@@ -77,6 +78,7 @@ type TabId =
   | "clients"
   | "faqs"
   | "about"
+  | "contact"
   | "footer";
 
 type Toast = {
@@ -123,6 +125,7 @@ const sidebarItems: Array<{
   { id: "clients", icon: Users2 },
   { id: "faqs", icon: CircleHelp },
   { id: "about", icon: Info },
+  { id: "contact", icon: Phone },
   { id: "footer", icon: FileText },
 ];
 
@@ -802,6 +805,7 @@ export function AdminApp() {
           projects: "/images/cover-hero.webp",
           contact: "/images/cover-hero.webp",
           faq: "/images/cover-hero.webp",
+          locations: "/images/cover-hero.webp",
         };
       }
       mutator(next);
@@ -861,6 +865,7 @@ export function AdminApp() {
           projects: "/images/cover-hero.webp",
           contact: "/images/cover-hero.webp",
           faq: "/images/cover-hero.webp",
+          locations: "/images/cover-hero.webp",
         };
       }
       mutator(next);
@@ -1237,10 +1242,18 @@ export function AdminApp() {
           />
         </div>
 
-        <div className="mt-5">
+        <div className="mt-5 space-y-5">
+          <ImageUploadField
+            label="صورة خلفية صفحة كل المدن (/locations)"
+            value={cms.pageHeroImages.locations || ""}
+            onChange={(value) =>
+              applyCmsAndSave((draft) => void (draft.pageHeroImages.locations = value))
+            }
+            fallback="/images/projects/project-01.png"
+          />
           <ObjectListEditor
             title="مدن الخدمة (SEO)"
-            description="أضف أو احذف أو رتّب المدن. لكل مدينة صفحة مستقلة في /locations/الرابط — استخدم حروفاً إنجليزية في حقل الرابط مثل riyadh."
+            description="أضف أو احذف أو رتّب المدن. لكل مدينة صفحة مستقلة وصورة خلفية خاصة بها. استخدم حروفاً إنجليزية في حقل الرابط مثل riyadh."
             items={cms.site.cities}
             onChange={(items) => applyCms((draft) => void (draft.site.cities = items))}
             createItem={initialServiceCity}
@@ -1299,6 +1312,14 @@ export function AdminApp() {
                     <option value="secondary">إضافية</option>
                   </select>
                 </label>
+                <div className="md:col-span-2">
+                  <ImageUploadField
+                    label={`صورة خلفية صفحة ${item.nameAr || "المدينة"}`}
+                    value={item.heroImage || ""}
+                    onChange={(heroImage) => update({ ...item, heroImage })}
+                    fallback={cms.pageHeroImages.locations || "/images/projects/project-01.png"}
+                  />
+                </div>
                 {item.slug ? (
                   <p className="md:col-span-2 text-xs text-[#777]" dir="ltr">
                     /locations/{item.slug}
@@ -1400,27 +1421,17 @@ export function AdminApp() {
             rows={6}
           />
           <TextareaField
-            label="عنوان اتصل بنا"
+            label="عنوان قسم الاتصال في الرئيسية"
             value={cms.home.contactTitle}
             onChange={(value) => applyCms((draft) => void (draft.home.contactTitle = value))}
             rows={4}
           />
           <TextareaField
-            label="نص الاتصال"
+            label="نص قسم الاتصال في الرئيسية"
             value={cms.home.contactSubtitle}
             onChange={(value) => applyCms((draft) => void (draft.home.contactSubtitle = value))}
             rows={4}
           />
-          <div className="md:col-span-2">
-            <ImageUploadField
-              label="صورة هيرو صفحة اتصل بنا"
-              value={cms.pageHeroImages.contact}
-              onChange={(value) =>
-                applyCmsAndSave((draft) => void (draft.pageHeroImages.contact = value))
-              }
-              fallback="/images/cover-hero.webp"
-            />
-          </div>
           <TextareaField
             label="شريط الدعوة"
             value={cms.home.ctaBandTitle}
@@ -1930,10 +1941,13 @@ export function AdminApp() {
   const renderClients = () => {
     if (!cms) return null;
     return (
-      <SectionCard title="العملاء" description="إدارة أسماء العملاء وشعارات شركاء النجاح.">
+      <SectionCard
+        title="شركاء النجاح"
+        description="أضف أو احذف أو رتّب شعارات الشركاء. الترتيب هنا هو نفس الترتيب في الصفحة الرئيسية وصفحة المشاريع."
+      >
         <ObjectListEditor
-          title="العملاء"
-          description="أضف العملاء الحاليين أو من تريد إبرازهم في الصفحة."
+          title="شعارات الشركاء"
+          description="استخدم أزرار الأعلى/الأسفل لتغيير الترتيب، وارفع الشعار من حقل الصورة. لا تنسَ حفظ التغييرات."
           items={cms.sampleClients}
           onChange={(items) => applyCms((draft) => void (draft.sampleClients = items))}
           createItem={initialClient}
@@ -1996,6 +2010,63 @@ export function AdminApp() {
             </div>
           )}
         />
+      </SectionCard>
+    );
+  };
+
+  const renderContact = () => {
+    if (!cms) return null;
+    return (
+      <SectionCard
+        title="اتصل بنا"
+        description="تحرير عنوان الصفحة، وصفها، صورة الهيرو، عنوان النموذج، ورابط الخريطة."
+      >
+        <div className="mb-6">
+          <ImageUploadField
+            label="صورة خلفية الهيرو"
+            value={cms.pageHeroImages.contact}
+            onChange={(value) =>
+              applyCmsAndSave((draft) => void (draft.pageHeroImages.contact = value))
+            }
+            fallback="/images/cover-hero.webp"
+          />
+        </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          <Field
+            label="النص العلوي (Eyebrow)"
+            value={cms.contactPage.heroEyebrow}
+            onChange={(value) => applyCms((draft) => void (draft.contactPage.heroEyebrow = value))}
+          />
+          <Field
+            label="عنوان الصفحة"
+            value={cms.contactPage.heroTitle}
+            onChange={(value) => applyCms((draft) => void (draft.contactPage.heroTitle = value))}
+          />
+          <Field
+            label="عنوان نموذج التواصل"
+            value={cms.contactPage.formTitle}
+            onChange={(value) => applyCms((draft) => void (draft.contactPage.formTitle = value))}
+          />
+        </div>
+        <div className="mt-4 grid gap-4">
+          <TextareaField
+            label="وصف الهيرو"
+            value={cms.contactPage.heroDescription}
+            onChange={(value) =>
+              applyCms((draft) => void (draft.contactPage.heroDescription = value))
+            }
+            rows={4}
+          />
+          <Field
+            label="رابط تضمين الخريطة (Google Maps embed)"
+            value={cms.contactPage.mapEmbedUrl}
+            onChange={(value) => applyCms((draft) => void (draft.contactPage.mapEmbedUrl = value))}
+            placeholder="https://www.google.com/maps?q=...&output=embed"
+          />
+          <p className="text-xs leading-6 text-[#777]">
+            من خرائط جوجل: مشاركة → تضمين خريطة → انسخ قيمة src من كود iframe.
+          </p>
+        </div>
       </SectionCard>
     );
   };
@@ -2241,6 +2312,8 @@ export function AdminApp() {
         return renderFaqs();
       case "about":
         return renderAbout();
+      case "contact":
+        return renderContact();
       case "footer":
         return renderFooter();
       default:

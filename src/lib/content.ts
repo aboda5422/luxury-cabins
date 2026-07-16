@@ -412,6 +412,12 @@ export const sampleClients = [
     logo: "/images/clients/partner-07.png",
   },
   {
+    name: "كدانة",
+    nameEn: "KIDANA",
+    sector: "عقارات وتطوير",
+    logo: "/images/clients/partner-24.png",
+  },
+  {
     name: "مفيد",
     nameEn: "MUFEED",
     sector: "تقنية",

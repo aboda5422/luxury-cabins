@@ -172,7 +172,8 @@
     "manufacturing": "/images/cover-hero.webp",
     "projects": "/images/cover-hero.webp",
     "contact": "/images/cover-hero.webp",
-    "faq": "/images/cover-hero.webp"
+    "faq": "/images/cover-hero.webp",
+    "locations": "/images/projects/project-01.png"
   },
   "services": [
     {
@@ -524,6 +525,12 @@
       "logo": "/images/clients/partner-07.png"
     },
     {
+      "name": "كدانة",
+      "nameEn": "KIDANA",
+      "sector": "عقارات وتطوير",
+      "logo": "/images/clients/partner-24.png"
+    },
+    {
       "name": "مفيد",
       "nameEn": "MUFEED",
       "sector": "تقنية",
@@ -766,5 +773,12 @@
       }
     ]
   },
-  "updatedAt": "2026-07-16T15:59:29.883Z"
+  "updatedAt": "2026-07-16T16:24:41.117Z",
+  "contactPage": {
+    "heroEyebrow": "اتصل بنا",
+    "heroTitle": "اتصل بنا الآن",
+    "heroDescription": "يضع فريقنا المتخصص خبراته بين يديكم لتقديم حلول احترافية تلبي متطلبات مشاريعكم بأعلى معايير الجودة.",
+    "formTitle": "أرسل استشارتك",
+    "mapEmbedUrl": "https://www.google.com/maps?q=Riyadh,Saudi+Arabia&output=embed"
+  }
 }

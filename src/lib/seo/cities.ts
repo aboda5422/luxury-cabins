@@ -63,6 +63,7 @@ export function normalizeCities(input: unknown, fallback: SeoCity[] = SEO_CITIES
       regionAr: String(item.regionAr ?? known?.regionAr ?? ""),
       regionEn: String(item.regionEn ?? known?.regionEn ?? ""),
       priority: item.priority === "primary" ? "primary" : "secondary",
+      heroImage: String(item.heroImage || known?.heroImage || ""),
     };
   });
 }
@@ -95,5 +96,6 @@ export function emptyServiceCity(): SeoCity {
     regionAr: "",
     regionEn: "",
     priority: "secondary",
+    heroImage: "",
   };
 }
