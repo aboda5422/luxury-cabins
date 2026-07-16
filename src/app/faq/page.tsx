@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { FaqPageClient } from "@/components/FaqPageClient";
+import { readCms } from "@/lib/cms/store";
+import { faqPageSchema } from "@/lib/seo/schema";
 import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -8,36 +10,25 @@ export const metadata: Metadata = {
   alternates: { canonical: "/faq" },
 };
 
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "هل تغطون جميع مناطق المملكة؟",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "نعم، نخدم جميع مناطق المملكة العربية السعودية مع تركيز خاص على المدن الرئيسية.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "ما الفرق بين التأجير والبيع والتصنيع؟",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "التأجير للاحتياجات المؤقتة، والبيع والتصنيع للاحتياجات الدائمة أو حسب المواصفات.",
-      },
-    },
-  ],
-};
+export default async function FaqPage() {
+  let faqs: { q: string; a: string }[] = [];
+  try {
+    const cms = await readCms();
+    faqs = cms.faqs;
+  } catch {
+    faqs = [];
+  }
 
-export default function FaqPage() {
+  const schema = faqs.length ? faqPageSchema(faqs) : null;
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+      {schema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ) : null}
       <FaqPageClient />
     </>
   );

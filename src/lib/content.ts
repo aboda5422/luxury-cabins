@@ -367,16 +367,146 @@ export const projects = [
   },
 ] as const;
 
-/** أمثلة مؤقتة لشركات سعودية معروفة — يستبدلها العميل لاحقاً بشعاراته الفعلية */
+/** شركاء النجاح — شعارات من ملف اللوقو (ترتيب الشريحة يمين → يسار، أعلى → أسفل) */
 export const sampleClients = [
-  { name: "أرامكو", nameEn: "Aramco", sector: "النفط والطاقة" },
-  { name: "سابك", nameEn: "SABIC", sector: "البتروكيماويات" },
-  { name: "معادن", nameEn: "Ma'aden", sector: "التعدين" },
-  { name: "نيوم", nameEn: "NEOM", sector: "المشاريع الكبرى" },
-  { name: "البحر الأحمر", nameEn: "Red Sea Global", sector: "السياحة" },
-  { name: "القدية", nameEn: "Qiddiya", sector: "الترفيه" },
-  { name: "STC", nameEn: "stc", sector: "الاتصالات" },
-  { name: "أكوا باور", nameEn: "ACWA Power", sector: "الطاقة" },
+  {
+    name: "أرامكو السعودية",
+    nameEn: "Saudi Aramco",
+    sector: "النفط والطاقة",
+    logo: "/images/clients/partner-01.png",
+  },
+  {
+    name: "القدية",
+    nameEn: "Qiddiya",
+    sector: "الترفيه",
+    logo: "/images/clients/partner-02.png",
+  },
+  {
+    name: "وزارة النقل والخدمات اللوجستية",
+    nameEn: "Ministry of Transport and Logistic Services",
+    sector: "حكومي",
+    logo: "/images/clients/partner-03.png",
+  },
+  {
+    name: "وزارة الرياضة",
+    nameEn: "Ministry of Sport",
+    sector: "حكومي",
+    logo: "/images/clients/partner-04.png",
+  },
+  {
+    name: "صلة",
+    nameEn: "Sela",
+    sector: "الفعاليات",
+    logo: "/images/clients/partner-05.png",
+  },
+  {
+    name: "مسك",
+    nameEn: "Misk Foundation",
+    sector: "مؤسسات",
+    logo: "/images/clients/partner-06.png",
+  },
+  {
+    name: "وزارة الثقافة",
+    nameEn: "Ministry of Culture",
+    sector: "حكومي",
+    logo: "/images/clients/partner-07.png",
+  },
+  {
+    name: "مفيد",
+    nameEn: "MUFEED",
+    sector: "تقنية",
+    logo: "/images/clients/partner-08.png",
+  },
+  {
+    name: "جامعة الملك فهد للبترول والمعادن",
+    nameEn: "KFUPM",
+    sector: "تعليم",
+    logo: "/images/clients/partner-09.png",
+  },
+  {
+    name: "التميمي",
+    nameEn: "Tamimi",
+    sector: "أعمال",
+    logo: "/images/clients/partner-10.png",
+  },
+  {
+    name: "نادي ديراب الريفي للجولف",
+    nameEn: "Dirab Golf & Country Club",
+    sector: "ترفيه",
+    logo: "/images/clients/partner-11.png",
+  },
+  {
+    name: "الظهران إكسبو",
+    nameEn: "Dhahran Expo",
+    sector: "معارض",
+    logo: "/images/clients/partner-12.png",
+  },
+  {
+    name: "واجهة الرياض للمعارض والمؤتمرات",
+    nameEn: "Riyadh Front",
+    sector: "معارض",
+    logo: "/images/clients/partner-13.png",
+  },
+  {
+    name: "الاتحاد السعودي للفروسية",
+    nameEn: "Saudi Arabian Equestrian Federation",
+    sector: "رياضة",
+    logo: "/images/clients/partner-14.png",
+  },
+  {
+    name: "حديقة الأمير ماجد",
+    nameEn: "Prince Majed Park",
+    sector: "ترفيه",
+    logo: "/images/clients/partner-15.png",
+  },
+  {
+    name: "أجواء السعودية",
+    nameEn: "Ajwaa Alsaudia",
+    sector: "فعاليات",
+    logo: "/images/clients/partner-16.png",
+  },
+  {
+    name: "ذا جاذرنق",
+    nameEn: "The Gathering",
+    sector: "فعاليات",
+    logo: "/images/clients/partner-17.png",
+  },
+  {
+    name: "كود",
+    nameEn: "CODE",
+    sector: "تقنية",
+    logo: "/images/clients/partner-18.png",
+  },
+  {
+    name: "هوادي",
+    nameEn: "Hwadi",
+    sector: "فعاليات",
+    logo: "/images/clients/partner-19.png",
+  },
+  {
+    name: "الحدث الذكي",
+    nameEn: "Event CleVer",
+    sector: "فعاليات",
+    logo: "/images/clients/partner-20.png",
+  },
+  {
+    name: "ويف إيفنت",
+    nameEn: "WAVE EVENT",
+    sector: "فعاليات",
+    logo: "/images/clients/partner-21.png",
+  },
+  {
+    name: "ماك مودرن آرك",
+    nameEn: "MACC Modern Arch",
+    sector: "تصميم",
+    logo: "/images/clients/partner-22.png",
+  },
+  {
+    name: "بلينك إكسبيرينس",
+    nameEn: "Blink Experience",
+    sector: "فعاليات",
+    logo: "/images/clients/partner-23.png",
+  },
 ] as const;
 
 

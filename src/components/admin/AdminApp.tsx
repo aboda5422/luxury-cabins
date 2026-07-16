@@ -209,6 +209,7 @@ function initialClient(): ClientItem {
     name: "",
     nameEn: "",
     sector: "",
+    logo: "",
   };
 }
 
@@ -1823,7 +1824,7 @@ export function AdminApp() {
   const renderClients = () => {
     if (!cms) return null;
     return (
-      <SectionCard title="العملاء" description="إدارة أسماء العملاء والجهات المرتبطة بالمشاريع.">
+      <SectionCard title="العملاء" description="إدارة أسماء العملاء وشعارات شركاء النجاح.">
         <ObjectListEditor
           title="العملاء"
           description="أضف العملاء الحاليين أو من تريد إبرازهم في الصفحة."
@@ -1832,17 +1833,24 @@ export function AdminApp() {
           createItem={initialClient}
           getKey={(item, index) => `${item.name || "client"}-${index}`}
           renderItem={(item, _index, update) => (
-            <div className="grid gap-4 md:grid-cols-3">
-              <Field label="الاسم" value={item.name} onChange={(name) => update({ ...item, name })} />
-              <Field
-                label="الاسم الإنجليزي"
-                value={item.nameEn}
-                onChange={(nameEn) => update({ ...item, nameEn })}
-              />
-              <Field
-                label="القطاع"
-                value={item.sector}
-                onChange={(sector) => update({ ...item, sector })}
+            <div className="grid gap-4">
+              <div className="grid gap-4 md:grid-cols-3">
+                <Field label="الاسم" value={item.name} onChange={(name) => update({ ...item, name })} />
+                <Field
+                  label="الاسم الإنجليزي"
+                  value={item.nameEn}
+                  onChange={(nameEn) => update({ ...item, nameEn })}
+                />
+                <Field
+                  label="القطاع"
+                  value={item.sector}
+                  onChange={(sector) => update({ ...item, sector })}
+                />
+              </div>
+              <ImageUploadField
+                label="الشعار"
+                value={item.logo || ""}
+                onChange={(logo) => update({ ...item, logo })}
               />
             </div>
           )}

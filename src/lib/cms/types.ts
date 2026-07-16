@@ -46,6 +46,7 @@ export type ClientItem = {
   name: string;
   nameEn: string;
   sector: string;
+  logo?: string;
 };
 
 export type FaqItem = { q: string; a: string };

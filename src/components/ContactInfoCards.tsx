@@ -3,6 +3,7 @@
 import { Mail, MapPin, Phone } from "lucide-react";
 import { useLocalizedCms } from "@/components/CmsProvider";
 import { useLocale } from "@/components/LocaleProvider";
+import { trackPhoneClick } from "@/lib/analytics";
 
 type Props = {
   showIntro?: boolean;
@@ -56,6 +57,9 @@ export function ContactInfoCards({ showIntro = true }: Props) {
             href={card.href}
             target={card.external ? "_blank" : undefined}
             rel={card.external ? "noopener noreferrer" : undefined}
+            onClick={() => {
+              if (card.id === "phone") trackPhoneClick();
+            }}
             className="group card-frame flex flex-col items-center bg-white px-6 py-10 text-center transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_18px_50px_rgba(0,0,0,0.12)]"
           >
             <span className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[var(--gold)]/15 text-[var(--gold)] transition group-hover:bg-[var(--gold)] group-hover:text-[#0f0f0f]">

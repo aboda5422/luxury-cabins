@@ -64,9 +64,20 @@ function mergeCms(defaults: CmsData, parsed: Partial<CmsData>): CmsData {
       ? parsed.manufacturingExtras
       : defaults.manufacturingExtras,
     projects: parsed.projects?.length ? parsed.projects : defaults.projects,
-    sampleClients: parsed.sampleClients?.length
-      ? parsed.sampleClients
-      : defaults.sampleClients,
+    sampleClients: (() => {
+      const incoming = parsed.sampleClients?.map((c) => ({
+        name: c.name || "",
+        nameEn: c.nameEn || "",
+        sector: c.sector || "",
+        logo: c.logo || "",
+      }));
+      const defaultsHaveLogos = defaults.sampleClients.some((c) => c.logo);
+      const incomingHasLogos = Boolean(incoming?.some((c) => c.logo));
+      if (!incoming?.length || (defaultsHaveLogos && !incomingHasLogos)) {
+        return defaults.sampleClients;
+      }
+      return incoming;
+    })(),
     faqs: parsed.faqs?.length ? parsed.faqs : defaults.faqs,
     aboutStats: parsed.aboutStats?.length
       ? parsed.aboutStats

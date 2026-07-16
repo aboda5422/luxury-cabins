@@ -8,6 +8,7 @@ import { CtaBand } from "@/components/CtaBand";
 import { useLocalizedCms } from "@/components/CmsProvider";
 import { useLocale } from "@/components/LocaleProvider";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
+import { trackWhatsAppClick } from "@/lib/analytics";
 
 const ADMIN_LONG_PRESS_MS = 2500;
 const iconClass = "h-[18px] w-[18px]";
@@ -17,10 +18,12 @@ function SocialLink({
   href,
   label,
   children,
+  onClick,
 }: {
   href?: string;
   label: string;
   children: React.ReactNode;
+  onClick?: () => void;
 }) {
   const ready = Boolean(href?.trim());
   if (!ready) {
@@ -37,6 +40,7 @@ function SocialLink({
       rel="noopener noreferrer"
       aria-label={label}
       className={linkClass}
+      onClick={onClick}
     >
       {children}
     </a>
@@ -112,6 +116,7 @@ export function Footer() {
     const email = String(data.get("email") || "");
     const text = encodeURIComponent(`${t.newsletterWaPrefix} ${email}`);
     window.open(`https://wa.me/${site.whatsapp}?text=${text}`, "_blank");
+    trackWhatsAppClick("newsletter");
     setSubscribed(true);
   }
 
@@ -145,7 +150,11 @@ export function Footer() {
             </button>
             <p className="text-sm leading-7 text-[#555]">{site.description}</p>
             <div className="mt-5 flex flex-wrap items-center gap-3.5">
-              <SocialLink href={`https://wa.me/${site.whatsapp}`} label={t.whatsapp}>
+              <SocialLink
+                href={`https://wa.me/${site.whatsapp}`}
+                label={t.whatsapp}
+                onClick={() => trackWhatsAppClick("footer")}
+              >
                 <WhatsAppIcon className={iconClass} />
               </SocialLink>
               <SocialLink href={site.social?.instagram} label="Instagram">

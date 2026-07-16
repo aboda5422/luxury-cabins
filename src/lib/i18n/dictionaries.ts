@@ -81,6 +81,11 @@ const ar = {
   rentalReady: "جاهزون للبدء",
   flexibleSolutions: "حلول مرنة",
   projectsGalleryTitle: "مشاريع في التأجير والبيع والتصنيع",
+  projectsCitiesEyebrow: "تغطية جغرافية",
+  projectsCitiesTitle: "ننفّذ مشاريعنا عبر مدن المملكة",
+  projectsCitiesDesc:
+    "من الرياض إلى جدة والدمام ومدن المملكة — تصفّح حلولنا المحلية لكل مدينة.",
+  projectsCitiesAll: "كل المدن",
   manufacturingFormTitle: "طلب عرض بيع / تصنيع",
   newsletterWaPrefix: "طلب اشتراك في النشرة:",
   waContactPrefix: "طلب استشارة من موقع",
@@ -246,6 +251,11 @@ const en: Dictionary = {
   rentalReady: "Ready to start",
   flexibleSolutions: "Flexible solutions",
   projectsGalleryTitle: "Projects in rental, sales, and manufacturing",
+  projectsCitiesEyebrow: "Geographic coverage",
+  projectsCitiesTitle: "We deliver projects across Saudi cities",
+  projectsCitiesDesc:
+    "From Riyadh to Jeddah, Dammam, and cities across the Kingdom — explore our local solutions for each city.",
+  projectsCitiesAll: "All cities",
   manufacturingFormTitle: "Request a sales / manufacturing quote",
   newsletterWaPrefix: "Newsletter signup:",
   waContactPrefix: "Consultation request from",

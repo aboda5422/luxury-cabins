@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { ChevronDown, X } from "lucide-react";
 import { useLocalizedCms } from "@/components/CmsProvider";
 import { useLocale } from "@/components/LocaleProvider";
+import { trackContactSubmit } from "@/lib/analytics";
 
 type Props = {
   title?: string;
@@ -61,6 +62,7 @@ export function ContactForm({
       window.open(`https://wa.me/${site.whatsapp}?text=${text}`, "_blank");
     }
 
+    trackContactSubmit(submitVia);
     setSent(true);
     onSubmitted?.();
   }

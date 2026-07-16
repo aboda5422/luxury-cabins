@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ProductDetailClient } from "@/components/ProductDetailClient";
 import { readCms } from "@/lib/cms/store";
+import { breadcrumbSchema, productSchema } from "@/lib/seo/schema";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -21,6 +22,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: product.title,
     description: product.shortDescription,
     alternates: { canonical: `/manufacturing/${product.id}` },
+    openGraph: {
+      title: product.title,
+      description: product.shortDescription,
+      url: `/manufacturing/${product.id}`,
+      images: product.images?.[0] ? [{ url: product.images[0] }] : undefined,
+    },
   };
 }
 
@@ -30,5 +37,28 @@ export default async function ProductDetailPage({ params }: Props) {
   const product = cms.catalogProducts.find((p) => p.id === slug);
   if (!product) notFound();
 
-  return <ProductDetailClient productId={slug} />;
+  const schemas = [
+    breadcrumbSchema([
+      { name: "الرئيسية", path: "/" },
+      { name: "البيع والتصنيع", path: "/manufacturing" },
+      { name: product.title },
+    ]),
+    productSchema({
+      name: product.title,
+      description: product.shortDescription || product.description,
+      path: `/manufacturing/${product.id}`,
+      image: product.images?.[0],
+      brand: cms.site.nameAr,
+    }),
+  ];
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
+      />
+      <ProductDetailClient productId={slug} />
+    </>
+  );
 }
