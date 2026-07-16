@@ -40,6 +40,8 @@ import {
   ShieldCheck,
   Sparkles,
   Trash2,
+  ChevronUp,
+  ChevronDown,
   Users2,
   Wrench,
   Boxes,
@@ -542,6 +544,15 @@ function ListEditor<T>({
     onChange(items.filter((_, current) => current !== index));
   };
 
+  const moveItem = (index: number, direction: -1 | 1) => {
+    const target = index + direction;
+    if (target < 0 || target >= items.length) return;
+    const nextItems = [...items];
+    const [item] = nextItems.splice(index, 1);
+    nextItems.splice(target, 0, item);
+    onChange(nextItems);
+  };
+
   return (
     <div className="rounded-[2rem] border border-[#e4dbc9] bg-[#fffdfa] p-5">
       <div className="flex flex-wrap items-start justify-between gap-4">
@@ -566,16 +577,43 @@ function ListEditor<T>({
               key={getKey(item, index)}
               className="rounded-[1.75rem] border border-[#eadfca] bg-white shadow-sm"
             >
-              <div className="flex items-center justify-between gap-4 border-b border-[#f0e5cf] px-4 py-3">
-                <div className="text-sm font-bold text-[#333]">عنصر {index + 1}</div>
-                <button
-                  type="button"
-                  onClick={() => deleteItem(index)}
-                  className="inline-flex items-center gap-2 rounded-full border border-red-200 bg-red-50 px-3 py-2 text-xs font-bold text-red-700 transition hover:bg-red-100"
-                >
-                  <Trash2 className="h-4 w-4" />
-                  حذف
-                </button>
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#f0e5cf] px-4 py-3">
+                <div className="text-sm font-bold text-[#333]">
+                  عنصر {index + 1}
+                  <span className="ms-2 font-medium text-[#999]">
+                    / {items.length}
+                  </span>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => moveItem(index, -1)}
+                    disabled={index === 0}
+                    title="تحريك للأعلى"
+                    aria-label="تحريك للأعلى"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#e4dbc9] bg-[#fffdfa] text-[#444] transition hover:bg-[#ffb400]/15 disabled:cursor-not-allowed disabled:opacity-35"
+                  >
+                    <ChevronUp className="h-4 w-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => moveItem(index, 1)}
+                    disabled={index === items.length - 1}
+                    title="تحريك للأسفل"
+                    aria-label="تحريك للأسفل"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#e4dbc9] bg-[#fffdfa] text-[#444] transition hover:bg-[#ffb400]/15 disabled:cursor-not-allowed disabled:opacity-35"
+                  >
+                    <ChevronDown className="h-4 w-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => deleteItem(index)}
+                    className="inline-flex items-center gap-2 rounded-full border border-red-200 bg-red-50 px-3 py-2 text-xs font-bold text-red-700 transition hover:bg-red-100"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    حذف
+                  </button>
+                </div>
               </div>
               <div className="space-y-4 p-4">
                 {renderItem(item, index, (next) => {
