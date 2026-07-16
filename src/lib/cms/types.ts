@@ -49,6 +49,15 @@ export type ClientItem = {
   logo?: string;
 };
 
+export type ServiceCity = {
+  slug: string;
+  nameAr: string;
+  nameEn: string;
+  regionAr: string;
+  regionEn: string;
+  priority: "primary" | "secondary";
+};
+
 export type FaqItem = { q: string; a: string };
 
 export type StatItem = { value: string; label: string };
@@ -66,7 +75,7 @@ export type SiteInfo = {
   email: string;
   address: string;
   addressDetail: string;
-  cities: string[];
+  cities: ServiceCity[];
   social: {
     instagram: string;
     facebook: string;

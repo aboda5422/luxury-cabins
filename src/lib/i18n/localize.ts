@@ -28,7 +28,7 @@ export function localizeCms(cms: CmsData, locale: Locale): CmsData {
     site: {
       ...cms.site,
       ...(o.site || {}),
-      cities: o.site?.cities?.length ? [...o.site.cities] : cms.site.cities,
+      cities: cms.site.cities.map((city) => ({ ...city })),
       social: cms.site.social,
     },
     navLinks: o.navLinks?.length

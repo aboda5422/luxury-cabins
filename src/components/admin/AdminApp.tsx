@@ -13,6 +13,7 @@ import type {
   ProcessStep,
   ProjectItem,
   RentalCategory,
+  ServiceCity,
   ServiceItem,
   StatItem,
 } from "@/lib/cms/types";
@@ -49,6 +50,7 @@ import {
 } from "lucide-react";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLocale } from "@/components/LocaleProvider";
+import { emptyServiceCity, slugifyCity } from "@/lib/seo/cities";
 
 type AdminAnalytics = AnalyticsData & {
   productsCount: number;
@@ -213,6 +215,10 @@ function initialClient(): ClientItem {
     sector: "",
     logo: "",
   };
+}
+
+function initialServiceCity(): ServiceCity {
+  return emptyServiceCity();
 }
 
 function initialFaq(): FaqItem {
@@ -1232,12 +1238,74 @@ export function AdminApp() {
         </div>
 
         <div className="mt-5">
-          <TextListEditor
-            title="المدن"
-            description="أضف المدن التي نخدمها في الموقع."
+          <ObjectListEditor
+            title="مدن الخدمة (SEO)"
+            description="أضف أو احذف أو رتّب المدن. لكل مدينة صفحة مستقلة في /locations/الرابط — استخدم حروفاً إنجليزية في حقل الرابط مثل riyadh."
             items={cms.site.cities}
             onChange={(items) => applyCms((draft) => void (draft.site.cities = items))}
-            placeholder="اسم المدينة"
+            createItem={initialServiceCity}
+            getKey={(item, index) => `${item.slug || item.nameAr || "city"}-${index}`}
+            renderItem={(item, _index, update) => (
+              <div className="grid gap-4 md:grid-cols-2">
+                <Field
+                  label="الاسم بالعربية"
+                  value={item.nameAr}
+                  onChange={(nameAr) => update({ ...item, nameAr })}
+                  placeholder="الرياض"
+                />
+                <Field
+                  label="الاسم بالإنجليزية"
+                  value={item.nameEn}
+                  onChange={(nameEn) =>
+                    update({
+                      ...item,
+                      nameEn,
+                      slug: item.slug || slugifyCity(nameEn),
+                    })
+                  }
+                  placeholder="Riyadh"
+                />
+                <Field
+                  label="المنطقة بالعربية"
+                  value={item.regionAr}
+                  onChange={(regionAr) => update({ ...item, regionAr })}
+                  placeholder="منطقة الرياض"
+                />
+                <Field
+                  label="المنطقة بالإنجليزية"
+                  value={item.regionEn}
+                  onChange={(regionEn) => update({ ...item, regionEn })}
+                  placeholder="Riyadh Region"
+                />
+                <Field
+                  label="رابط الصفحة (slug)"
+                  value={item.slug}
+                  onChange={(slug) => update({ ...item, slug: slugifyCity(slug) || slug })}
+                  placeholder="riyadh"
+                />
+                <label className="block">
+                  <span className="mb-2 block text-sm font-bold text-[#1e1e1e]">الأولوية</span>
+                  <select
+                    value={item.priority}
+                    onChange={(e) =>
+                      update({
+                        ...item,
+                        priority: e.target.value === "primary" ? "primary" : "secondary",
+                      })
+                    }
+                    className="w-full rounded-2xl border border-[#d9d1c0] bg-white px-4 py-3 text-sm outline-none transition focus:border-[#ffb400] focus:ring-4 focus:ring-[#ffb400]/10"
+                  >
+                    <option value="primary">رئيسية</option>
+                    <option value="secondary">إضافية</option>
+                  </select>
+                </label>
+                {item.slug ? (
+                  <p className="md:col-span-2 text-xs text-[#777]" dir="ltr">
+                    /locations/{item.slug}
+                  </p>
+                ) : null}
+              </div>
+            )}
           />
         </div>
       </SectionCard>

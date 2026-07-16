@@ -3,8 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/PageHero";
 import { CtaBand } from "@/components/CtaBand";
+import { readCms } from "@/lib/cms/store";
 import {
-  SEO_CITIES,
   cityDescriptionAr,
   cityTitleAr,
   cityPath,
@@ -17,17 +17,19 @@ type Props = {
   params: Promise<{ city: string }>;
 };
 
-export function generateStaticParams() {
-  return SEO_CITIES.map((city) => ({ city: city.slug }));
+export async function generateStaticParams() {
+  const cms = await readCms();
+  return cms.site.cities.map((city) => ({ city: city.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { city: slug } = await params;
-  const city = getCityBySlug(slug);
+  const cms = await readCms();
+  const city = getCityBySlug(slug, cms.site.cities);
   if (!city) return { title: "المدينة غير موجودة" };
 
   const title = cityTitleAr(city);
-  const description = cityDescriptionAr(city, siteConfig.nameAr);
+  const description = cityDescriptionAr(city, cms.site.nameAr || siteConfig.nameAr);
 
   return {
     title,
@@ -52,11 +54,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CityLocationPage({ params }: Props) {
   const { city: slug } = await params;
-  const city = getCityBySlug(slug);
+  const cms = await readCms();
+  const cities = cms.site.cities;
+  const city = getCityBySlug(slug, cities);
   if (!city) notFound();
 
+  const brand = cms.site.nameAr || siteConfig.nameAr;
   const title = cityTitleAr(city);
-  const description = cityDescriptionAr(city, siteConfig.nameAr);
+  const description = cityDescriptionAr(city, brand);
 
   const schemas = [
     breadcrumbSchema([
@@ -69,27 +74,31 @@ export default async function CityLocationPage({ params }: Props) {
       description,
       path: cityPath(city.slug),
       serviceType: "Cabin rental, sales, and manufacturing",
-      areaServed: [city.nameAr, city.nameEn],
+      areaServed: [city.nameAr, city.nameEn].filter(Boolean),
     }),
     {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
-      name: siteConfig.nameAr,
+      name: brand,
       url: `https://luxurycabins.com.sa${cityPath(city.slug)}`,
-      telephone: siteConfig.phone,
-      email: siteConfig.email,
+      telephone: cms.site.phone || siteConfig.phone,
+      email: cms.site.email || siteConfig.email,
       areaServed: {
         "@type": "City",
         name: city.nameAr,
-        containedInPlace: {
-          "@type": "AdministrativeArea",
-          name: city.regionAr,
-        },
+        ...(city.regionAr
+          ? {
+              containedInPlace: {
+                "@type": "AdministrativeArea",
+                name: city.regionAr,
+              },
+            }
+          : {}),
       },
       address: {
         "@type": "PostalAddress",
         addressLocality: city.nameAr,
-        addressRegion: city.regionAr,
+        ...(city.regionAr ? { addressRegion: city.regionAr } : {}),
         addressCountry: "SA",
       },
     },
@@ -104,7 +113,7 @@ export default async function CityLocationPage({ params }: Props) {
     {
       href: "/manufacturing",
       title: `بيع وتصنيع كبائن في ${city.nameAr}`,
-      body: `تصنيع وبيع وحدات حسب المواصفات مع توريد وتركيب يخدم ${city.regionAr}.`,
+      body: `تصنيع وبيع وحدات حسب المواصفات مع توريد وتركيب${city.regionAr ? ` يخدم ${city.regionAr}` : ""}.`,
     },
     {
       href: "/services",
@@ -120,7 +129,7 @@ export default async function CityLocationPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
       />
       <PageHero
-        eyebrow={city.regionAr}
+        eyebrow={city.regionAr || undefined}
         title={title}
         description={description}
         breadcrumbs={[
@@ -133,13 +142,13 @@ export default async function CityLocationPage({ params }: Props) {
       <section className="section-pad bg-white">
         <div className="container-site max-w-4xl">
           <h2 className="heading-display text-2xl md:text-3xl">
-            لماذا {siteConfig.nameAr} في {city.nameAr}؟
+            لماذا {brand} في {city.nameAr}؟
           </h2>
           <p className="mt-4 leading-8 text-[#555]">
-            نقدّم تغطية لوجستية وتشغيلية لمشاريعكم في {city.nameAr} و{city.regionAr}،
-            مع حلول مرنة للتأجير أو التمليك أو التصنيع حسب الحاجة. سواء كان المشروع
-            مؤقتاً لفعالية، أو دائماً لموقع تشغيلي، نصمّم العرض بما يناسب الجدول الزمني
-            والميزانية ومتطلبات الموقع.
+            نقدّم تغطية لوجستية وتشغيلية لمشاريعكم في {city.nameAr}
+            {city.regionAr ? ` و${city.regionAr}` : ""}، مع حلول مرنة للتأجير أو التمليك أو
+            التصنيع حسب الحاجة. سواء كان المشروع مؤقتاً لفعالية، أو دائماً لموقع تشغيلي، نصمّم
+            العرض بما يناسب الجدول الزمني والميزانية ومتطلبات الموقع.
           </p>
           <ul className="mt-6 space-y-3 text-[#444]">
             <li className="flex gap-2">
@@ -180,15 +189,17 @@ export default async function CityLocationPage({ params }: Props) {
         <div className="container-site">
           <h2 className="heading-display mb-6 text-2xl md:text-3xl">مدن أخرى نخدمها</h2>
           <div className="flex flex-wrap gap-3">
-            {SEO_CITIES.filter((c) => c.slug !== city.slug).map((c) => (
-              <Link
-                key={c.slug}
-                href={cityPath(c.slug)}
-                className="border border-[#e8e4de] px-4 py-2 text-sm font-semibold text-[#444] transition hover:border-[var(--gold)] hover:text-[var(--gold)]"
-              >
-                {c.nameAr}
-              </Link>
-            ))}
+            {cities
+              .filter((c) => c.slug !== city.slug)
+              .map((c) => (
+                <Link
+                  key={c.slug}
+                  href={cityPath(c.slug)}
+                  className="border border-[#e8e4de] px-4 py-2 text-sm font-semibold text-[#444] transition hover:border-[var(--gold)] hover:text-[var(--gold)]"
+                >
+                  {c.nameAr}
+                </Link>
+              ))}
           </div>
         </div>
       </section>

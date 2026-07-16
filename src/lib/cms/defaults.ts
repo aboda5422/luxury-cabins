@@ -1,5 +1,6 @@
 import type { CmsData } from "./types";
 import { siteConfig, navLinks } from "@/lib/site";
+import { SEO_CITIES } from "@/lib/seo/cities";
 import {
   services,
   processSteps,
@@ -27,7 +28,7 @@ export function getDefaultCms(): CmsData {
       email: siteConfig.email,
       address: siteConfig.address,
       addressDetail: siteConfig.addressDetail,
-      cities: [...siteConfig.cities],
+      cities: SEO_CITIES.map((c) => ({ ...c })),
       social: {
         instagram: siteConfig.social.instagram,
         facebook: siteConfig.social.facebook,

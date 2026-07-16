@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { readCms } from "@/lib/cms/store";
-import { SEO_CITIES, cityPath } from "@/lib/seo/cities";
+import { cityPath } from "@/lib/seo/cities";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = "https://luxurycabins.com.sa";
@@ -18,14 +18,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
   ];
 
-  const cityRoutes: MetadataRoute.Sitemap = SEO_CITIES.map((city) => ({
+  const cms = await readCms();
+
+  const cityRoutes: MetadataRoute.Sitemap = cms.site.cities.map((city) => ({
     url: `${base}${cityPath(city.slug)}`,
     lastModified: now,
     changeFrequency: "weekly",
     priority: city.priority === "primary" ? 0.85 : 0.7,
   }));
 
-  const cms = await readCms();
   const productRoutes: MetadataRoute.Sitemap = cms.catalogProducts.map((product) => ({
     url: `${base}/manufacturing/${product.id}`,
     lastModified: now,

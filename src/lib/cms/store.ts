@@ -3,6 +3,7 @@ import path from "path";
 import { getDefaultCms } from "./defaults";
 import type { AnalyticsData, CmsData, NavLink } from "./types";
 import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/admin";
+import { normalizeCities } from "@/lib/seo/cities";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const CMS_FILE = path.join(DATA_DIR, "cms.json");
@@ -31,9 +32,7 @@ function mergeCms(defaults: CmsData, parsed: Partial<CmsData>): CmsData {
         ...defaults.site.social,
         ...((parsed.site as CmsData["site"] | undefined)?.social || {}),
       },
-      cities: parsed.site?.cities?.length
-        ? parsed.site.cities
-        : defaults.site.cities,
+      cities: normalizeCities(parsed.site?.cities, defaults.site.cities),
     },
     home: { ...defaults.home, ...(parsed.home || {}) },
     pageHeroImages: {

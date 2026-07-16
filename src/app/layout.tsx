@@ -185,7 +185,7 @@ export default async function RootLayout({
     },
     areaServed: (cms.site.cities || []).map((city) => ({
       "@type": "City",
-      name: city,
+      name: city.nameAr,
     })),
     priceRange: "$$",
     ...(gbpUrl ? { hasMap: gbpUrl } : {}),

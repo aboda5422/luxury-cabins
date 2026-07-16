@@ -13,17 +13,94 @@
     "address": "الرياض، المملكة العربية السعودية",
     "addressDetail": "الرياض - الرياض",
     "cities": [
-      "الرياض",
-      "جدة",
-      "مكة المكرمة",
-      "المدينة المنورة",
-      "الدمام",
-      "الخبر",
-      "الجبيل",
-      "تبوك",
-      "أبها",
-      "القصيم",
-      "حائل"
+      {
+        "slug": "riyadh",
+        "nameAr": "الرياض",
+        "nameEn": "Riyadh",
+        "regionAr": "منطقة الرياض",
+        "regionEn": "Riyadh Region",
+        "priority": "primary"
+      },
+      {
+        "slug": "jeddah",
+        "nameAr": "جدة",
+        "nameEn": "Jeddah",
+        "regionAr": "منطقة مكة المكرمة",
+        "regionEn": "Makkah Region",
+        "priority": "primary"
+      },
+      {
+        "slug": "makkah",
+        "nameAr": "مكة المكرمة",
+        "nameEn": "Makkah",
+        "regionAr": "منطقة مكة المكرمة",
+        "regionEn": "Makkah Region",
+        "priority": "primary"
+      },
+      {
+        "slug": "madinah",
+        "nameAr": "المدينة المنورة",
+        "nameEn": "Madinah",
+        "regionAr": "منطقة المدينة المنورة",
+        "regionEn": "Madinah Region",
+        "priority": "primary"
+      },
+      {
+        "slug": "dammam",
+        "nameAr": "الدمام",
+        "nameEn": "Dammam",
+        "regionAr": "المنطقة الشرقية",
+        "regionEn": "Eastern Province",
+        "priority": "primary"
+      },
+      {
+        "slug": "khobar",
+        "nameAr": "الخبر",
+        "nameEn": "Khobar",
+        "regionAr": "المنطقة الشرقية",
+        "regionEn": "Eastern Province",
+        "priority": "primary"
+      },
+      {
+        "slug": "jubail",
+        "nameAr": "الجبيل",
+        "nameEn": "Jubail",
+        "regionAr": "المنطقة الشرقية",
+        "regionEn": "Eastern Province",
+        "priority": "primary"
+      },
+      {
+        "slug": "tabuk",
+        "nameAr": "تبوك",
+        "nameEn": "Tabuk",
+        "regionAr": "منطقة تبوك",
+        "regionEn": "Tabuk Region",
+        "priority": "secondary"
+      },
+      {
+        "slug": "abha",
+        "nameAr": "أبها",
+        "nameEn": "Abha",
+        "regionAr": "منطقة عسير",
+        "regionEn": "Asir Region",
+        "priority": "secondary"
+      },
+      {
+        "slug": "qassim",
+        "nameAr": "القصيم",
+        "nameEn": "Qassim",
+        "regionAr": "منطقة القصيم",
+        "regionEn": "Qassim Region",
+        "priority": "secondary"
+      },
+      {
+        "slug": "hail",
+        "nameAr": "حائل",
+        "nameEn": "Hail",
+        "regionAr": "منطقة حائل",
+        "regionEn": "Hail Region",
+        "priority": "secondary"
+      }
     ],
     "social": {
       "instagram": "",
@@ -689,5 +766,5 @@
       }
     ]
   },
-  "updatedAt": "2026-07-16T12:25:16.803Z"
+  "updatedAt": "2026-07-16T15:59:29.883Z"
 }
