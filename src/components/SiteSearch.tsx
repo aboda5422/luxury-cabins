@@ -7,6 +7,7 @@ import { createPortal } from "react-dom";
 import { ArrowLeft, Search, X } from "lucide-react";
 import { useLocalizedCms } from "@/components/CmsProvider";
 import { useLocale } from "@/components/LocaleProvider";
+import { productPath } from "@/lib/seo/products";
 
 type SearchHit = {
   id: string;
@@ -96,7 +97,7 @@ export function SiteSearch() {
       id: `product-${p.id}`,
       title: p.title,
       subtitle: p.shortDescription,
-      href: `/manufacturing/${p.id}`,
+      href: productPath(p),
       image: p.images[0],
       kind: "product",
     }));

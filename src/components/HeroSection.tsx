@@ -1,20 +1,21 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { useLocalizedCms } from "@/components/CmsProvider";
 
+const FALLBACK_HERO = "/images/cover-hero.webp";
+
 export function HeroSection() {
   const { site, home } = useLocalizedCms();
   const reduceMotion = useReducedMotion();
+  const heroSrc = home.heroImage?.trim() || FALLBACK_HERO;
 
   return (
     <section className="relative min-h-[82vh] overflow-hidden pt-[72px] text-white md:min-h-[90vh] md:pt-[100px]">
       <motion.div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url(${home.heroImage || "/images/cover-hero.webp"})`,
-        }}
+        className="absolute inset-0"
         animate={
           reduceMotion
             ? undefined
@@ -23,7 +24,17 @@ export function HeroSection() {
               }
         }
         transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-      />
+      >
+        <Image
+          src={heroSrc}
+          alt={home.heroTitle || site.nameAr}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+          unoptimized={heroSrc.startsWith("http")}
+        />
+      </motion.div>
       <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/45" />
       <div className="pointer-events-none absolute inset-y-0 left-0 w-[50%] bg-gradient-to-r from-[var(--gold)]/18 to-transparent" />
       <div

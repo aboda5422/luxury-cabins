@@ -147,7 +147,7 @@
     "heroTitle": "الأولى في تأجير وبيع وتصنيع الوحدات المتنقلة",
     "heroSubtitle": "وحدات متنقلة - خيام أوروبية - بيع وتصنيع حسب الطلب",
     "heroCta": "استكشف حلولنا",
-    "heroImage": "/images/cms/hero-home.jpg",
+    "heroImage": "/images/cms/hero-home.webp",
     "servicesEyebrow": "حلولنا المتكاملة",
     "servicesTitle": "حلول متكاملة لتصنيع وبيع وتأجير الوحدات المتنقلة",
     "servicesTitleLine2": "(وحدات متنقلة – خيام أوروبية)",
@@ -173,7 +173,7 @@
     "projects": "/images/cover-hero.webp",
     "contact": "/images/cover-hero.webp",
     "faq": "/images/cover-hero.webp",
-    "locations": "/images/projects/project-01.png"
+    "locations": "/images/cover-hero.webp"
   },
   "services": [
     {
@@ -233,6 +233,16 @@
         "/images/products/houses-2.jpg",
         "/images/products/houses-3.jpg",
         "/images/products/houses-4.jpg"
+      ],
+      "slug": "ready-houses",
+      "seoTitle": "تصنيع بيوت جاهزة فاخرة في السعودية",
+      "h1": "تصنيع بيوت جاهزة فاخرة في السعودية",
+      "seoDescription": "تصنيع وبيع بيوت جاهزة وملاحق واستراحات بهيكل حديدي وعزل حراري في الرياض وجميع مناطق المملكة.",
+      "seoKeywords": [
+        "بيوت جاهزة",
+        "ملاحق جاهزة",
+        "تصنيع بيوت جاهزة",
+        "كبائن سكنية"
       ]
     },
     {
@@ -252,6 +262,74 @@
         "/images/products/rooms-2.jpg",
         "/images/products/rooms-3.jpg",
         "/images/products/rooms-4.jpg"
+      ],
+      "slug": "ready-rooms",
+      "seoTitle": "غرف جاهزة ومتنقلة بمواصفات عالية في السعودية",
+      "h1": "غرف جاهزة ومتنقلة بمواصفات عالية",
+      "seoDescription": "تصنيع غرف جاهزة بجميع الأحجام للسكن والعمل، عزل حراري وتركيب سريع في الرياض ومدن المملكة.",
+      "seoKeywords": [
+        "غرف جاهزة",
+        "غرف سندوتش بانل",
+        "تصنيع غرف جاهزة"
+      ]
+    },
+    {
+      "id": "guard-rooms",
+      "slug": "guard-rooms",
+      "title": "غرف حراسة",
+      "seoTitle": "غرف حراسة جاهزة ومتنقلة بمواصفات عالية",
+      "h1": "غرف حراسة جاهزة ومتنقلة بمواصفات عالية",
+      "seoDescription": "تصنيع وبيع غرف حراسة جاهزة ومتنقلة للشركات والمشاريع والمواقع الإنشائية في السعودية.",
+      "seoKeywords": [
+        "غرف حراسة",
+        "غرفة حارس",
+        "غرف حراسة جاهزة",
+        "مكاتب غرف حارس"
+      ],
+      "shortDescription": "غرف حراسة جاهزة ومتنقلة بمواصفات أمنية عملية وتركيب سريع للمواقع والمشاريع.",
+      "description": "نصمّم ونصنّع غرف حراسة جاهزة ومتنقلة بمقاسات وتشطيبات تناسب بوابات المشاريع والمصانع والمجمعات، مع عزل ونوافذ رؤية وتركيب ميداني سريع.",
+      "priceLabel": "اطلب عرض سعر",
+      "priceNote": "حسب المقاس والتجهيز",
+      "specs": [
+        "رؤية ميدانية ونوافذ عملية",
+        "عزل حراري مناسب للمناخ",
+        "تركيب سريع في الموقع"
+      ],
+      "images": [
+        "/images/products/rooms-1.jpg",
+        "/images/products/rooms-2.jpg",
+        "/images/products/rooms-3.jpg",
+        "/images/products/offices-1.jpg"
+      ]
+    },
+    {
+      "id": "portable-cabins",
+      "slug": "portable-cabins",
+      "title": "كبائن متنقلة",
+      "seoTitle": "تصنيع كباين متنقلة فاخرة في السعودية",
+      "h1": "تصنيع كباين متنقلة فاخرة في السعودية",
+      "seoDescription": "تصنيع كبائن متنقلة فاخرة ووحدات جاهزة للمشاريع والسكن المؤقت في الرياض وجدة وجميع مناطق المملكة.",
+      "seoKeywords": [
+        "كبائن متنقلة",
+        "تصنيع كبائن",
+        "وحدات متنقلة",
+        "كبائن جاهزة",
+        "الكبائن الفاخرة"
+      ],
+      "shortDescription": "كبائن ووحدات متنقلة فاخرة للسكن والمكاتب والمواقع، بتصنيع حسب المواصفات.",
+      "description": "نقدّم تصنيع كبائن متنقلة فاخرة ووحدات جاهزة حسب مقاسات المشروع، بعزل وتشطيب احترافي وتوريد وتركيب في مختلف مناطق المملكة.",
+      "priceLabel": "اطلب عرض سعر",
+      "priceNote": "حسب المساحة والتشطيب",
+      "specs": [
+        "تصنيع حسب المقاس",
+        "عزل وتشطيب فاخر",
+        "توريد وتركيب ميداني"
+      ],
+      "images": [
+        "/images/products/houses-1.jpg",
+        "/images/products/offices-1.jpg",
+        "/images/products/caravans-1.jpg",
+        "/images/products/barracks-1.jpg"
       ]
     },
     {
@@ -271,6 +349,16 @@
         "/images/products/barracks-2.jpg",
         "/images/products/barracks-3.jpg",
         "/images/products/barracks-4.jpg"
+      ],
+      "slug": "barracks",
+      "seoTitle": "تصنيع وتفصيل بركسات جاهزة في السعودية",
+      "h1": "تصنيع وتفصيل بركسات جاهزة في السعودية",
+      "seoDescription": "تصنيع بركسات بعوازل حرارية وصوتية وشبكات كهرباء ومياه مع فك وتركيب سهل لجميع المناطق.",
+      "seoKeywords": [
+        "بركسات",
+        "تفصيل بركسات",
+        "بركسات جاهزة",
+        "سكن عمال"
       ]
     },
     {
@@ -290,6 +378,16 @@
         "/images/products/caravans-2.jpg",
         "/images/products/caravans-3.jpg",
         "/images/products/caravans-4.jpg"
+      ],
+      "slug": "caravans",
+      "seoTitle": "تصنيع كرفانات سحب ومجهزة في السعودية",
+      "h1": "تصنيع كرفانات سحب ومجهزة في السعودية",
+      "seoDescription": "تفصيل وتصنيع كرفانات سحب وثابتة للمخيمات والمواقع مع توريد لمختلف مناطق المملكة.",
+      "seoKeywords": [
+        "كرفانات",
+        "تصنيع كرفانات",
+        "كرفانات سحب",
+        "تأجير كرفانات"
       ]
     },
     {
@@ -309,6 +407,16 @@
         "/images/products/offices-2.jpg",
         "/images/products/offices-3.jpg",
         "/images/products/offices-4.jpg"
+      ],
+      "slug": "portable-offices",
+      "seoTitle": "مكاتب متنقلة وجاهزة للمشاريع في السعودية",
+      "h1": "مكاتب متنقلة وجاهزة للمشاريع في السعودية",
+      "seoDescription": "تصنيع مكاتب جاهزة ومتنقلة للشركات والمشاريع الهندسية والعقارية مع تركيب سريع في الموقع.",
+      "seoKeywords": [
+        "مكاتب متنقلة",
+        "مكاتب جاهزة",
+        "مكاتب مهندسين",
+        "كبائن مكاتب"
       ]
     }
   ],
@@ -773,7 +881,7 @@
       }
     ]
   },
-  "updatedAt": "2026-07-16T16:24:41.117Z",
+  "updatedAt": "2026-07-17T17:43:51.080176Z",
   "contactPage": {
     "heroEyebrow": "اتصل بنا",
     "heroTitle": "اتصل بنا الآن",

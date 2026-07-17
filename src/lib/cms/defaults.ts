@@ -45,13 +45,13 @@ export function getDefaultCms(): CmsData {
       projects: "/images/cover-hero.webp",
       contact: "/images/cover-hero.webp",
       faq: "/images/cover-hero.webp",
-      locations: "/images/projects/project-01.png",
+      locations: "/images/cover-hero.webp",
     },
     home: {
       heroTitle: "الأولى في تأجير وبيع وتصنيع الوحدات المتنقلة",
       heroSubtitle: "وحدات متنقلة - خيام أوروبية - بيع وتصنيع حسب الطلب",
       heroCta: "استكشف حلولنا",
-      heroImage: "/images/cms/hero-home.jpg",
+      heroImage: "/images/cms/hero-home.webp",
       servicesEyebrow: "حلولنا المتكاملة",
       servicesTitle: "حلول متكاملة لتصنيع وبيع وتأجير الوحدات المتنقلة",
       servicesTitleLine2: "(وحدات متنقلة – خيام أوروبية)",
@@ -78,6 +78,7 @@ export function getDefaultCms(): CmsData {
       ...p,
       specs: [...p.specs],
       images: [...p.images],
+      seoKeywords: p.seoKeywords ? [...p.seoKeywords] : [],
     })),
     rentalCategories: rentalCategories.map((c) => ({
       ...c,

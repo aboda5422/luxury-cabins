@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { BackLink } from "@/components/BackLink";
 
@@ -28,13 +29,18 @@ export function PageHero({
   const parentCrumb = breadcrumbs?.find((item) => item.href);
   const resolvedBackHref = backHref || parentCrumb?.href || "/";
   const bg = backgroundImage?.trim() || DEFAULT_HERO_BG;
-  const bgUrl = `url("${bg.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}")`;
+  const remote = bg.startsWith("http");
 
   return (
     <section className="relative overflow-hidden pt-[72px] text-white md:pt-[100px]">
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: bgUrl }}
+      <Image
+        src={bg}
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover object-center"
+        unoptimized={remote}
       />
       <div className="absolute inset-0 bg-black/55" />
       <div className="container-site relative py-16 md:py-20">

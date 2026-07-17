@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import Link from "next/link";
 import { CheckCircle2, ExternalLink } from "lucide-react";
 import { BackLink } from "@/components/BackLink";
 import { ProductGallery } from "@/components/ProductGallery";
@@ -9,19 +10,23 @@ import { RequestFormModal } from "@/components/ContactForm";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { useLocalizedCms } from "@/components/CmsProvider";
 import { useLocale } from "@/components/LocaleProvider";
+import { productH1, productPath } from "@/lib/seo/products";
 
 type Props = {
   productId: string;
 };
 
 export function ProductDetailClient({ productId }: Props) {
-  const { catalogProducts, site } = useLocalizedCms();
+  const { catalogProducts, site, manufacturingPage } = useLocalizedCms();
   const { t } = useLocale();
   const [quoteOpen, setQuoteOpen] = useState(false);
   const closeQuote = useCallback(() => setQuoteOpen(false), []);
   const product = catalogProducts.find((p) => p.id === productId);
   if (!product) return null;
 
+  const heading = productH1(product);
+  const path = productPath(product);
+  const manufacturingLabel = manufacturingPage?.heroTitle || "البيع والتصنيع";
   const requestLabel = `${t.askProduct} ${product.title}`.trim();
   const waLink = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
     `${t.waProductQuote} ${product.title}`,
@@ -30,16 +35,27 @@ export function ProductDetailClient({ productId }: Props) {
   return (
     <section className="bg-[#F7F4F0] pb-16 pt-[6.5rem] md:pb-24 md:pt-[8.5rem]">
       <div className="container-site">
+        <nav className="mb-4 flex flex-wrap items-center gap-2 text-sm text-[#777]">
+          <Link href="/" className="transition hover:text-[var(--gold)]">
+            {t.home}
+          </Link>
+          <span aria-hidden>/</span>
+          <Link href="/manufacturing" className="transition hover:text-[var(--gold)]">
+            {manufacturingLabel}
+          </Link>
+          <span aria-hidden>/</span>
+          <span className="text-[#333]">{heading}</span>
+        </nav>
         <BackLink href="/manufacturing" label={t.backToProducts} className="mb-8" />
 
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-14">
-          <ProductGallery images={product.images} title={product.title} />
+          <ProductGallery images={product.images} title={heading} />
 
           <div className="min-w-0">
             <span className="mb-4 inline-block rounded-full bg-[var(--gold)]/15 px-3 py-1 text-xs font-medium text-[#8a6200]">
               {product.priceLabel}
             </span>
-            <h1 className="heading-display text-3xl md:text-4xl">{product.title}</h1>
+            <h1 className="heading-display text-3xl md:text-4xl">{heading}</h1>
             <p className="mt-4 text-lg leading-relaxed text-[#777]">
               {product.shortDescription}
             </p>
@@ -57,9 +73,9 @@ export function ProductDetailClient({ productId }: Props) {
 
             <div className="mt-8 flex flex-wrap gap-3">
               <ProductShareButton
-                title={product.title}
+                title={heading}
                 text={product.shortDescription}
-                url={`/manufacturing/${product.id}`}
+                url={path}
                 label={t.share}
                 className="border-[#e8e4de] bg-white px-5 py-2.5 text-[#555]"
               />

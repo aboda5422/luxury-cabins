@@ -147,6 +147,7 @@ export default async function RootLayout({
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": `${siteUrl}/#organization`,
     name: cms.site.nameAr,
     alternateName: [cms.site.nameEn, cms.site.legalName].filter(Boolean),
     url: siteUrl,
@@ -178,6 +179,7 @@ export default async function RootLayout({
     description: cms.site.description,
     telephone: cms.site.phone,
     email: cms.site.email,
+    parentOrganization: { "@id": `${siteUrl}/#organization` },
     address: {
       "@type": "PostalAddress",
       streetAddress: cms.site.addressDetail || cms.site.address,
@@ -200,7 +202,8 @@ export default async function RootLayout({
     alternateName: cms.site.nameEn,
     url: siteUrl,
     inLanguage: ["ar", "en"],
-    publisher: { "@id": `${siteUrl}/#localbusiness` },
+    publisher: { "@id": `${siteUrl}/#organization` },
+    about: { "@id": `${siteUrl}/#localbusiness` },
   };
 
   const schemas = [organizationSchema, localBusinessSchema, websiteSchema];

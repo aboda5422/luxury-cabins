@@ -52,6 +52,7 @@ import {
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLocale } from "@/components/LocaleProvider";
 import { emptyServiceCity, slugifyCity } from "@/lib/seo/cities";
+import { buildSeoHealthReport } from "@/lib/seo/health";
 
 type AdminAnalytics = AnalyticsData & {
   productsCount: number;
@@ -76,6 +77,7 @@ type TabId =
   | "manufacturing"
   | "projects"
   | "clients"
+  | "seo"
   | "faqs"
   | "about"
   | "contact"
@@ -123,6 +125,7 @@ const sidebarItems: Array<{
   { id: "manufacturing", icon: Sparkles },
   { id: "projects", icon: Database },
   { id: "clients", icon: Users2 },
+  { id: "seo", icon: ShieldCheck },
   { id: "faqs", icon: CircleHelp },
   { id: "about", icon: Info },
   { id: "contact", icon: Phone },
@@ -162,6 +165,7 @@ function formatDate(value: string, localeTag = "ar-SA") {
 function initialCatalogProduct(): CatalogProduct {
   return {
     id: makeId("product"),
+    slug: "",
     title: "",
     shortDescription: "",
     description: "",
@@ -169,6 +173,10 @@ function initialCatalogProduct(): CatalogProduct {
     priceNote: "",
     specs: [],
     images: [],
+    seoTitle: "",
+    seoDescription: "",
+    h1: "",
+    seoKeywords: [],
   };
 }
 
@@ -272,9 +280,10 @@ function Field({
   );
 }
 
-async function uploadAdminImage(file: File): Promise<string> {
+async function uploadAdminImage(file: File, nameHint = ""): Promise<string> {
   const body = new FormData();
   body.append("file", file);
+  if (nameHint.trim()) body.append("name", nameHint.trim());
   const res = await fetch("/api/admin/upload", { method: "POST", body });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
@@ -290,12 +299,14 @@ function ImageUploadField({
   onChange,
   fallback = "",
   className = "",
+  nameHint = "",
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   fallback?: string;
   className?: string;
+  nameHint?: string;
 }) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
@@ -312,7 +323,7 @@ function ImageUploadField({
     setUploading(true);
     setError("");
     try {
-      onChange(await uploadAdminImage(file));
+      onChange(await uploadAdminImage(file, nameHint || label));
     } catch (err) {
       setError(err instanceof Error ? err.message : "تعذّر رفع الصورة");
     } finally {
@@ -1565,16 +1576,44 @@ export function AdminApp() {
           getKey={(item, index) => `${item.id}-${index}`}
           renderItem={(item, _index, update) => (
             <div className="grid gap-4 md:grid-cols-2">
-              <Field label="المعرف" value={item.id} onChange={(id) => update({ ...item, id })} />
+              <Field label="المعرف الداخلي" value={item.id} onChange={(id) => update({ ...item, id })} />
               <Field
-                label="العنوان"
+                label="رابط الصفحة (slug)"
+                value={item.slug || ""}
+                onChange={(slug) => update({ ...item, slug: slug.toLowerCase().replace(/[^a-z0-9-]/g, "-") })}
+                placeholder="portable-cabins"
+              />
+              <Field
+                label="العنوان الظاهر"
                 value={item.title}
                 onChange={(title) => update({ ...item, title })}
+              />
+              <Field
+                label="عنوان SEO (title)"
+                value={item.seoTitle || ""}
+                onChange={(seoTitle) => update({ ...item, seoTitle })}
+                placeholder="تصنيع كباين متنقلة فاخرة في السعودية"
+              />
+              <Field
+                label="H1 للصفحة"
+                value={item.h1 || ""}
+                onChange={(h1) => update({ ...item, h1 })}
+                placeholder="نفس عنوان SEO أو صياغة أقصر"
+              />
+              <Field
+                label="وصف SEO"
+                value={item.seoDescription || ""}
+                onChange={(seoDescription) => update({ ...item, seoDescription })}
               />
               <Field
                 label="وصف مختصر"
                 value={item.shortDescription}
                 onChange={(shortDescription) => update({ ...item, shortDescription })}
+              />
+              <Field
+                label="كلمات مفتاحية (سطر لكل كلمة)"
+                value={toLines(item.seoKeywords || [])}
+                onChange={(value) => update({ ...item, seoKeywords: fromLines(value) })}
               />
               <Field
                 label="سعر"
@@ -1604,6 +1643,11 @@ export function AdminApp() {
                 values={item.images}
                 onChange={(images) => update({ ...item, images })}
               />
+              {(item.slug || item.id) && (
+                <p className="md:col-span-2 text-xs text-[#777]" dir="ltr">
+                  /manufacturing/{item.slug || item.id}
+                </p>
+              )}
             </div>
           )}
         />
@@ -1979,6 +2023,80 @@ export function AdminApp() {
     );
   };
 
+  const renderSeo = () => {
+    if (!cms) return null;
+    const report = buildSeoHealthReport(cms);
+    const errors = report.issues.filter((i) => i.severity === "error");
+    const warns = report.issues.filter((i) => i.severity === "warn");
+    const infos = report.issues.filter((i) => i.severity === "info");
+
+    return (
+      <SectionCard
+        title="صحة SEO"
+        description="فحص آلي قابل للتوسع لأي منتج أو مدينة جديدة — لا يغني عن Search Console."
+      >
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          {[
+            ["صفحات ثابتة", report.counts.staticPages],
+            ["مدن", report.counts.cities],
+            ["منتجات", report.counts.products],
+            ["أسئلة", report.counts.faqs],
+            ["Sitemap تقديري", report.counts.estimatedSitemapUrls],
+          ].map(([label, value]) => (
+            <div key={String(label)} className="rounded-2xl border border-[#e4dbc9] bg-white px-4 py-4">
+              <p className="text-xs font-bold text-[#777]">{label}</p>
+              <p className="mt-2 text-2xl font-black text-[#181818]">{value}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-6 grid gap-3 sm:grid-cols-3">
+          <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-bold text-red-800">
+            أخطاء: {errors.length}
+          </div>
+          <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-bold text-amber-800">
+            تحذيرات: {warns.length}
+          </div>
+          <div className="rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm font-bold text-sky-800">
+            ملاحظات: {infos.length}
+          </div>
+        </div>
+
+        <div className="mt-6 space-y-3">
+          {report.issues.length === 0 ? (
+            <p className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-6 text-sm font-bold text-emerald-800">
+              لا توجد ملاحظات حالياً على بيانات CMS.
+            </p>
+          ) : (
+            report.issues.map((issue, index) => (
+              <div
+                key={`${issue.scope}-${index}`}
+                className="rounded-2xl border border-[#e4dbc9] bg-white px-4 py-3"
+              >
+                <p className="text-xs font-bold uppercase tracking-wide text-[#888]">
+                  {issue.severity} · {issue.scope}
+                </p>
+                <p className="mt-1 text-sm font-semibold text-[#222]">{issue.message}</p>
+                {issue.href ? (
+                  <a
+                    href={issue.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-2 inline-block text-xs font-bold text-[#8a6200] underline"
+                    dir="ltr"
+                  >
+                    {issue.href}
+                  </a>
+                ) : null}
+              </div>
+            ))
+          )}
+        </div>
+        <p className="mt-4 text-xs text-[#777]">آخر فحص محلي: {report.generatedAt}</p>
+      </SectionCard>
+    );
+  };
+
   const renderFaqs = () => {
     if (!cms) return null;
     return (
@@ -2308,6 +2426,8 @@ export function AdminApp() {
         return renderProjects();
       case "clients":
         return renderClients();
+      case "seo":
+        return renderSeo();
       case "faqs":
         return renderFaqs();
       case "about":

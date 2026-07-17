@@ -17,16 +17,46 @@ export const SEO_CITIES: SeoCity[] = [
   { slug: "hail", nameAr: "حائل", nameEn: "Hail", regionAr: "منطقة حائل", regionEn: "Hail Region", priority: "secondary" },
 ];
 
+/** أسماء عربية شائعة → slug ثابت (يمنع city-random) */
+const ARABIC_CITY_SLUGS: Record<string, string> = {
+  الرياض: "riyadh",
+  جدة: "jeddah",
+  "مكة المكرمة": "makkah",
+  مكة: "makkah",
+  "المدينة المنورة": "madinah",
+  المدينة: "madinah",
+  الدمام: "dammam",
+  الخبر: "khobar",
+  الجبيل: "jubail",
+  تبوك: "tabuk",
+  أبها: "abha",
+  ابها: "abha",
+  القصيم: "qassim",
+  حائل: "hail",
+};
+
 export function slugifyCity(input: string): string {
-  const ascii = input
-    .trim()
+  const trimmed = input.trim();
+  if (!trimmed) return "";
+
+  const fromArabic = ARABIC_CITY_SLUGS[trimmed];
+  if (fromArabic) return fromArabic;
+
+  const known = SEO_CITIES.find(
+    (c) => c.nameAr === trimmed || c.nameEn.toLowerCase() === trimmed.toLowerCase() || c.slug === trimmed.toLowerCase(),
+  );
+  if (known) return known.slug;
+
+  return trimmed
     .toLowerCase()
     .replace(/[^a-z0-9\s-]/g, "")
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "");
-  if (ascii) return ascii;
-  return `city-${Date.now().toString(36)}`;
+}
+
+function isRandomCitySlug(slug: string): boolean {
+  return /^city-[a-z0-9]+$/i.test(slug);
 }
 
 export function normalizeCities(input: unknown, fallback: SeoCity[] = SEO_CITIES): SeoCity[] {
@@ -36,8 +66,9 @@ export function normalizeCities(input: unknown, fallback: SeoCity[] = SEO_CITIES
     if (typeof raw === "string") {
       const known = fallback.find((c) => c.nameAr === raw || c.nameEn === raw);
       if (known) return { ...known };
+      const slug = slugifyCity(raw) || `city-${index + 1}`;
       return {
-        slug: slugifyCity(raw) || `city-${index + 1}`,
+        slug,
         nameAr: raw,
         nameEn: raw,
         regionAr: "",
@@ -53,11 +84,30 @@ export function normalizeCities(input: unknown, fallback: SeoCity[] = SEO_CITIES
       (c) =>
         c.slug === item.slug ||
         c.nameAr === nameAr ||
-        c.nameEn === nameEn,
+        c.nameEn === nameEn ||
+        ARABIC_CITY_SLUGS[nameAr] === c.slug,
     );
 
+    let slug = String(item.slug || "").trim();
+    if (!slug || isRandomCitySlug(slug)) {
+      slug =
+        known?.slug ||
+        slugifyCity(nameEn) ||
+        slugifyCity(nameAr) ||
+        `city-${index + 1}`;
+    } else {
+      slug = slugifyCity(slug) || slug;
+      if (isRandomCitySlug(slug)) {
+        slug =
+          known?.slug ||
+          slugifyCity(nameEn) ||
+          slugifyCity(nameAr) ||
+          `city-${index + 1}`;
+      }
+    }
+
     return {
-      slug: String(item.slug || known?.slug || slugifyCity(nameEn || nameAr) || `city-${index + 1}`),
+      slug,
       nameAr: nameAr || known?.nameAr || `مدينة ${index + 1}`,
       nameEn: nameEn || known?.nameEn || nameAr || `City ${index + 1}`,
       regionAr: String(item.regionAr ?? known?.regionAr ?? ""),

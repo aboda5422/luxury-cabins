@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { readCms } from "@/lib/cms/store";
 import { cityPath } from "@/lib/seo/cities";
+import { productPath } from "@/lib/seo/products";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = "https://luxurycabins.com.sa";
@@ -28,7 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   const productRoutes: MetadataRoute.Sitemap = cms.catalogProducts.map((product) => ({
-    url: `${base}/manufacturing/${product.id}`,
+    url: `${base}${productPath(product)}`,
     lastModified: now,
     changeFrequency: "weekly",
     priority: 0.7,

@@ -1,10 +1,22 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { ContactInfoCards } from "@/components/ContactInfoCards";
-import { ContactForm } from "@/components/ContactForm";
 import { PageHero } from "@/components/PageHero";
 import { useLocalizedCms } from "@/components/CmsProvider";
 import { useLocale } from "@/components/LocaleProvider";
+
+const ContactForm = dynamic(
+  () => import("@/components/ContactForm").then((m) => m.ContactForm),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex min-h-[320px] items-center justify-center text-sm text-[#777]">
+        جارٍ تحميل النموذج...
+      </div>
+    ),
+  },
+);
 
 export function ContactPageClient() {
   const { contactPage, pageHeroImages, navLinks } = useLocalizedCms();

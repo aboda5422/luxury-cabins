@@ -6,9 +6,11 @@ import { ArrowLeft, Package } from "lucide-react";
 import { ProductShareButton } from "@/components/ProductShareButton";
 import { useLocale } from "@/components/LocaleProvider";
 import { useImageSlider } from "@/hooks/useImageSlider";
+import { productPath } from "@/lib/seo/products";
 
 export type CatalogProductCard = {
   id: string;
+  slug?: string;
   title: string;
   shortDescription: string;
   priceLabel: string;
@@ -21,7 +23,7 @@ type Props = {
 
 export function ProductCard({ product }: Props) {
   const { t } = useLocale();
-  const href = `/manufacturing/${product.id}`;
+  const href = productPath(product);
   const images = product.images.filter(Boolean);
   const total = images.length;
   const { index, swipeHandlers, consumeSwipe } = useImageSlider(total, 3800);

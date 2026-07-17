@@ -11,6 +11,7 @@ import {
   getCityBySlug,
 } from "@/lib/seo/cities";
 import { breadcrumbSchema, serviceSchema } from "@/lib/seo/schema";
+import { productPath } from "@/lib/seo/products";
 import { siteConfig } from "@/lib/site";
 
 type Props = {
@@ -63,6 +64,19 @@ export default async function CityLocationPage({ params }: Props) {
   const title = cityTitleAr(city);
   const description = cityDescriptionAr(city, brand);
 
+  const productLinks = [
+    { label: "كبائن متنقلة", matchIds: ["portable-cabins"] },
+    { label: "غرف حراسة", matchIds: ["guard-rooms"] },
+    { label: "كرفانات", matchIds: ["caravans"] },
+    { label: "بركسات", matchIds: ["barracks"] },
+    { label: "مكاتب جاهزة", matchIds: ["offices"] },
+  ]
+    .map((item) => {
+      const product = cms.catalogProducts.find((p) => item.matchIds.includes(p.id));
+      return product ? { label: item.label, href: productPath(product) } : null;
+    })
+    .filter(Boolean) as { label: string; href: string }[];
+
   const schemas = [
     breadcrumbSchema([
       { name: "الرئيسية", path: "/" },
@@ -79,8 +93,10 @@ export default async function CityLocationPage({ params }: Props) {
     {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
+      "@id": `https://luxurycabins.com.sa${cityPath(city.slug)}#localbusiness`,
       name: brand,
       url: `https://luxurycabins.com.sa${cityPath(city.slug)}`,
+      parentOrganization: { "@id": "https://luxurycabins.com.sa/#organization" },
       telephone: cms.site.phone || siteConfig.phone,
       email: cms.site.email || siteConfig.email,
       areaServed: {
@@ -105,6 +121,11 @@ export default async function CityLocationPage({ params }: Props) {
   ];
 
   const services = [
+    ...productLinks.slice(0, 2).map((link) => ({
+      href: link.href,
+      title: `${link.label} في ${city.nameAr}`,
+      body: `حلول ${link.label} للمشاريع والمواقع مع توريد وتركيب في ${city.nameAr}.`,
+    })),
     {
       href: "/rental",
       title: `تأجير كبائن في ${city.nameAr}`,
@@ -151,6 +172,23 @@ export default async function CityLocationPage({ params }: Props) {
             التصنيع حسب الحاجة. سواء كان المشروع مؤقتاً لفعالية، أو دائماً لموقع تشغيلي، نصمّم
             العرض بما يناسب الجدول الزمني والميزانية ومتطلبات الموقع.
           </p>
+          {productLinks.length ? (
+            <p className="mt-5 leading-8 text-[#555]">
+              نوفر أفضل{" "}
+              {productLinks.map((link, index) => (
+                <span key={link.href}>
+                  {index > 0 ? (index === productLinks.length - 1 ? " و" : "، ") : null}
+                  <Link
+                    href={link.href}
+                    className="font-bold text-[#1a1a1a] underline decoration-[var(--gold)] underline-offset-4 transition hover:text-[var(--gold)]"
+                  >
+                    {link.label}
+                  </Link>
+                </span>
+              ))}{" "}
+              في مدينة {city.nameAr} مع توريد وتركيب ودعم ميداني.
+            </p>
+          ) : null}
           <ul className="mt-6 space-y-3 text-[#444]">
             <li className="flex gap-2">
               <span className="text-[var(--gold)]">•</span>
@@ -171,7 +209,7 @@ export default async function CityLocationPage({ params }: Props) {
       <section className="section-pad bg-[#F8F8F8]">
         <div className="container-site">
           <h2 className="heading-display mb-8 text-2xl md:text-3xl">خدماتنا في {city.nameAr}</h2>
-          <div className="grid gap-5 md:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {services.map((item) => (
               <Link
                 key={item.href}

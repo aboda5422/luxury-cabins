@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { FaqPageClient } from "@/components/FaqPageClient";
 import { readCms } from "@/lib/cms/store";
-import { faqPageSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, faqPageSchema } from "@/lib/seo/schema";
 import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -19,16 +19,20 @@ export default async function FaqPage() {
     faqs = [];
   }
 
-  const schema = faqs.length ? faqPageSchema(faqs) : null;
+  const schemas = [
+    breadcrumbSchema([
+      { name: "الرئيسية", path: "/" },
+      { name: "الأسئلة الشائعة" },
+    ]),
+    ...(faqs.length ? [faqPageSchema(faqs)] : []),
+  ];
 
   return (
     <>
-      {schema ? (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      ) : null}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
+      />
       <FaqPageClient />
     </>
   );

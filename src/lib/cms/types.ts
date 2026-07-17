@@ -16,6 +16,8 @@ export type ProcessStep = {
 
 export type CatalogProduct = {
   id: string;
+  /** SEO-friendly URL segment; falls back to id when empty */
+  slug?: string;
   title: string;
   shortDescription: string;
   description: string;
@@ -23,6 +25,10 @@ export type CatalogProduct = {
   priceNote: string;
   specs: string[];
   images: string[];
+  seoTitle?: string;
+  seoDescription?: string;
+  h1?: string;
+  seoKeywords?: string[];
 };
 
 export type RentalCategory = {

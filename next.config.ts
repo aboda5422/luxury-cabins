@@ -15,6 +15,29 @@ const nextConfig: NextConfig = {
     ],
   },
   poweredByHeader: false,
+  async redirects() {
+    return [
+      {
+        source: "/manufacturing/Readycommercial%20units",
+        destination: "/manufacturing",
+        permanent: true,
+      },
+      {
+        source: "/manufacturing/Readycommercial units",
+        destination: "/manufacturing",
+        permanent: true,
+      },
+      {
+        source: "/manufacturing/Readycommercial-units",
+        destination: "/manufacturing",
+        permanent: true,
+      },
+      // Legacy product ids → SEO slugs
+      { source: "/manufacturing/houses", destination: "/manufacturing/ready-houses", permanent: true },
+      { source: "/manufacturing/rooms", destination: "/manufacturing/ready-rooms", permanent: true },
+      { source: "/manufacturing/offices", destination: "/manufacturing/portable-offices", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

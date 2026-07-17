@@ -48,6 +48,7 @@ export function localizeCms(cms: CmsData, locale: Locale): CmsData {
       ...p,
       specs: [...p.specs],
       images: [...p.images],
+      seoKeywords: p.seoKeywords ? [...p.seoKeywords] : [],
     })),
     rentalCategories: mergeById(cms.rentalCategories, o.rentalCategories).map((c) => ({
       ...c,

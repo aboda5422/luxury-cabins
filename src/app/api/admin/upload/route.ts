@@ -19,6 +19,17 @@ const EXT: Record<string, string> = {
   "image/gif": "gif",
 };
 
+function slugifyFilename(input: string): string {
+  return input
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-_]/g, "")
+    .replace(/[\s_]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 80);
+}
+
 export async function POST(req: Request) {
   if (!(await isAdminAuthenticated())) {
     return NextResponse.json({ error: "غير مصرح" }, { status: 401 });
@@ -26,6 +37,7 @@ export async function POST(req: Request) {
 
   const form = await req.formData();
   const file = form.get("file");
+  const hint = String(form.get("name") || form.get("slug") || "").trim();
 
   if (!(file instanceof File)) {
     return NextResponse.json({ error: "لم يتم إرفاق ملف" }, { status: 400 });
@@ -52,7 +64,11 @@ export async function POST(req: Request) {
 
   const buf = Buffer.from(await file.arrayBuffer());
   const ext = EXT[file.type] || "jpg";
-  const name = `img-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+  const base =
+    slugifyFilename(hint) ||
+    slugifyFilename(file.name.replace(/\.[^.]+$/, "")) ||
+    "image";
+  const name = `${base}-${Date.now().toString(36)}.${ext}`;
 
   const { error } = await supabase.storage.from("uploads").upload(name, buf, {
     contentType: file.type,
@@ -67,5 +83,5 @@ export async function POST(req: Request) {
   }
 
   const publicUrl = getSupabasePublicUrl(name);
-  return NextResponse.json({ url: publicUrl || `/uploads/${name}` });
+  return NextResponse.json({ url: publicUrl || `/uploads/${name}`, alt: hint || base });
 }
