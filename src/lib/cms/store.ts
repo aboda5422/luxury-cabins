@@ -67,17 +67,19 @@ function mergeCms(defaults: CmsData, parsed: Partial<CmsData>): CmsData {
       ? parsed.processSteps
       : defaults.processSteps,
     catalogProducts: (() => {
+      const REMOVED_PRODUCT_IDS = new Set(["portable-cabins", "guard-rooms"]);
       const incoming = parsed.catalogProducts?.length
         ? parsed.catalogProducts
         : defaults.catalogProducts;
-      const normalized = normalizeCatalogProducts(incoming);
+      const normalized = normalizeCatalogProducts(incoming).filter(
+        (p) => !REMOVED_PRODUCT_IDS.has(p.id) && !REMOVED_PRODUCT_IDS.has(p.slug || ""),
+      );
       const byId = new Map(normalized.map((p) => [p.id, p]));
+      // Fill empty SEO fields from defaults for products that still exist — never re-add deleted ones
       for (const def of defaults.catalogProducts) {
+        if (REMOVED_PRODUCT_IDS.has(def.id)) continue;
         const existing = byId.get(def.id);
-        if (!existing) {
-          byId.set(def.id, def);
-          continue;
-        }
+        if (!existing) continue;
         byId.set(def.id, {
           ...existing,
           slug: existing.slug || def.slug,

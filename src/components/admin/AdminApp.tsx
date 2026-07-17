@@ -1581,7 +1581,7 @@ export function AdminApp() {
                 label="رابط الصفحة (slug)"
                 value={item.slug || ""}
                 onChange={(slug) => update({ ...item, slug: slug.toLowerCase().replace(/[^a-z0-9-]/g, "-") })}
-                placeholder="portable-cabins"
+                placeholder="ready-houses"
               />
               <Field
                 label="العنوان الظاهر"

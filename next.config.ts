@@ -36,6 +36,9 @@ const nextConfig: NextConfig = {
       { source: "/manufacturing/houses", destination: "/manufacturing/ready-houses", permanent: true },
       { source: "/manufacturing/rooms", destination: "/manufacturing/ready-rooms", permanent: true },
       { source: "/manufacturing/offices", destination: "/manufacturing/portable-offices", permanent: true },
+      // Removed products — keep old URLs from returning soft content
+      { source: "/manufacturing/portable-cabins", destination: "/manufacturing", permanent: true },
+      { source: "/manufacturing/guard-rooms", destination: "/manufacturing", permanent: true },
     ];
   },
 };

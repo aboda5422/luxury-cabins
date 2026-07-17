@@ -65,8 +65,8 @@ export default async function CityLocationPage({ params }: Props) {
   const description = cityDescriptionAr(city, brand);
 
   const productLinks = [
-    { label: "كبائن متنقلة", matchIds: ["portable-cabins"] },
-    { label: "غرف حراسة", matchIds: ["guard-rooms"] },
+    { label: "بيوت جاهزة", matchIds: ["houses"] },
+    { label: "غرف جاهزة", matchIds: ["rooms"] },
     { label: "كرفانات", matchIds: ["caravans"] },
     { label: "بركسات", matchIds: ["barracks"] },
     { label: "مكاتب جاهزة", matchIds: ["offices"] },
