@@ -2077,16 +2077,16 @@ export function AdminApp() {
                   {issue.severity} · {issue.scope}
                 </p>
                 <p className="mt-1 text-sm font-semibold text-[#222]">{issue.message}</p>
-                {issue.href ? (
-                  <a
-                    href={issue.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-2 inline-block text-xs font-bold text-[#8a6200] underline"
-                    dir="ltr"
+                {issue.adminTab && issue.adminTab !== "seo" ? (
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab(issue.adminTab as TabId)}
+                    className="mt-3 inline-flex items-center gap-2 rounded-full border border-[#e4dbc9] bg-[#fff8e8] px-3 py-1.5 text-xs font-bold text-[#8a6200] transition hover:border-[#ffb400] hover:bg-[#ffb400]/15"
                   >
-                    {issue.href}
-                  </a>
+                    {issue.actionLabel || "الانتقال لإصلاح المشكلة"}
+                  </button>
+                ) : issue.actionLabel ? (
+                  <p className="mt-2 text-xs font-bold text-[#777]">{issue.actionLabel}</p>
                 ) : null}
               </div>
             ))

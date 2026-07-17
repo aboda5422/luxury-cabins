@@ -1,12 +1,22 @@
 import type { CmsData } from "@/lib/cms/types";
-import { productPath, productSlug } from "@/lib/seo/products";
-import { cityPath } from "@/lib/seo/cities";
+import { productSlug } from "@/lib/seo/products";
+
+/** Admin sidebar tab ids that can fix the issue */
+export type SeoAdminTab =
+  | "company"
+  | "catalog"
+  | "faqs"
+  | "home"
+  | "manufacturing"
+  | "seo";
 
 export type SeoHealthIssue = {
   severity: "error" | "warn" | "info";
   scope: string;
   message: string;
-  href?: string;
+  /** Where to fix this inside the admin panel */
+  adminTab?: SeoAdminTab;
+  actionLabel?: string;
 };
 
 export type SeoHealthReport = {
@@ -38,48 +48,54 @@ export function buildSeoHealthReport(cms: CmsData): SeoHealthReport {
 
   for (const product of cms.catalogProducts) {
     const slug = productSlug(product);
-    const path = productPath(product);
+    const label = product.title || product.id;
     if (!slug || /^product-/i.test(slug) || slug.includes(" ")) {
       issues.push({
         severity: "error",
         scope: "product",
-        message: `منتج بلا slug صالح: ${product.title || product.id}`,
-        href: path,
+        message: `منتج بلا slug صالح: ${label}`,
+        adminTab: "catalog",
+        actionLabel: "فتح منتجات المتجر",
       });
     }
     if (!product.seoTitle && !product.h1) {
       issues.push({
         severity: "warn",
         scope: "product",
-        message: `منتج بلا seoTitle/H1: ${product.title || product.id}`,
-        href: path,
+        message: `منتج بلا seoTitle/H1: ${label}`,
+        adminTab: "catalog",
+        actionLabel: "فتح منتجات المتجر",
       });
     }
     if (!product.seoDescription && !product.shortDescription) {
       issues.push({
         severity: "warn",
         scope: "product",
-        message: `منتج بلا وصف SEO: ${product.title || product.id}`,
-        href: path,
+        message: `منتج بلا وصف SEO: ${label}`,
+        adminTab: "catalog",
+        actionLabel: "فتح منتجات المتجر",
       });
     }
     if (!product.images?.length) {
       issues.push({
         severity: "warn",
         scope: "product",
-        message: `منتج بلا صور: ${product.title || product.id}`,
-        href: path,
+        message: `منتج بلا صور: ${label}`,
+        adminTab: "catalog",
+        actionLabel: "فتح منتجات المتجر",
       });
     }
   }
 
   for (const city of cms.site.cities) {
+    const label = city.nameAr || city.nameEn || city.slug;
     if (!city.slug || /^city-[a-z0-9]+$/i.test(city.slug)) {
       issues.push({
         severity: "error",
         scope: "city",
-        message: `مدينة بـ slug غير صديق لمحركات البحث: ${city.nameAr || city.nameEn}`,
-        href: city.slug ? cityPath(city.slug) : undefined,
+        message: `مدينة بـ slug غير صديق لمحركات البحث: ${label}`,
+        adminTab: "company",
+        actionLabel: "فتح بيانات الشركة / المدن",
       });
     }
     if (!city.nameEn || /[\u0600-\u06FF]/.test(city.nameEn)) {
@@ -87,7 +103,8 @@ export function buildSeoHealthReport(cms: CmsData): SeoHealthReport {
         severity: "warn",
         scope: "city",
         message: `يُفضّل اسم إنجليزي واضح للمدينة: ${city.nameAr}`,
-        href: cityPath(city.slug),
+        adminTab: "company",
+        actionLabel: "فتح بيانات الشركة / المدن",
       });
     }
   }
@@ -97,6 +114,8 @@ export function buildSeoHealthReport(cms: CmsData): SeoHealthReport {
       severity: "error",
       scope: "site",
       message: "وصف الموقع (meta description العام) فارغ",
+      adminTab: "company",
+      actionLabel: "فتح بيانات الشركة",
     });
   }
 
@@ -105,7 +124,8 @@ export function buildSeoHealthReport(cms: CmsData): SeoHealthReport {
       severity: "info",
       scope: "faq",
       message: "لا توجد أسئلة شائعة — صفحة FAQ ستكون ضعيفة لـ schema",
-      href: "/faq",
+      adminTab: "faqs",
+      actionLabel: "فتح الأسئلة الشائعة",
     });
   }
 
@@ -113,12 +133,13 @@ export function buildSeoHealthReport(cms: CmsData): SeoHealthReport {
     "/manufacturing/Readycommercial%20units",
     "/manufacturing/Readycommercial units",
   ];
-  for (const href of knownBroken) {
+  for (const path of knownBroken) {
     issues.push({
       severity: "info",
       scope: "redirect",
-      message: `رابط معروف يحتاج 301 (مضبوط في next.config): ${href}`,
-      href,
+      message: `رابط قديم تم تحويله بـ 301 في الإعدادات: ${path}`,
+      adminTab: "seo",
+      actionLabel: "تم المعالجة تلقائياً",
     });
   }
 
