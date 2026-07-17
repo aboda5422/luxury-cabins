@@ -33,12 +33,18 @@ export type CatalogProduct = {
 
 export type RentalCategory = {
   id: string;
+  /** SEO-friendly URL segment; falls back to id when empty */
+  slug?: string;
   title: string;
   shortDescription: string;
   description: string;
   specs: string[];
   images: string[];
   whatsappMessage: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  h1?: string;
+  seoKeywords?: string[];
 };
 
 export type ProjectItem = {
@@ -154,6 +160,10 @@ export type CmsData = {
     values: string[];
   };
   rentalPage: {
+    seoTitle?: string;
+    seoDescription?: string;
+    h1?: string;
+    seoKeywords?: string[];
     heroDescription: string;
     sectionTitle: string;
     sectionBody: string;

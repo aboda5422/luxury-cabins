@@ -84,6 +84,7 @@ export function getDefaultCms(): CmsData {
       ...c,
       specs: [...c.specs],
       images: [...c.images],
+      seoKeywords: "seoKeywords" in c && c.seoKeywords ? [...c.seoKeywords] : [],
     })),
     manufacturingExtras: [...manufacturingExtras],
     projects: projects.map((p) => ({ ...p })),
@@ -115,6 +116,11 @@ export function getDefaultCms(): CmsData {
       ],
     },
     rentalPage: {
+      seoTitle: "تأجير وحدات متنقلة وخيام أوروبية في السعودية",
+      h1: "تأجير وحدات متنقلة وخيام أوروبية",
+      seoDescription:
+        "حلول تأجير مرنة للمشاريع والفعاليات بكفاءة واعتمادية، يخدم كافة الاحتياجات والمناسبات.",
+      seoKeywords: ["تأجير وحدات متنقلة", "تأجير خيام", "كبائن للإيجار", "Luxury Cabins"],
       heroDescription:
         "حلول تأجير مرنة للمشاريع والفعاليات بكفاءة واعتمادية، يخدم كافة الاحتياجات والمناسبات.",
       sectionTitle: "وحدات متنقلة وخيام أوروبية لمشروعك",

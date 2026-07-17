@@ -54,6 +54,7 @@ export function localizeCms(cms: CmsData, locale: Locale): CmsData {
       ...c,
       specs: [...c.specs],
       images: [...c.images],
+      seoKeywords: c.seoKeywords ? [...c.seoKeywords] : [],
     })),
     manufacturingExtras: o.manufacturingExtras?.length
       ? [...o.manufacturingExtras]

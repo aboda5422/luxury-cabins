@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { readCms } from "@/lib/cms/store";
 import { cityPath } from "@/lib/seo/cities";
 import { productPath } from "@/lib/seo/products";
+import { rentalPath } from "@/lib/seo/rentals";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = "https://luxurycabins.com.sa";
@@ -35,5 +36,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...cityRoutes, ...productRoutes];
+  const rentalRoutes: MetadataRoute.Sitemap = cms.rentalCategories.map((category) => ({
+    url: `${base}${rentalPath(category)}`,
+    lastModified: now,
+    changeFrequency: "weekly",
+    priority: 0.75,
+  }));
+
+  return [...staticRoutes, ...cityRoutes, ...productRoutes, ...rentalRoutes];
 }

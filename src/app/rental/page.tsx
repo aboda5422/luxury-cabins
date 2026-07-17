@@ -4,10 +4,25 @@ import { readCms } from "@/lib/cms/store";
 
 export async function generateMetadata(): Promise<Metadata> {
   const cms = await readCms();
+  const title =
+    cms.rentalPage.seoTitle?.trim() ||
+    cms.rentalPage.h1?.trim() ||
+    "التأجير";
+  const description =
+    cms.rentalPage.seoDescription?.trim() ||
+    cms.rentalPage.heroDescription;
   return {
-    title: "التأجير",
-    description: cms.rentalPage.heroDescription,
+    title,
+    description,
+    keywords: cms.rentalPage.seoKeywords?.length
+      ? cms.rentalPage.seoKeywords
+      : undefined,
     alternates: { canonical: "/rental" },
+    openGraph: {
+      title,
+      description,
+      url: "/rental",
+    },
   };
 }
 

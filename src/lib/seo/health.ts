@@ -1,10 +1,12 @@
 import type { CmsData } from "@/lib/cms/types";
 import { productSlug } from "@/lib/seo/products";
+import { rentalSlug } from "@/lib/seo/rentals";
 
 /** Admin sidebar tab ids that can fix the issue */
 export type SeoAdminTab =
   | "company"
   | "catalog"
+  | "rentals"
   | "faqs"
   | "home"
   | "manufacturing"
@@ -87,6 +89,57 @@ export function buildSeoHealthReport(cms: CmsData): SeoHealthReport {
     }
   }
 
+  for (const category of cms.rentalCategories) {
+    const slug = rentalSlug(category);
+    const label = category.title || category.id;
+    if (!slug || /^rental-/i.test(slug) || slug.includes(" ")) {
+      issues.push({
+        severity: "error",
+        scope: "rental",
+        message: `فئة تأجير بلا slug صالح: ${label}`,
+        adminTab: "rentals",
+        actionLabel: "فتح فئات التأجير",
+      });
+    }
+    if (!category.seoTitle && !category.h1) {
+      issues.push({
+        severity: "warn",
+        scope: "rental",
+        message: `فئة تأجير بلا seoTitle/H1: ${label}`,
+        adminTab: "rentals",
+        actionLabel: "فتح فئات التأجير",
+      });
+    }
+    if (!category.seoDescription && !category.shortDescription) {
+      issues.push({
+        severity: "warn",
+        scope: "rental",
+        message: `فئة تأجير بلا وصف SEO: ${label}`,
+        adminTab: "rentals",
+        actionLabel: "فتح فئات التأجير",
+      });
+    }
+    if (!category.images?.length) {
+      issues.push({
+        severity: "warn",
+        scope: "rental",
+        message: `فئة تأجير بلا صور: ${label}`,
+        adminTab: "rentals",
+        actionLabel: "فتح فئات التأجير",
+      });
+    }
+  }
+
+  if (!cms.rentalPage.seoTitle && !cms.rentalPage.h1) {
+    issues.push({
+      severity: "warn",
+      scope: "rental-page",
+      message: "صفحة التأجير بلا seoTitle/H1",
+      adminTab: "rentals",
+      actionLabel: "فتح التأجير",
+    });
+  }
+
   for (const city of cms.site.cities) {
     const label = city.nameAr || city.nameEn || city.slug;
     if (!city.slug || /^city-[a-z0-9]+$/i.test(city.slug)) {
@@ -151,7 +204,10 @@ export function buildSeoHealthReport(cms: CmsData): SeoHealthReport {
       products: cms.catalogProducts.length,
       faqs: cms.faqs.length,
       estimatedSitemapUrls:
-        STATIC_PATHS.length + cms.site.cities.length + cms.catalogProducts.length,
+        STATIC_PATHS.length +
+        cms.site.cities.length +
+        cms.catalogProducts.length +
+        cms.rentalCategories.length,
     },
     issues,
   };

@@ -5,6 +5,7 @@ import type { AnalyticsData, CmsData, NavLink } from "./types";
 import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/admin";
 import { normalizeCities } from "@/lib/seo/cities";
 import { normalizeCatalogProducts } from "@/lib/seo/products";
+import { normalizeRentalCategories } from "@/lib/seo/rentals";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const CMS_FILE = path.join(DATA_DIR, "cms.json");
@@ -114,9 +115,27 @@ function mergeCms(defaults: CmsData, parsed: Partial<CmsData>): CmsData {
       }
       return normalizeCatalogProducts(Array.from(byId.values()));
     })(),
-    rentalCategories: parsed.rentalCategories?.length
-      ? parsed.rentalCategories
-      : defaults.rentalCategories,
+    rentalCategories: (() => {
+      const incoming = parsed.rentalCategories?.length
+        ? parsed.rentalCategories
+        : defaults.rentalCategories;
+      const normalized = normalizeRentalCategories(incoming);
+      const byId = new Map(normalized.map((c) => [c.id, c]));
+      for (const def of defaults.rentalCategories) {
+        const existing = byId.get(def.id);
+        if (!existing) continue;
+        byId.set(def.id, {
+          ...existing,
+          slug: existing.slug || def.slug,
+          seoTitle: existing.seoTitle || def.seoTitle,
+          seoDescription: existing.seoDescription || def.seoDescription,
+          h1: existing.h1 || def.h1,
+          seoKeywords:
+            existing.seoKeywords?.length ? existing.seoKeywords : def.seoKeywords || [],
+        });
+      }
+      return normalizeRentalCategories(Array.from(byId.values()));
+    })(),
     manufacturingExtras: parsed.manufacturingExtras?.length
       ? parsed.manufacturingExtras
       : defaults.manufacturingExtras,

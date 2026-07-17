@@ -191,12 +191,17 @@ function initialCatalogProduct(): CatalogProduct {
 function initialRentalCategory(): RentalCategory {
   return {
     id: makeId("rental"),
+    slug: "",
     title: "",
     shortDescription: "",
     description: "",
     specs: [],
     images: [],
     whatsappMessage: "",
+    seoTitle: "",
+    seoDescription: "",
+    h1: "",
+    seoKeywords: [],
   };
 }
 
@@ -1688,6 +1693,33 @@ export function AdminApp() {
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             <Field
+              label="عنوان SEO (title)"
+              value={cms.rentalPage.seoTitle || ""}
+              onChange={(value) => applyCms((draft) => void (draft.rentalPage.seoTitle = value))}
+              placeholder="تأجير وحدات متنقلة وخيام أوروبية في السعودية"
+            />
+            <Field
+              label="H1 للصفحة"
+              value={cms.rentalPage.h1 || ""}
+              onChange={(value) => applyCms((draft) => void (draft.rentalPage.h1 = value))}
+            />
+            <Field
+              label="وصف SEO"
+              value={cms.rentalPage.seoDescription || ""}
+              onChange={(value) =>
+                applyCms((draft) => void (draft.rentalPage.seoDescription = value))
+              }
+            />
+            <TextareaField
+              label="كلمات مفتاحية (صفحة التأجير)"
+              value={toLines(cms.rentalPage.seoKeywords || [])}
+              onChange={(value) =>
+                applyCms((draft) => void (draft.rentalPage.seoKeywords = fromKeywords(value)))
+              }
+              rows={4}
+              placeholder={"تأجير وحدات متنقلة\nتأجير خيام"}
+            />
+            <Field
               label="وصف الهيرو"
               value={cms.rentalPage.heroDescription}
               onChange={(value) => applyCms((draft) => void (draft.rentalPage.heroDescription = value))}
@@ -1751,15 +1783,48 @@ export function AdminApp() {
               <div className="grid gap-4 md:grid-cols-2">
                 <Field label="المعرف" value={item.id} onChange={(id) => update({ ...item, id })} />
                 <Field
+                  label="رابط الصفحة (slug)"
+                  value={item.slug || ""}
+                  onChange={(slug) =>
+                    update({ ...item, slug: slug.toLowerCase().replace(/[^a-z0-9-]/g, "-") })
+                  }
+                  placeholder="mobile-units"
+                />
+                <Field
                   label="العنوان"
                   value={item.title}
                   onChange={(title) => update({ ...item, title })}
+                />
+                <Field
+                  label="عنوان SEO (title)"
+                  value={item.seoTitle || ""}
+                  onChange={(seoTitle) => update({ ...item, seoTitle })}
+                />
+                <Field
+                  label="H1 للصفحة"
+                  value={item.h1 || ""}
+                  onChange={(h1) => update({ ...item, h1 })}
+                />
+                <Field
+                  label="وصف SEO"
+                  value={item.seoDescription || ""}
+                  onChange={(seoDescription) => update({ ...item, seoDescription })}
                 />
                 <Field
                   label="وصف مختصر"
                   value={item.shortDescription}
                   onChange={(shortDescription) => update({ ...item, shortDescription })}
                 />
+                <TextareaField
+                  label="كلمات مفتاحية"
+                  value={toLines(item.seoKeywords || [])}
+                  onChange={(value) => update({ ...item, seoKeywords: fromKeywords(value) })}
+                  rows={4}
+                  placeholder={"تأجير وحدات متنقلة\nخيام أوروبية"}
+                />
+                <p className="md:col-span-2 -mt-2 text-xs text-[#777]">
+                  اكتب كل كلمة في سطر مستقل (Enter)، أو افصل بينها بفاصلة إن رغبت.
+                </p>
                 <Field
                   label="رسالة واتساب"
                   value={item.whatsappMessage}
@@ -1782,6 +1847,11 @@ export function AdminApp() {
                   values={item.images}
                   onChange={(images) => update({ ...item, images })}
                 />
+                {(item.slug || item.id) && (
+                  <p className="md:col-span-2 text-xs text-[#777]" dir="ltr">
+                    /rental/{item.slug || item.id}
+                  </p>
+                )}
               </div>
             )}
           />

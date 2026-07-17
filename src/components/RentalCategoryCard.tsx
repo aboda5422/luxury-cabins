@@ -10,6 +10,7 @@ import { ProductShareButton } from "@/components/ProductShareButton";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { useImageSlider } from "@/hooks/useImageSlider";
 import type { RentalCategory } from "@/lib/cms/types";
+import { rentalPath } from "@/lib/seo/rentals";
 
 type Props = {
   category: RentalCategory;
@@ -30,6 +31,7 @@ export function RentalCategoryCard({ category }: Props) {
   const waHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
     category.whatsappMessage,
   )}`;
+  const sharePath = rentalPath(category);
 
   return (
     <article className="luxe-card luxe-card--static flex h-full flex-col overflow-hidden bg-white">
@@ -89,7 +91,7 @@ export function RentalCategoryCard({ category }: Props) {
           <ProductShareButton
             title={category.title}
             text={category.shortDescription}
-            url="/rental"
+            url={sharePath}
             label={t.share}
             className={`${pillBase} bg-white text-[#555] hover:bg-[#faf8f4] hover:text-[var(--gold)]`}
           />
