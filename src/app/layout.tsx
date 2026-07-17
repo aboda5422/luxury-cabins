@@ -73,11 +73,12 @@ export async function generateMetadata(): Promise<Metadata> {
     publisher: cms.site.nameAr,
     icons: {
       icon: [
+        { url: "/favicon.ico", sizes: "any" },
         { url: "/logo/favicon.ico", sizes: "any" },
-        { url: "/logo/favicon.png", type: "image/png" },
+        { url: "/logo/favicon.png", type: "image/png", sizes: "512x512" },
       ],
       apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
-      shortcut: "/logo/favicon.ico",
+      shortcut: ["/favicon.ico", "/logo/favicon.ico"],
     },
     openGraph: {
       type: "website",

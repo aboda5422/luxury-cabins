@@ -93,7 +93,7 @@ export default function AdminLoginPage() {
               src="/logo/logo-header.png"
               alt="Luxury Cabins"
               width={280}
-              height={110}
+              height={172}
               className="h-16 w-auto object-contain md:h-20"
               priority
               unoptimized

@@ -39,9 +39,9 @@ export function Header() {
           <Image
             src="/logo/logo-header.png"
             alt={site.nameEn}
-            width={240}
-            height={100}
-            className="h-11 w-auto object-contain md:h-[4.5rem]"
+            width={260}
+            height={160}
+            className="h-12 w-auto object-contain md:h-[4.75rem]"
             priority
             unoptimized
           />

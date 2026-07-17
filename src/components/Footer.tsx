@@ -142,7 +142,7 @@ export function Footer() {
                 src="/logo/logo-footer.png"
                 alt={site.nameAr}
                 width={420}
-                height={180}
+                height={258}
                 className="pointer-events-none h-auto w-full object-contain"
                 unoptimized
                 draggable={false}
