@@ -151,6 +151,14 @@ function fromLines(value: string) {
     .filter(Boolean);
 }
 
+/** Keywords: allow Enter lines and/or Arabic/English commas */
+function fromKeywords(value: string) {
+  return value
+    .split(/[\r\n,،]+/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+}
+
 function formatDate(value: string, localeTag = "ar-SA") {
   try {
     return new Intl.DateTimeFormat(localeTag, {
@@ -1610,11 +1618,16 @@ export function AdminApp() {
                 value={item.shortDescription}
                 onChange={(shortDescription) => update({ ...item, shortDescription })}
               />
-              <Field
-                label="كلمات مفتاحية (سطر لكل كلمة)"
+              <TextareaField
+                label="كلمات مفتاحية"
                 value={toLines(item.seoKeywords || [])}
-                onChange={(value) => update({ ...item, seoKeywords: fromLines(value) })}
+                onChange={(value) => update({ ...item, seoKeywords: fromKeywords(value) })}
+                rows={4}
+                placeholder={"كبائن متنقلة\nبركسات\nغرف جاهزة"}
               />
+              <p className="md:col-span-2 -mt-2 text-xs text-[#777]">
+                اكتب كل كلمة في سطر مستقل (Enter)، أو افصل بينها بفاصلة إن رغبت.
+              </p>
               <Field
                 label="سعر"
                 value={item.priceLabel}
