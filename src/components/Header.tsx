@@ -37,13 +37,13 @@ export function Header() {
       <div className="container-site flex h-[72px] items-center justify-between gap-3 md:h-[100px] md:gap-5">
         <Link href="/" className="shrink-0">
           <Image
-            src="/logo/logo-header.png"
+            src="/logo/logo-header.webp"
             alt={site.nameEn}
-            width={260}
-            height={160}
+            width={240}
+            height={147}
+            sizes="(max-width:768px) 120px, 190px"
             className="h-12 w-auto object-contain md:h-[4.75rem]"
             priority
-            unoptimized
           />
         </Link>
 

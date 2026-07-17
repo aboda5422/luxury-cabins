@@ -27,10 +27,10 @@ export function VisionSection() {
 
         <div className="relative mx-auto w-full max-w-md lg:max-w-none">
           <AnimatedMedia
-            src={home.visionImage || "/images/vision-side.jpg"}
+            src={home.visionImage || "/images/cms/vision-side.webp"}
             alt="خدمات ميدانية ووحدات متنقلة"
             className="aspect-[3/4] w-full"
-            sizes="(max-width:1024px) 90vw, 45vw"
+            sizes="(max-width:1024px) 90vw, 420px"
             accent="both"
             spotCorner="bl"
           />

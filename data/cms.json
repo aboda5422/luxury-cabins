@@ -156,7 +156,7 @@
     "visionTitle": "رؤيتنا..",
     "visionBody": "رؤيتنا أن نكون الشركة الرائدة في توفير حلول الوحدات المتنقلة عبر التأجير والبيع والتصنيع في المملكة العربية السعودية. نحن معروفون بالتزامنا بالجودة والابتكار. لا نهدف إلى تصنيع وحدات رخيصة بل وحدات عالية الجودة بطابع احترافي، مع التوسع المستمر لخدمة عملائنا وضمان نجاح مشاريعهم.",
     "visionCta": "اتصل بنا الآن",
-    "visionImage": "/images/cms/vision-side.jpg",
+    "visionImage": "/images/cms/vision-side.webp",
     "processEyebrow": "منهجية احترافية... تنفذ بمعايير عالمية",
     "processTitle": "رحلة تنفيذ مشروعك",
     "processSubtitle": "منظومة تنفيذ احترافية تضمن الجودة والدقة والالتزام في جميع مراحل المشروع.",
@@ -181,14 +181,14 @@
       "title": "البيع والتصنيع",
       "short": "وحدات جاهزة للتمليك وتصنيع حسب المقاسات والمواصفات: بيوت وغرف وبركسات وكرفانات ومكاتب.",
       "href": "/manufacturing",
-      "image": "/images/cms/service-sales.jpg"
+      "image": "/images/cms/service-sales.webp"
     },
     {
       "id": "mobile-units",
       "title": "إيجار الوحدات المتنقلة",
       "short": "وحدات متنقلة فاخرة جاهزة للتشغيل للمشاريع والفعاليات — مع توريد وتركيب ودعم أثناء فترة التأجير.",
       "href": "/rental#mobile-units",
-      "image": "/images/cms/service-units.jpg"
+      "image": "/images/cms/service-units.webp"
     },
     {
       "id": "european-tents",

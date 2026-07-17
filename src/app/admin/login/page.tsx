@@ -90,13 +90,13 @@ export default function AdminLoginPage() {
           </div>
           <Link href="/" className="inline-flex justify-center">
             <Image
-              src="/logo/logo-header.png"
+              src="/logo/logo-header.webp"
               alt="Luxury Cabins"
-              width={280}
-              height={172}
+              width={240}
+              height={147}
+              sizes="200px"
               className="h-16 w-auto object-contain md:h-20"
               priority
-              unoptimized
             />
           </Link>
           <h1 className="mt-5 text-2xl font-extrabold text-[#0f0f0f]">{t.adminLoginTitle}</h1>

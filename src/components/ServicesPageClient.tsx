@@ -166,7 +166,7 @@ export function ServicesPageClient() {
           </div>
           <div className="relative aspect-[4/3] overflow-hidden bg-[#efebe6]">
             <Image
-              src={home.visionImage || "/images/vision-side.jpg"}
+              src={home.visionImage || "/images/cms/vision-side.webp"}
               alt={site.nameEn}
               fill
               sizes="(max-width:1024px) 100vw, 50vw"

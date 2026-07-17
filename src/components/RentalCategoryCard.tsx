@@ -48,7 +48,7 @@ export function RentalCategoryCard({ category }: Props) {
                 src={src}
                 alt={`${category.title} — ${i + 1}`}
                 fill
-                sizes="(max-width:1024px) 100vw, 50vw"
+                sizes="(max-width:768px) 92vw, (max-width:1200px) 50vw, 640px"
                 className="pointer-events-none object-cover"
                 priority={i === 0}
               />

@@ -139,12 +139,12 @@ export function Footer() {
               onContextMenu={(e) => e.preventDefault()}
             >
               <Image
-                src="/logo/logo-footer.png"
+                src="/logo/logo-footer.webp"
                 alt={site.nameAr}
-                width={420}
-                height={258}
+                width={320}
+                height={197}
+                sizes="(max-width:768px) 280px, 340px"
                 className="pointer-events-none h-auto w-full object-contain"
-                unoptimized
                 draggable={false}
               />
             </button>

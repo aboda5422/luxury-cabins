@@ -22,7 +22,26 @@ function ensureServicesNav(links: NavLink[]): NavLink[] {
   return next;
 }
 
+function upgradeLocalImagePath(path: string | undefined, fallback: string): string {
+  const value = (path || "").trim() || fallback;
+  const upgrades: Record<string, string> = {
+    "/images/cms/hero-home.jpg": "/images/cms/hero-home.webp",
+    "/images/cms/vision-side.jpg": "/images/cms/vision-side.webp",
+    "/images/vision-side.jpg": "/images/cms/vision-side.webp",
+    "/images/cms/service-sales.jpg": "/images/cms/service-sales.webp",
+    "/images/cms/service-units.jpg": "/images/cms/service-units.webp",
+  };
+  return upgrades[value] || value;
+}
+
 function mergeCms(defaults: CmsData, parsed: Partial<CmsData>): CmsData {
+  const homeMerged = { ...defaults.home, ...(parsed.home || {}) };
+  homeMerged.heroImage = upgradeLocalImagePath(homeMerged.heroImage, defaults.home.heroImage);
+  homeMerged.visionImage = upgradeLocalImagePath(
+    homeMerged.visionImage,
+    defaults.home.visionImage,
+  );
+
   return {
     ...defaults,
     ...parsed,
@@ -35,7 +54,7 @@ function mergeCms(defaults: CmsData, parsed: Partial<CmsData>): CmsData {
       },
       cities: normalizeCities(parsed.site?.cities, defaults.site.cities),
     },
-    home: { ...defaults.home, ...(parsed.home || {}) },
+    home: homeMerged,
     pageHeroImages: {
       ...defaults.pageHeroImages,
       ...(parsed.pageHeroImages || {}),
@@ -62,7 +81,10 @@ function mergeCms(defaults: CmsData, parsed: Partial<CmsData>): CmsData {
     navLinks: ensureServicesNav(
       parsed.navLinks?.length ? parsed.navLinks : defaults.navLinks,
     ),
-    services: parsed.services?.length ? parsed.services : defaults.services,
+    services: (parsed.services?.length ? parsed.services : defaults.services).map((s) => ({
+      ...s,
+      image: upgradeLocalImagePath(s.image, s.image),
+    })),
     processSteps: parsed.processSteps?.length
       ? parsed.processSteps
       : defaults.processSteps,

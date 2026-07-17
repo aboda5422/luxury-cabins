@@ -5,7 +5,7 @@ export const services = [
     short:
       "وحدات جاهزة للتمليك وتصنيع حسب المقاسات والمواصفات: بيوت وغرف وبركسات وكرفانات ومكاتب.",
     href: "/manufacturing",
-    image: "/images/cms/service-sales.jpg",
+    image: "/images/cms/service-sales.webp",
   },
   {
     id: "mobile-units",
@@ -13,7 +13,7 @@ export const services = [
     short:
       "وحدات متنقلة فاخرة جاهزة للتشغيل للمشاريع والفعاليات — مع توريد وتركيب ودعم أثناء فترة التأجير.",
     href: "/rental#mobile-units",
-    image: "/images/cms/service-units.jpg",
+    image: "/images/cms/service-units.webp",
   },
   {
     id: "european-tents",

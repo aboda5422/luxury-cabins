@@ -61,7 +61,7 @@ export function getDefaultCms(): CmsData {
       visionBody:
         "رؤيتنا أن نكون الشركة الرائدة في توفير حلول الوحدات المتنقلة عبر التأجير والبيع والتصنيع في المملكة العربية السعودية. نحن معروفون بالتزامنا بالجودة والابتكار. لا نهدف إلى تصنيع وحدات رخيصة بل وحدات عالية الجودة بطابع احترافي، مع التوسع المستمر لخدمة عملائنا وضمان نجاح مشاريعهم.",
       visionCta: "اتصل بنا الآن",
-      visionImage: "/images/cms/vision-side.jpg",
+      visionImage: "/images/cms/vision-side.webp",
       processEyebrow: "منهجية احترافية... تنفذ بمعايير عالمية",
       processTitle: "رحلة تنفيذ مشروعك",
       processSubtitle:

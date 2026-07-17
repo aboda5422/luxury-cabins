@@ -1403,7 +1403,7 @@ export function AdminApp() {
           <ImageUploadField
             label="صورة قسم الرؤية"
             value={cms.home.visionImage || ""}
-            fallback="/images/vision-side.jpg"
+            fallback="/images/cms/vision-side.webp"
             onChange={(value) => applyCmsAndSave((draft) => void (draft.home.visionImage = value))}
           />
           <Field
