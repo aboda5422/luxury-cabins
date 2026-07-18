@@ -1,12 +1,29 @@
-﻿import { ContactInfoCards } from "@/components/ContactInfoCards";
-import { ClientsGrid } from "@/components/ClientsGrid";
+﻿import dynamic from "next/dynamic";
 import { HeroSection } from "@/components/HeroSection";
-import { ProcessSection } from "@/components/ProcessSection";
-import { ServicesSection } from "@/components/ServicesSection";
-import { VisionSection } from "@/components/VisionSection";
 import type { Metadata } from "next";
 import { readCms } from "@/lib/cms/store";
 import { siteConfig } from "@/lib/site";
+
+const ServicesSection = dynamic(
+  () => import("@/components/ServicesSection").then((m) => m.ServicesSection),
+  { loading: () => null },
+);
+const VisionSection = dynamic(
+  () => import("@/components/VisionSection").then((m) => m.VisionSection),
+  { loading: () => null },
+);
+const ProcessSection = dynamic(
+  () => import("@/components/ProcessSection").then((m) => m.ProcessSection),
+  { loading: () => null },
+);
+const ClientsGrid = dynamic(
+  () => import("@/components/ClientsGrid").then((m) => m.ClientsGrid),
+  { loading: () => null },
+);
+const ContactInfoCards = dynamic(
+  () => import("@/components/ContactInfoCards").then((m) => m.ContactInfoCards),
+  { loading: () => null },
+);
 
 export async function generateMetadata(): Promise<Metadata> {
   const cms = await readCms();
@@ -40,9 +57,7 @@ export default function HomePage() {
       <ServicesSection />
       <VisionSection />
       <ProcessSection />
-
       <ClientsGrid asSection />
-
       <section className="section-pad bg-[#F8F8F8]">
         <div className="container-site">
           <ContactInfoCards />

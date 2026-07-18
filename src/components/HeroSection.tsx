@@ -2,58 +2,33 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
 import { useLocalizedCms } from "@/components/CmsProvider";
 
 const FALLBACK_HERO = "/images/luxury-portable-cabins-page-hero.webp";
 
 export function HeroSection() {
   const { site, home } = useLocalizedCms();
-  const reduceMotion = useReducedMotion();
   const heroSrc = home.heroImage?.trim() || FALLBACK_HERO;
 
   return (
     <section className="relative min-h-[82vh] overflow-hidden pt-[72px] text-white md:min-h-[90vh] md:pt-[100px]">
-      <motion.div
-        className="absolute inset-0"
-        animate={
-          reduceMotion
-            ? undefined
-            : {
-                scale: [1, 1.06, 1],
-              }
-        }
-        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-      >
+      <div className="absolute inset-0 will-change-transform animate-[hero-zoom_22s_ease-in-out_infinite]">
         <Image
           src={heroSrc}
           alt={home.heroTitle || site.nameAr}
           fill
           priority
+          fetchPriority="high"
           sizes="100vw"
           className="object-cover object-center"
           unoptimized={heroSrc.startsWith("http")}
         />
-      </motion.div>
+      </div>
       <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/45" />
       <div className="pointer-events-none absolute inset-y-0 left-0 w-[50%] bg-gradient-to-r from-[var(--gold)]/18 to-transparent" />
-      <div
-        className="pointer-events-none absolute inset-0 opacity-25 mix-blend-soft-light"
-        style={{
-          backgroundImage: "url(/images/arabic-pattern-overlay.webp)",
-          backgroundRepeat: "repeat-y",
-          backgroundPosition: "center",
-          backgroundSize: "contain",
-        }}
-      />
 
       <div className="container-site relative flex min-h-[calc(82vh-72px)] items-center md:min-h-[calc(90vh-100px)]">
-        <motion.div
-          className="ms-auto w-full max-w-2xl py-16 text-center md:w-[52%] md:py-24"
-          initial={reduceMotion ? false : { opacity: 0, y: 32 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.75, ease: "easeOut" }}
-        >
+        <div className="ms-auto w-full max-w-2xl animate-[hero-fade_0.75s_ease-out] py-16 text-center md:w-[52%] md:py-24">
           <p className="font-display text-base font-extrabold tracking-wide text-[var(--gold)] md:text-lg">
             {site.nameAr}
           </p>
@@ -71,7 +46,7 @@ export function HeroSection() {
               {home.heroCta}
             </Link>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

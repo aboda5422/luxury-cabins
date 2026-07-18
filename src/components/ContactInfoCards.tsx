@@ -67,7 +67,11 @@ export function ContactInfoCards({ showIntro = true }: Props) {
             </span>
             <h3 className="text-lg font-extrabold text-[#0f0f0f]">{card.title}</h3>
             <p
-              className={`mt-2 text-sm leading-7 text-[#777] ${"ltr" in card && card.ltr ? "dir-ltr" : ""}`}
+              className={`mt-2 text-sm leading-7 ${
+                card.id === "email" || card.id === "phone"
+                  ? "font-medium text-[#555]"
+                  : "text-[#777]"
+              } ${"ltr" in card && card.ltr ? "dir-ltr" : ""}`}
               dir={"ltr" in card && card.ltr ? "ltr" : undefined}
             >
               {card.value}

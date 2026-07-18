@@ -249,6 +249,27 @@ body {
   animation: wa-soft-pulse 2.4s ease-out infinite;
 }
 
+@keyframes hero-zoom {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -262,5 +283,9 @@ body {
   .whatsapp-float {
     animation: none !important;
     transition: none !important;
+  }
+
+  [class*="animate-[hero-"] {
+    animation: none !important;
   }
 }

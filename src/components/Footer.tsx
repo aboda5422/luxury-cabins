@@ -25,17 +25,12 @@ function SocialLink({
   children: React.ReactNode;
   onClick?: () => void;
 }) {
-  const ready = Boolean(href?.trim());
-  if (!ready) {
-    return (
-      <span aria-label={label} title={label} className={`${linkClass} cursor-default opacity-40`}>
-        {children}
-      </span>
-    );
-  }
+  const url = href?.trim();
+  if (!url) return null;
+
   return (
     <a
-      href={href}
+      href={url}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
@@ -124,7 +119,7 @@ export function Footer() {
     <>
       <CtaBand title={home.ctaBandTitle} primaryLabel={home.ctaBandButton} />
 
-      <footer className="bg-[#F3F1EE] text-[#2a2a2a]">
+      <footer className="bg-[#F3F1EE] text-[#1c1c1c]">
         <div className="container-site section-pad grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <button
@@ -148,7 +143,7 @@ export function Footer() {
                 draggable={false}
               />
             </button>
-            <p className="text-sm leading-7 text-[#555]">{site.description}</p>
+            <p className="text-sm font-medium leading-7 text-[#3d3d3d]">{site.description}</p>
             <div className="mt-5 flex flex-wrap items-center gap-3.5">
               <SocialLink
                 href={`https://wa.me/${site.whatsapp}`}
@@ -221,7 +216,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-[#e0ddd8]">
-          <div className="container-site flex flex-col gap-3 py-5 text-center text-xs text-[#777] md:flex-row md:items-center md:justify-between md:text-start">
+          <div className="container-site flex flex-col gap-3 py-5 text-center text-xs font-medium text-[#444] md:flex-row md:items-center md:justify-between md:text-start">
             <p>
               © {site.nameEn} {new Date().getFullYear()}. {t.copyright}
             </p>

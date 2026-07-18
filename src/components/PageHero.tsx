@@ -33,15 +33,16 @@ export function PageHero({
 
   return (
     <section className="relative overflow-hidden pt-[72px] text-white md:pt-[100px]">
-      <Image
-        src={bg}
-        alt={title ? `خلفية صفحة ${title} — Luxury Cabins` : "خلفية صفحة Luxury Cabins"}
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover object-center"
-        unoptimized={remote}
-      />
+        <Image
+          src={bg}
+          alt={title ? `خلفية صفحة ${title} — Luxury Cabins` : "خلفية صفحة Luxury Cabins"}
+          fill
+          priority
+          fetchPriority="high"
+          sizes="100vw"
+          className="object-cover object-center"
+          unoptimized={remote}
+        />
       <div className="absolute inset-0 bg-black/55" />
       <div className="container-site relative py-16 md:py-20">
         {showBack ? (

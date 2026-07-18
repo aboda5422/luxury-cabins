@@ -1218,6 +1218,12 @@ export function AdminApp() {
             value={cms.site.email}
             onChange={(value) => applyCms((draft) => void (draft.site.email = value))}
           />
+          <div className="md:col-span-2 mt-2 border-t border-[#eee] pt-4">
+            <p className="mb-3 text-sm font-bold text-[#1e1e1e]">روابط منصات التواصل الاجتماعي</p>
+            <p className="mb-4 text-xs leading-6 text-[#777]">
+              اترك الحقل فارغاً لإخفاء أيقونة المنصة من الموقع بالكامل.
+            </p>
+          </div>
           <Field
             label="Instagram"
             value={cms.site.social?.instagram || ""}
@@ -1226,6 +1232,7 @@ export function AdminApp() {
                 draft.site.social = { ...draft.site.social, instagram: value };
               })
             }
+            placeholder="https://instagram.com/..."
           />
           <Field
             label="Facebook"
@@ -1235,15 +1242,17 @@ export function AdminApp() {
                 draft.site.social = { ...draft.site.social, facebook: value };
               })
             }
+            placeholder="https://facebook.com/..."
           />
           <Field
-            label="X / Twitter"
+            label="X (Twitter)"
             value={cms.site.social?.twitter || ""}
             onChange={(value) =>
               applyCms((draft) => {
                 draft.site.social = { ...draft.site.social, twitter: value };
               })
             }
+            placeholder="https://x.com/..."
           />
           <Field
             label="LinkedIn"
@@ -1253,6 +1262,7 @@ export function AdminApp() {
                 draft.site.social = { ...draft.site.social, linkedin: value };
               })
             }
+            placeholder="https://linkedin.com/company/..."
           />
           <Field
             label="العنوان"

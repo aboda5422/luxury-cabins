@@ -21,13 +21,15 @@ const noto = Noto_Sans_Arabic({
   variable: "--font-noto",
   display: "swap",
   weight: ["400", "500", "600", "700", "800"],
+  preload: true,
 });
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
   variable: "--font-cairo",
   display: "swap",
-  weight: ["600", "700", "800", "900"],
+  weight: ["700", "800", "900"],
+  preload: true,
 });
 
 const siteUrl = "https://luxurycabins.com.sa";
@@ -93,7 +95,7 @@ export async function generateMetadata(): Promise<Metadata> {
           width: 1200,
           height: 630,
           alt: `${cms.site.nameAr} — ${cms.site.tagline}`,
-          type: "image/jpeg",
+          type: "image/webp",
         },
       ],
     },

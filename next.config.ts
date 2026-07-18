@@ -15,6 +15,27 @@ const nextConfig: NextConfig = {
     ],
   },
   poweredByHeader: false,
+  experimental: {
+    optimizePackageImports: ["lucide-react", "framer-motion"],
+  },
+  async headers() {
+    const longCache = [
+      {
+        key: "Cache-Control",
+        value: "public, max-age=31536000, immutable",
+      },
+    ];
+    return [
+      { source: "/_next/static/:path*", headers: longCache },
+      { source: "/images/:path*", headers: longCache },
+      { source: "/logo/:path*", headers: longCache },
+      { source: "/uploads/:path*", headers: longCache },
+      {
+        source: "/:path*.(ico|png|jpg|jpeg|webp|avif|svg|woff|woff2|ttf|css|js)",
+        headers: longCache,
+      },
+    ];
+  },
   async redirects() {
     return [
       {
