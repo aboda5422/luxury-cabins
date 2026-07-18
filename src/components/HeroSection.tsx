@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { useLocalizedCms } from "@/components/CmsProvider";
 
-const FALLBACK_HERO = "/images/cover-hero.webp";
+const FALLBACK_HERO = "/images/luxury-portable-cabins-page-hero.webp";
 
 export function HeroSection() {
   const { site, home } = useLocalizedCms();
@@ -40,7 +40,7 @@ export function HeroSection() {
       <div
         className="pointer-events-none absolute inset-0 opacity-25 mix-blend-soft-light"
         style={{
-          backgroundImage: "url(/images/ar-bg.png)",
+          backgroundImage: "url(/images/arabic-pattern-overlay.webp)",
           backgroundRepeat: "repeat-y",
           backgroundPosition: "center",
           backgroundSize: "contain",

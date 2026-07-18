@@ -30,7 +30,7 @@ export function ProductGallery({ images, title }: Props) {
             <div key={`${src}-${i}`} className="relative h-full w-full shrink-0 grow-0 basis-full">
               <Image
                 src={src}
-                alt={`${title} — ${i + 1}`}
+                alt={`${title} — صورة ${i + 1} لمنتج تصنيع وبيع الوحدات الجاهزة`}
                 fill
                 priority={i === 0}
                 sizes="(max-width:1024px) 100vw, 50vw"

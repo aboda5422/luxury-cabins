@@ -38,7 +38,7 @@ export function Header() {
         <Link href="/" className="shrink-0">
           <Image
             src="/logo/logo-header.webp"
-            alt={site.nameEn}
+            alt={site.nameAr || "شعار Luxury Cabins"}
             width={240}
             height={147}
             sizes="(max-width:768px) 120px, 190px"

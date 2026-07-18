@@ -6,6 +6,7 @@ import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/admin";
 import { normalizeCities } from "@/lib/seo/cities";
 import { normalizeCatalogProducts } from "@/lib/seo/products";
 import { normalizeRentalCategories } from "@/lib/seo/rentals";
+import { upgradeImageList, upgradeImagePath } from "@/lib/seo/image-paths";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const CMS_FILE = path.join(DATA_DIR, "cms.json");
@@ -23,16 +24,8 @@ function ensureServicesNav(links: NavLink[]): NavLink[] {
   return next;
 }
 
-function upgradeLocalImagePath(path: string | undefined, fallback: string): string {
-  const value = (path || "").trim() || fallback;
-  const upgrades: Record<string, string> = {
-    "/images/cms/hero-home.jpg": "/images/cms/hero-home.webp",
-    "/images/cms/vision-side.jpg": "/images/cms/vision-side.webp",
-    "/images/vision-side.jpg": "/images/cms/vision-side.webp",
-    "/images/cms/service-sales.jpg": "/images/cms/service-sales.webp",
-    "/images/cms/service-units.jpg": "/images/cms/service-units.webp",
-  };
-  return upgrades[value] || value;
+function upgradeLocalImagePath(input: string | undefined, fallback = ""): string {
+  return upgradeImagePath(input, fallback);
 }
 
 function mergeCms(defaults: CmsData, parsed: Partial<CmsData>): CmsData {
@@ -56,15 +49,34 @@ function mergeCms(defaults: CmsData, parsed: Partial<CmsData>): CmsData {
       cities: normalizeCities(parsed.site?.cities, defaults.site.cities),
     },
     home: homeMerged,
-    pageHeroImages: {
-      ...defaults.pageHeroImages,
-      ...(parsed.pageHeroImages || {}),
+    pageHeroImages: Object.fromEntries(
+      Object.entries({
+        ...defaults.pageHeroImages,
+        ...(parsed.pageHeroImages || {}),
+      }).map(([key, value]) => [
+        key,
+        upgradeLocalImagePath(
+          value,
+          defaults.pageHeroImages[key as keyof CmsData["pageHeroImages"]],
+        ),
+      ]),
+    ) as CmsData["pageHeroImages"],
+    about: {
+      ...defaults.about,
+      ...(parsed.about || {}),
+      sideImage: upgradeLocalImagePath(
+        parsed.about?.sideImage || defaults.about.sideImage,
+        defaults.about.sideImage,
+      ),
     },
-    about: { ...defaults.about, ...(parsed.about || {}) },
     rentalPage: { ...defaults.rentalPage, ...(parsed.rentalPage || {}) },
     manufacturingPage: {
       ...defaults.manufacturingPage,
       ...(parsed.manufacturingPage || {}),
+      introImage: upgradeLocalImagePath(
+        parsed.manufacturingPage?.introImage || defaults.manufacturingPage.introImage,
+        defaults.manufacturingPage.introImage,
+      ),
     },
     contactPage: {
       ...defaults.contactPage,
@@ -113,7 +125,12 @@ function mergeCms(defaults: CmsData, parsed: Partial<CmsData>): CmsData {
             existing.seoKeywords?.length ? existing.seoKeywords : def.seoKeywords || [],
         });
       }
-      return normalizeCatalogProducts(Array.from(byId.values()));
+      return normalizeCatalogProducts(
+        Array.from(byId.values()).map((p) => ({
+          ...p,
+          images: upgradeImageList(p.images),
+        })),
+      );
     })(),
     rentalCategories: (() => {
       const incoming = parsed.rentalCategories?.length
@@ -134,12 +151,20 @@ function mergeCms(defaults: CmsData, parsed: Partial<CmsData>): CmsData {
             existing.seoKeywords?.length ? existing.seoKeywords : def.seoKeywords || [],
         });
       }
-      return normalizeRentalCategories(Array.from(byId.values()));
+      return normalizeRentalCategories(
+        Array.from(byId.values()).map((c) => ({
+          ...c,
+          images: upgradeImageList(c.images),
+        })),
+      );
     })(),
     manufacturingExtras: parsed.manufacturingExtras?.length
       ? parsed.manufacturingExtras
       : defaults.manufacturingExtras,
-    projects: parsed.projects?.length ? parsed.projects : defaults.projects,
+    projects: (parsed.projects?.length ? parsed.projects : defaults.projects).map((p) => ({
+      ...p,
+      image: upgradeLocalImagePath(p.image, p.image),
+    })),
     sampleClients: (() => {
       const incoming = parsed.sampleClients?.map((c) => ({
         name: c.name || "",
@@ -158,6 +183,7 @@ function mergeCms(defaults: CmsData, parsed: Partial<CmsData>): CmsData {
         (c) =>
           c.name === "كدانة" ||
           c.nameEn?.toUpperCase() === "KIDANA" ||
+          c.logo?.includes("kidana") ||
           c.logo?.includes("partner-24"),
       );
       if (!hasKidana) {
@@ -167,7 +193,7 @@ function mergeCms(defaults: CmsData, parsed: Partial<CmsData>): CmsData {
           name: "كدانة",
           nameEn: "KIDANA",
           sector: "عقارات وتطوير",
-          logo: "/images/clients/partner-24.png",
+          logo: "/images/clients/partner-kidana.webp",
         };
         const cultureIdx = clients.findIndex(
           (c) => c.name === "وزارة الثقافة" || c.nameEn === "Ministry of Culture",
@@ -177,7 +203,10 @@ function mergeCms(defaults: CmsData, parsed: Partial<CmsData>): CmsData {
         else clients.push({ ...kidana });
       }
 
-      return clients;
+      return clients.map((c) => ({
+        ...c,
+        logo: upgradeLocalImagePath(c.logo, c.logo),
+      }));
     })(),
     faqs: parsed.faqs?.length ? parsed.faqs : defaults.faqs,
     aboutStats: parsed.aboutStats?.length

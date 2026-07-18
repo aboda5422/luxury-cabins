@@ -48,7 +48,7 @@ export function RentalCategoryCard({ category }: Props) {
             <div key={`${src}-${i}`} className="relative h-full w-full shrink-0 grow-0 basis-full">
               <Image
                 src={src}
-                alt={`${category.title} — ${i + 1}`}
+                alt={`${category.title} — صورة ${i + 1} لتأجير الوحدات المتنقلة والخيام`}
                 fill
                 sizes="(max-width:768px) 92vw, (max-width:1200px) 50vw, 640px"
                 className="pointer-events-none object-cover"

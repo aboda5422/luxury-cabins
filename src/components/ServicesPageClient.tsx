@@ -37,10 +37,10 @@ export function ServicesPageClient() {
 
   const rentalImage =
     services.find((s) => s.href.includes("/rental"))?.image ||
-    "/images/rental/units/unit-2.jpg";
+    "/images/rental/units/rental-luxury-portable-unit-02.webp";
   const manufacturingImage =
     services.find((s) => s.href.includes("/manufacturing"))?.image ||
-    "/images/cabin-1.jpg";
+    "/images/custom-portable-cabin-manufacturing.webp";
 
   const cards = [
     {
@@ -166,8 +166,8 @@ export function ServicesPageClient() {
           </div>
           <div className="relative aspect-[4/3] overflow-hidden bg-[#efebe6]">
             <Image
-              src={home.visionImage || "/images/cms/vision-side.webp"}
-              alt={site.nameEn}
+              src={home.visionImage || "/images/cms/luxury-cabins-field-services.webp"}
+              alt={home.visionTitle || "رؤية Luxury Cabins في خدمات الوحدات المتنقلة"}
               fill
               sizes="(max-width:1024px) 100vw, 50vw"
               className="object-cover"

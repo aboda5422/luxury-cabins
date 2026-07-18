@@ -43,7 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const title = `${cms.site.nameAr} | ${cms.site.nameEn} — تأجير وبيع وتصنيع الوحدات المتنقلة`;
   const description = cms.site.description;
-  const ogImage = "/og.jpg";
+  const ogImage = "/og-luxury-cabins-saudi.webp";
 
   return {
     metadataBase: new URL(siteUrl),
@@ -174,7 +174,7 @@ export default async function RootLayout({
     name: cms.site.nameAr,
     alternateName: cms.site.nameEn,
     url: siteUrl,
-    image: `${siteUrl}/og.jpg`,
+    image: `${siteUrl}/og-luxury-cabins-saudi.webp`,
     logo: `${siteUrl}/logo/logo.png`,
     description: cms.site.description,
     telephone: cms.site.phone,

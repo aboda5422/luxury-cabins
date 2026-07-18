@@ -211,7 +211,7 @@ export function SiteSearch() {
                               {item.image ? (
                                 <Image
                                   src={item.image}
-                                  alt=""
+                                  alt={item.title}
                                   fill
                                   sizes="48px"
                                   className="object-cover"

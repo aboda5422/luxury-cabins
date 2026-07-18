@@ -14,7 +14,7 @@ type Props = {
   backgroundImage?: string;
 };
 
-const DEFAULT_HERO_BG = "/images/cover-hero.webp";
+const DEFAULT_HERO_BG = "/images/luxury-portable-cabins-page-hero.webp";
 
 export function PageHero({
   eyebrow,
@@ -35,7 +35,7 @@ export function PageHero({
     <section className="relative overflow-hidden pt-[72px] text-white md:pt-[100px]">
       <Image
         src={bg}
-        alt=""
+        alt={title ? `خلفية صفحة ${title} — Luxury Cabins` : "خلفية صفحة Luxury Cabins"}
         fill
         priority
         sizes="100vw"

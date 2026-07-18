@@ -45,7 +45,7 @@ export function ServicesSection() {
             >
               <AnimatedMedia
                 src={service.image}
-                alt={service.title}
+                alt={`${service.title} — خدمات Luxury Cabins للوحدات المتنقلة`}
                 className="h-48"
                 sizes="(max-width:768px) 92vw, (max-width:1200px) 40vw, 420px"
                 spotCorner={index === 1 ? "tl" : index === 2 ? "br" : "tr"}

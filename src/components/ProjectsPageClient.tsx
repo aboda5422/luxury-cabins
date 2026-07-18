@@ -43,7 +43,7 @@ export function ProjectsPageClient() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={project.image}
-                    alt={`${project.title} - ${project.location}`}
+                    alt={`${project.title} في ${project.location} — مشروع وحدات متنقلة`}
                     className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
                   />
                   <span className="absolute top-3 right-3 bg-[var(--gold)] px-3 py-1 text-xs font-bold text-[#0f0f0f]">

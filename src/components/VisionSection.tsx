@@ -27,8 +27,8 @@ export function VisionSection() {
 
         <div className="relative mx-auto w-full max-w-md lg:max-w-none">
           <AnimatedMedia
-            src={home.visionImage || "/images/cms/vision-side.webp"}
-            alt="خدمات ميدانية ووحدات متنقلة"
+            src={home.visionImage || "/images/cms/luxury-cabins-field-services.webp"}
+            alt={home.visionTitle || "خدمات ميدانية ووحدات متنقلة فاخرة"}
             className="aspect-[3/4] w-full"
             sizes="(max-width:1024px) 90vw, 420px"
             accent="both"

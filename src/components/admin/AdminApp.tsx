@@ -822,14 +822,14 @@ export function AdminApp() {
       const next = clone(current);
       if (!next.pageHeroImages) {
         next.pageHeroImages = {
-          services: "/images/cover-hero.webp",
-          about: "/images/cover-hero.webp",
-          rental: "/images/cover-hero.webp",
-          manufacturing: "/images/cover-hero.webp",
-          projects: "/images/cover-hero.webp",
-          contact: "/images/cover-hero.webp",
-          faq: "/images/cover-hero.webp",
-          locations: "/images/cover-hero.webp",
+          services: "/images/luxury-portable-cabins-page-hero.webp",
+          about: "/images/luxury-portable-cabins-page-hero.webp",
+          rental: "/images/luxury-portable-cabins-page-hero.webp",
+          manufacturing: "/images/luxury-portable-cabins-page-hero.webp",
+          projects: "/images/luxury-portable-cabins-page-hero.webp",
+          contact: "/images/luxury-portable-cabins-page-hero.webp",
+          faq: "/images/luxury-portable-cabins-page-hero.webp",
+          locations: "/images/luxury-portable-cabins-page-hero.webp",
         };
       }
       mutator(next);
@@ -882,14 +882,14 @@ export function AdminApp() {
       const next = clone(current);
       if (!next.pageHeroImages) {
         next.pageHeroImages = {
-          services: "/images/cover-hero.webp",
-          about: "/images/cover-hero.webp",
-          rental: "/images/cover-hero.webp",
-          manufacturing: "/images/cover-hero.webp",
-          projects: "/images/cover-hero.webp",
-          contact: "/images/cover-hero.webp",
-          faq: "/images/cover-hero.webp",
-          locations: "/images/cover-hero.webp",
+          services: "/images/luxury-portable-cabins-page-hero.webp",
+          about: "/images/luxury-portable-cabins-page-hero.webp",
+          rental: "/images/luxury-portable-cabins-page-hero.webp",
+          manufacturing: "/images/luxury-portable-cabins-page-hero.webp",
+          projects: "/images/luxury-portable-cabins-page-hero.webp",
+          contact: "/images/luxury-portable-cabins-page-hero.webp",
+          faq: "/images/luxury-portable-cabins-page-hero.webp",
+          locations: "/images/luxury-portable-cabins-page-hero.webp",
         };
       }
       mutator(next);
@@ -1273,7 +1273,7 @@ export function AdminApp() {
             onChange={(value) =>
               applyCmsAndSave((draft) => void (draft.pageHeroImages.locations = value))
             }
-            fallback="/images/projects/project-01.png"
+            fallback="/images/projects/riyadh-decorative-white-office-unit.webp"
           />
           <ObjectListEditor
             title="مدن الخدمة (SEO)"
@@ -1341,7 +1341,7 @@ export function AdminApp() {
                     label={`صورة خلفية صفحة ${item.nameAr || "المدينة"}`}
                     value={item.heroImage || ""}
                     onChange={(heroImage) => update({ ...item, heroImage })}
-                    fallback={cms.pageHeroImages.locations || "/images/projects/project-01.png"}
+                    fallback={cms.pageHeroImages.locations || "/images/projects/riyadh-decorative-white-office-unit.webp"}
                   />
                 </div>
                 {item.slug ? (
@@ -1401,7 +1401,7 @@ export function AdminApp() {
             label="صورة الهيرو"
             value={cms.home.heroImage || ""}
             onChange={(value) => applyCmsAndSave((draft) => void (draft.home.heroImage = value))}
-            fallback="/images/cover-hero.webp"
+            fallback="/images/luxury-portable-cabins-page-hero.webp"
           />
           <Field
             label="عنوان الرؤية"
@@ -1416,7 +1416,7 @@ export function AdminApp() {
           <ImageUploadField
             label="صورة قسم الرؤية"
             value={cms.home.visionImage || ""}
-            fallback="/images/cms/vision-side.webp"
+            fallback="/images/cms/luxury-cabins-field-services.webp"
             onChange={(value) => applyCmsAndSave((draft) => void (draft.home.visionImage = value))}
           />
           <Field
@@ -1487,7 +1487,7 @@ export function AdminApp() {
             onChange={(value) =>
               applyCmsAndSave((draft) => void (draft.pageHeroImages.services = value))
             }
-            fallback="/images/cover-hero.webp"
+            fallback="/images/luxury-portable-cabins-page-hero.webp"
           />
         </div>
         <div className="mb-6 grid gap-4 md:grid-cols-2">
@@ -1688,7 +1688,7 @@ export function AdminApp() {
               onChange={(value) =>
                 applyCmsAndSave((draft) => void (draft.pageHeroImages.rental = value))
               }
-              fallback="/images/cover-hero.webp"
+              fallback="/images/luxury-portable-cabins-page-hero.webp"
             />
           </div>
           <div className="grid gap-4 md:grid-cols-2">
@@ -1875,7 +1875,7 @@ export function AdminApp() {
               onChange={(value) =>
                 applyCmsAndSave((draft) => void (draft.pageHeroImages.manufacturing = value))
               }
-              fallback="/images/cover-hero.webp"
+              fallback="/images/luxury-portable-cabins-page-hero.webp"
             />
           </div>
           <div className="mb-6">
@@ -1885,7 +1885,7 @@ export function AdminApp() {
               onChange={(value) =>
                 applyCmsAndSave((draft) => void (draft.manufacturingPage.introImage = value))
               }
-              fallback="/images/cabin-1.jpg"
+              fallback="/images/custom-portable-cabin-manufacturing.webp"
             />
           </div>
           <div className="grid gap-4 md:grid-cols-2">
@@ -2026,7 +2026,7 @@ export function AdminApp() {
             onChange={(value) =>
               applyCmsAndSave((draft) => void (draft.pageHeroImages.projects = value))
             }
-            fallback="/images/cover-hero.webp"
+            fallback="/images/luxury-portable-cabins-page-hero.webp"
           />
         </div>
         <ObjectListEditor
@@ -2189,7 +2189,7 @@ export function AdminApp() {
             label="صورة هيرو صفحة الأسئلة الشائعة"
             value={cms.pageHeroImages.faq}
             onChange={(value) => applyCmsAndSave((draft) => void (draft.pageHeroImages.faq = value))}
-            fallback="/images/cover-hero.webp"
+            fallback="/images/luxury-portable-cabins-page-hero.webp"
           />
         </div>
         <ObjectListEditor
@@ -2229,7 +2229,7 @@ export function AdminApp() {
             onChange={(value) =>
               applyCmsAndSave((draft) => void (draft.pageHeroImages.contact = value))
             }
-            fallback="/images/cover-hero.webp"
+            fallback="/images/luxury-portable-cabins-page-hero.webp"
           />
         </div>
         <div className="grid gap-4 md:grid-cols-2">
@@ -2284,7 +2284,7 @@ export function AdminApp() {
               onChange={(value) =>
                 applyCmsAndSave((draft) => void (draft.pageHeroImages.about = value))
               }
-              fallback="/images/cover-hero.webp"
+              fallback="/images/luxury-portable-cabins-page-hero.webp"
             />
           </div>
           <div className="mb-6">
@@ -2294,7 +2294,7 @@ export function AdminApp() {
               onChange={(value) =>
                 applyCmsAndSave((draft) => void (draft.about.sideImage = value))
               }
-              fallback="/images/cabin-2.jpg"
+              fallback="/images/luxury-cabins-about-company.webp"
             />
           </div>
           <div className="grid gap-4 md:grid-cols-2">

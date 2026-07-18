@@ -36,8 +36,8 @@ export function AboutPageClient() {
           </div>
           <div className="relative aspect-[4/3] overflow-hidden">
             <Image
-              src={about.sideImage || "/images/cabin-2.jpg"}
-              alt={about.whoTitle}
+              src={about.sideImage || "/images/luxury-cabins-about-company.webp"}
+              alt={about.whoTitle || "من نحن — شركة Luxury Cabins للوحدات المتنقلة"}
               fill
               className="object-cover"
               sizes="(max-width:1024px) 100vw, 50vw"

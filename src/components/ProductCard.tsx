@@ -65,7 +65,7 @@ export function ProductCard({ product }: Props) {
               <div key={`${src}-${i}`} className="relative h-full w-full shrink-0 grow-0 basis-full">
                 <Image
                   src={src}
-                  alt={`${product.title} — ${i + 1}`}
+                  alt={`${product.title} — صورة ${i + 1} لتصنيع وبيع الوحدات الجاهزة`}
                   fill
                   sizes="(max-width:768px) 100vw, 33vw"
                   className="pointer-events-none object-cover"

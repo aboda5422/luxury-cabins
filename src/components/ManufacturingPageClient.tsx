@@ -52,8 +52,8 @@ export function ManufacturingPageClient() {
           </div>
           <div className="relative aspect-[4/3] overflow-hidden bg-[#f5f5f5]">
             <Image
-              src={manufacturingPage.introImage || "/images/cabin-1.jpg"}
-              alt={manufacturingPage.heroTitle}
+              src={manufacturingPage.introImage || "/images/custom-portable-cabin-manufacturing.webp"}
+              alt={manufacturingPage.introTitle || manufacturingPage.heroTitle || "تصنيع وبيع الوحدات الجاهزة"}
               fill
               className="object-cover"
               sizes="(max-width:1024px) 100vw, 50vw"

@@ -38,20 +38,20 @@ export function getDefaultCms(): CmsData {
     },
     navLinks: navLinks.map((l) => ({ ...l })),
     pageHeroImages: {
-      services: "/images/cover-hero.webp",
-      about: "/images/cover-hero.webp",
-      rental: "/images/cover-hero.webp",
-      manufacturing: "/images/cover-hero.webp",
-      projects: "/images/cover-hero.webp",
-      contact: "/images/cover-hero.webp",
-      faq: "/images/cover-hero.webp",
-      locations: "/images/cover-hero.webp",
+      services: "/images/luxury-portable-cabins-page-hero.webp",
+      about: "/images/luxury-portable-cabins-page-hero.webp",
+      rental: "/images/luxury-portable-cabins-page-hero.webp",
+      manufacturing: "/images/luxury-portable-cabins-page-hero.webp",
+      projects: "/images/luxury-portable-cabins-page-hero.webp",
+      contact: "/images/luxury-portable-cabins-page-hero.webp",
+      faq: "/images/luxury-portable-cabins-page-hero.webp",
+      locations: "/images/luxury-portable-cabins-page-hero.webp",
     },
     home: {
       heroTitle: "الأولى في تأجير وبيع وتصنيع الوحدات المتنقلة",
       heroSubtitle: "وحدات متنقلة - خيام أوروبية - بيع وتصنيع حسب الطلب",
       heroCta: "استكشف حلولنا",
-      heroImage: "/images/cms/hero-home.webp",
+      heroImage: "/images/cms/luxury-cabins-home-hero.webp",
       servicesEyebrow: "حلولنا المتكاملة",
       servicesTitle: "حلول متكاملة لتصنيع وبيع وتأجير الوحدات المتنقلة",
       servicesTitleLine2: "(وحدات متنقلة – خيام أوروبية)",
@@ -61,7 +61,7 @@ export function getDefaultCms(): CmsData {
       visionBody:
         "رؤيتنا أن نكون الشركة الرائدة في توفير حلول الوحدات المتنقلة عبر التأجير والبيع والتصنيع في المملكة العربية السعودية. نحن معروفون بالتزامنا بالجودة والابتكار. لا نهدف إلى تصنيع وحدات رخيصة بل وحدات عالية الجودة بطابع احترافي، مع التوسع المستمر لخدمة عملائنا وضمان نجاح مشاريعهم.",
       visionCta: "اتصل بنا الآن",
-      visionImage: "/images/cms/vision-side.webp",
+      visionImage: "/images/cms/luxury-cabins-field-services.webp",
       processEyebrow: "منهجية احترافية... تنفذ بمعايير عالمية",
       processTitle: "رحلة تنفيذ مشروعك",
       processSubtitle:
@@ -98,7 +98,7 @@ export function getDefaultCms(): CmsData {
       whoBody1:
         "نعمل على تقديم حلول وحدات متنقلة عالية الجودة تدعم كفاءة التشغيل في المواقع الإنشائية والصناعية والفعاليات. لا نسعى لتقديم حلول رخيصة، بل حلول متينة بطابع احترافي.",
       whoBody2: `الاسم التجاري: ${siteConfig.nameAr} | ${siteConfig.nameEn}`,
-      sideImage: "/images/cabin-2.jpg",
+      sideImage: "/images/luxury-cabins-about-company.webp",
       visionTitle: "رؤيتنا",
       visionBody:
         "أن نكون الشركة الرائدة في توفير حلول الوحدات المتنقلة والتأجير والتصنيع في المملكة العربية السعودية، مع التزام دائم بالجودة والابتكار وخدمة العميل في كل مدينة.",
@@ -146,7 +146,7 @@ export function getDefaultCms(): CmsData {
       introTitle: "حلول مصممة خصيصًا وفق متطلبات مشروعك ومواصفاته الفنية.",
       introBody:
         "اختر وحدة جاهزة للتمليك، أو اطلب تصنيعاً بمواصفاتكم الخاصة مع إمكانية التركيب في الموقع.",
-      introImage: "/images/cabin-1.jpg",
+      introImage: "/images/custom-portable-cabin-manufacturing.webp",
       highlights: ["جودة مواد وتشطيب", "تفصيل حسب المقاس", "التزام بالمواعيد"],
       catalogEyebrow: "منتجاتنا",
       catalogBadge: "تركيب وتوريد حسب الاتفاق",

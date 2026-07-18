@@ -28,7 +28,7 @@ export function ClientsGrid({ asSection = true }: Props) {
             {client.logo ? (
               <Image
                 src={client.logo}
-                alt={client.name}
+                alt={`شعار شريك النجاح ${client.name}`}
                 width={330}
                 height={132}
                 className="max-h-24 w-auto max-w-full object-contain md:max-h-[7.5rem]"
