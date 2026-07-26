@@ -56,7 +56,8 @@ export function ManufacturingPageClient() {
               alt={manufacturingPage.introTitle || manufacturingPage.heroTitle || "تصنيع وبيع الوحدات الجاهزة"}
               fill
               className="object-cover"
-              sizes="(max-width:1024px) 100vw, 50vw"
+              sizes="(max-width:1024px) 100vw, 560px"
+              quality={75}
               unoptimized={Boolean(manufacturingPage.introImage?.startsWith("http"))}
             />
           </div>

@@ -270,6 +270,18 @@ body {
   }
 }
 
+@keyframes media-spot {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(1.25);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -285,7 +297,8 @@ body {
     transition: none !important;
   }
 
-  [class*="animate-[hero-"] {
+  [class*="animate-[hero-"],
+  [class*="animate-[media-"] {
     animation: none !important;
   }
 }

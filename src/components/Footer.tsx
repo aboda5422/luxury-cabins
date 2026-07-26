@@ -139,6 +139,7 @@ export function Footer() {
                 width={320}
                 height={197}
                 sizes="(max-width:768px) 280px, 340px"
+                quality={75}
                 className="pointer-events-none h-auto w-full object-contain"
                 draggable={false}
               />

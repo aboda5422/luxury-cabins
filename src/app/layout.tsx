@@ -212,6 +212,18 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} dir={localeDir(locale)} className={`${noto.variable} ${cairo.variable}`}>
+      <head>
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+html{scroll-behavior:smooth}
+body{margin:0;background:#fff;color:#0f0f0f}
+.container-site{width:min(1400px,calc(100% - 3rem));margin-inline:auto}
+header.fixed{position:fixed;inset-inline:0;top:0;z-index:50;background:#fff}
+`,
+          }}
+        />
+      </head>
       <body className="min-h-screen font-sans antialiased">
         <script
           type="application/ld+json"

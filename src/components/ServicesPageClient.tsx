@@ -92,7 +92,8 @@ export function ServicesPageClient() {
                     src={card.image}
                     alt={t[card.titleKey]}
                     fill
-                    sizes="(max-width:768px) 100vw, 50vw"
+                    sizes="(max-width:768px) 100vw, 560px"
+                    quality={75}
                     className="object-cover transition duration-700 group-hover:scale-105"
                     unoptimized={card.image.startsWith("http")}
                   />
@@ -169,7 +170,8 @@ export function ServicesPageClient() {
               src={home.visionImage || "/images/cms/luxury-cabins-field-services.webp"}
               alt={home.visionTitle || "رؤية Luxury Cabins في خدمات الوحدات المتنقلة"}
               fill
-              sizes="(max-width:1024px) 100vw, 50vw"
+              sizes="(max-width:1024px) 100vw, 560px"
+              quality={75}
               className="object-cover"
             />
           </div>

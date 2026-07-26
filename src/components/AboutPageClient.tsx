@@ -40,7 +40,8 @@ export function AboutPageClient() {
               alt={about.whoTitle || "من نحن — شركة Luxury Cabins للوحدات المتنقلة"}
               fill
               className="object-cover"
-              sizes="(max-width:1024px) 100vw, 50vw"
+              sizes="(max-width:1024px) 100vw, 560px"
+              quality={75}
               unoptimized={Boolean(about.sideImage?.startsWith("http"))}
             />
           </div>

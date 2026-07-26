@@ -33,7 +33,8 @@ export function ProductGallery({ images, title }: Props) {
                 alt={`${title} — صورة ${i + 1} لمنتج تصنيع وبيع الوحدات الجاهزة`}
                 fill
                 priority={i === 0}
-                sizes="(max-width:1024px) 100vw, 50vw"
+                sizes="(max-width:1024px) 100vw, 560px"
+                quality={75}
                 className="pointer-events-none object-cover"
               />
             </div>

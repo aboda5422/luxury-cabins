@@ -29,10 +29,11 @@ export function ClientsGrid({ asSection = true }: Props) {
               <Image
                 src={client.logo}
                 alt={`شعار شريك النجاح ${client.name}`}
-                width={330}
-                height={132}
+                width={220}
+                height={88}
+                sizes="(max-width:640px) 45vw, (max-width:768px) 30vw, 180px"
+                quality={75}
                 className="max-h-24 w-auto max-w-full object-contain md:max-h-[7.5rem]"
-                unoptimized
               />
             ) : (
               <span className="select-none text-center text-base font-bold tracking-wide text-[#1a1a1a] md:text-xl">

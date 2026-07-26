@@ -4,11 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { Menu, X } from "lucide-react";
 import { useLocalizedCms } from "@/components/CmsProvider";
 import { useLocale } from "@/components/LocaleProvider";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { SiteSearch } from "@/components/SiteSearch";
+
+const SiteSearch = dynamic(
+  () => import("@/components/SiteSearch").then((m) => m.SiteSearch),
+  { ssr: false, loading: () => null },
+);
 
 export function Header() {
   const { site, navLinks } = useLocalizedCms();
@@ -37,13 +42,15 @@ export function Header() {
       <div className="container-site flex h-[72px] items-center justify-between gap-3 md:h-[100px] md:gap-5">
         <Link href="/" className="shrink-0">
           <Image
-            src="/logo/logo-header.webp"
+            src="/logo/logo-header-sm.webp"
             alt={site.nameAr || "شعار Luxury Cabins"}
-            width={240}
-            height={147}
-            sizes="(max-width:768px) 120px, 190px"
+            width={280}
+            height={172}
+            sizes="140px"
+            quality={75}
             className="h-12 w-auto object-contain md:h-[4.75rem]"
             priority
+            fetchPriority="high"
           />
         </Link>
 

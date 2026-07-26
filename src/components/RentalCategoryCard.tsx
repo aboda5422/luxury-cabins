@@ -50,7 +50,8 @@ export function RentalCategoryCard({ category }: Props) {
                 src={src}
                 alt={`${category.title} — صورة ${i + 1} لتأجير الوحدات المتنقلة والخيام`}
                 fill
-                sizes="(max-width:768px) 92vw, (max-width:1200px) 50vw, 640px"
+                sizes="(max-width:768px) 92vw, (max-width:1200px) 48vw, 640px"
+                quality={75}
                 className="pointer-events-none object-cover"
                 priority={i === 0}
               />

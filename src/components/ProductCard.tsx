@@ -67,7 +67,8 @@ export function ProductCard({ product }: Props) {
                   src={src}
                   alt={`${product.title} — صورة ${i + 1} لتصنيع وبيع الوحدات الجاهزة`}
                   fill
-                  sizes="(max-width:768px) 100vw, 33vw"
+                  sizes="(max-width:768px) 100vw, (max-width:1200px) 33vw, 420px"
+                  quality={75}
                   className="pointer-events-none object-cover"
                   priority={i === 0}
                 />
