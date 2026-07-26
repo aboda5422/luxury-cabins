@@ -39,6 +39,7 @@
     "edge >= 111",
     "firefox >= 111",
     "safari >= 16.4",
-    "not dead"
+    "not dead",
+    "not op_mini all"
   ]
 }
