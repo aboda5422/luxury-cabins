@@ -8,8 +8,9 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
     /** Cache optimized /_next/image responses for 30 days */
     minimumCacheTTL: 60 * 60 * 24 * 30,
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
-    imageSizes: [48, 64, 96, 128, 256, 384],
+    /** Cap srcset widths — homepage cards never need 1920 */
+    deviceSizes: [640, 750, 828, 1080, 1200],
+    imageSizes: [48, 64, 96, 128, 140, 256, 384],
     remotePatterns: [
       {
         protocol: "https",

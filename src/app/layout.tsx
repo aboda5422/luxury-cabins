@@ -20,7 +20,7 @@ const noto = Noto_Sans_Arabic({
   subsets: ["arabic", "latin"],
   variable: "--font-noto",
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
   preload: true,
 });
 
@@ -217,9 +217,10 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
 html{scroll-behavior:smooth}
-body{margin:0;background:#fff;color:#0f0f0f}
+body{margin:0;background:#fff;color:#0f0f0f;font-family:var(--font-noto),system-ui,sans-serif}
 .container-site{width:min(1400px,calc(100% - 3rem));margin-inline:auto}
 header.fixed{position:fixed;inset-inline:0;top:0;z-index:50;background:#fff}
+.min-h-screen{min-height:100vh}
 `,
           }}
         />

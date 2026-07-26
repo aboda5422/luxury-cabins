@@ -34,7 +34,7 @@ export function ServicesSection() {
                 src={service.image}
                 alt={`${service.title} — خدمات Luxury Cabins للوحدات المتنقلة`}
                 className="h-48"
-                sizes="(max-width:768px) 92vw, (max-width:1200px) 33vw, 400px"
+                sizes="(max-width:768px) 92vw, (max-width:1200px) 30vw, 380px"
                 spotCorner={index === 1 ? "tl" : index === 2 ? "br" : "tr"}
               />
               <div className="flex flex-1 flex-col p-7">

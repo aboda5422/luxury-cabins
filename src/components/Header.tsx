@@ -44,13 +44,14 @@ export function Header() {
           <Image
             src="/logo/logo-header-sm.webp"
             alt={site.nameAr || "شعار Luxury Cabins"}
-            width={280}
-            height={172}
+            width={274}
+            height={168}
             sizes="140px"
             quality={75}
             className="h-12 w-auto object-contain md:h-[4.75rem]"
             priority
             fetchPriority="high"
+            unoptimized
           />
         </Link>
 

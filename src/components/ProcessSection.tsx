@@ -1,6 +1,5 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
 import { ClipboardList, Factory, MessagesSquare } from "lucide-react";
 import { useLocalizedCms } from "@/components/CmsProvider";
 
@@ -8,7 +7,6 @@ const icons = [MessagesSquare, ClipboardList, Factory] as const;
 
 export function ProcessSection() {
   const { home, processSteps } = useLocalizedCms();
-  const reduceMotion = useReducedMotion();
 
   return (
     <section className="relative overflow-hidden bg-[#151b24] py-20 md:py-28">
@@ -31,13 +29,7 @@ export function ProcessSection() {
       />
 
       <div className="container-site relative">
-        <motion.div
-          className="mb-14 text-center"
-          initial={reduceMotion ? false : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.5 }}
-        >
+        <div className="mb-14 text-center animate-[fade-up_0.5s_ease-out_both]">
           <p className="mb-3 text-sm font-bold tracking-wide text-[var(--gold)]">
             {home.processEyebrow}
           </p>
@@ -48,23 +40,9 @@ export function ProcessSection() {
           <p className="mx-auto mt-5 max-w-xl text-sm leading-8 text-white/65 md:text-base">
             {home.processSubtitle}
           </p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          className="relative grid gap-6 md:grid-cols-3 md:gap-7"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.25 }}
-          variants={{
-            hidden: {},
-            visible: {
-              transition: {
-                staggerChildren: reduceMotion ? 0 : 0.28,
-                delayChildren: reduceMotion ? 0 : 0.12,
-              },
-            },
-          }}
-        >
+        <div className="relative grid gap-6 md:grid-cols-3 md:gap-7">
           <div
             className="pointer-events-none absolute top-[4.5rem] right-[12%] left-[12%] hidden h-px bg-gradient-to-l from-transparent via-[var(--gold)]/40 to-transparent md:block"
             aria-hidden
@@ -73,20 +51,10 @@ export function ProcessSection() {
           {processSteps.map((step, index) => {
             const Icon = icons[index] ?? MessagesSquare;
             return (
-              <motion.article
+              <article
                 key={step.step}
-                className="group relative border border-white/10 bg-gradient-to-b from-white/[0.09] to-white/[0.03] p-8 text-center backdrop-blur-[2px] transition duration-300 hover:-translate-y-1.5 hover:border-[var(--gold)]/45 hover:bg-white/[0.12]"
-                variants={{
-                  hidden: reduceMotion
-                    ? { opacity: 1, y: 0, scale: 1 }
-                    : { opacity: 0, y: 36, scale: 0.96 },
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    scale: 1,
-                    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
-                  },
-                }}
+                className="group relative border border-white/10 bg-gradient-to-b from-white/[0.09] to-white/[0.03] p-8 text-center backdrop-blur-[2px] transition duration-300 hover:-translate-y-1.5 hover:border-[var(--gold)]/45 hover:bg-white/[0.12] animate-[fade-up_0.55s_ease-out_both]"
+                style={{ animationDelay: `${0.12 + index * 0.12}s` }}
               >
                 <div className="absolute inset-x-0 top-0 h-[2px] origin-center scale-x-50 bg-[var(--gold)]/70 transition duration-300 group-hover:scale-x-100" />
 
@@ -101,10 +69,10 @@ export function ProcessSection() {
                 </p>
                 <h3 className="text-xl font-extrabold text-white">{step.title}</h3>
                 <p className="mt-3 text-sm leading-7 text-white/65">{step.description}</p>
-              </motion.article>
+              </article>
             );
           })}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
