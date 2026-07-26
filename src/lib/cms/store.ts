@@ -4,7 +4,7 @@ import { getDefaultCms } from "./defaults";
 import type { AnalyticsData, CmsData, NavLink } from "./types";
 import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase/admin";
 import { normalizeCities } from "@/lib/seo/cities";
-import { normalizeCatalogProducts } from "@/lib/seo/products";
+import { normalizeCatalogProducts, resolveProductSlug } from "@/lib/seo/products";
 import { normalizeRentalCategories } from "@/lib/seo/rentals";
 import { upgradeImageList, upgradeImagePath } from "@/lib/seo/image-paths";
 
@@ -117,7 +117,7 @@ function mergeCms(defaults: CmsData, parsed: Partial<CmsData>): CmsData {
         if (!existing) continue;
         byId.set(def.id, {
           ...existing,
-          slug: existing.slug || def.slug,
+          slug: resolveProductSlug(existing, def.slug),
           seoTitle: existing.seoTitle || def.seoTitle,
           seoDescription: existing.seoDescription || def.seoDescription,
           h1: existing.h1 || def.h1,

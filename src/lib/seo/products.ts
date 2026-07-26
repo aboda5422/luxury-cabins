@@ -1,5 +1,12 @@
 import type { CatalogProduct } from "@/lib/cms/types";
 
+/** Legacy id-based paths → SEO-friendly slugs */
+export const PRODUCT_SLUG_ALIASES: Record<string, string> = {
+  houses: "ready-houses",
+  rooms: "ready-rooms",
+  offices: "portable-offices",
+};
+
 export function slugifyProduct(input: string): string {
   return input
     .trim()
@@ -10,8 +17,36 @@ export function slugifyProduct(input: string): string {
     .replace(/^-|-$/g, "");
 }
 
+export function canonicalProductSlug(slugOrId: string): string {
+  const key = slugOrId.trim();
+  return PRODUCT_SLUG_ALIASES[key] || key;
+}
+
+/**
+ * Prefer an explicit SEO slug from defaults when the stored value is empty
+ * or still equals the internal id (legacy CMS rows).
+ */
+export function resolveProductSlug(
+  product: Pick<CatalogProduct, "id" | "slug">,
+  preferredSlug?: string,
+): string {
+  const id = String(product.id || "").trim();
+  const stored = String(product.slug || "").trim();
+  const preferred = String(preferredSlug || "").trim();
+
+  if (preferred) {
+    if (!stored || stored === id || PRODUCT_SLUG_ALIASES[stored] === preferred) {
+      return preferred;
+    }
+  }
+
+  if (stored) return canonicalProductSlug(stored);
+  if (id) return canonicalProductSlug(id);
+  return "";
+}
+
 export function productSlug(product: Pick<CatalogProduct, "id" | "slug">): string {
-  return (product.slug || product.id || "").trim();
+  return resolveProductSlug(product);
 }
 
 export function productPath(product: Pick<CatalogProduct, "id" | "slug">): string {
@@ -35,7 +70,11 @@ export function getProductBySlug(
   slug: string,
 ): CatalogProduct | undefined {
   const key = decodeURIComponent(slug).trim();
-  return products.find((p) => productSlug(p) === key || p.id === key);
+  const canonical = canonicalProductSlug(key);
+  return products.find((p) => {
+    const s = productSlug(p);
+    return s === key || s === canonical || p.id === key || canonicalProductSlug(p.id) === canonical;
+  });
 }
 
 /** Normalize CMS products so slug/SEO fields always exist (scalable for new products). */
@@ -44,7 +83,7 @@ export function normalizeCatalogProducts(products: CatalogProduct[]): CatalogPro
     const id = String(p.id || `product-${index + 1}`).trim();
     const title = String(p.title || "").trim();
     const slug =
-      slugifyProduct(String(p.slug || "")) ||
+      resolveProductSlug({ id, slug: p.slug }) ||
       slugifyProduct(id) ||
       `product-${index + 1}`;
     return {
