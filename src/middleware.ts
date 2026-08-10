@@ -59,11 +59,7 @@ export function middleware(request: NextRequest) {
   const needsPath = pathname !== originalPath;
 
   if (!needsHttps && !needsApex && !needsPath) {
-    const res = NextResponse.next();
-    res.headers.set("x-lc-mw", "1");
-    res.headers.set("x-lc-scheme", scheme);
-    res.headers.set("x-lc-host", host || "-");
-    return res;
+    return NextResponse.next();
   }
 
   if (isLocal) {
@@ -72,12 +68,8 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(target, 301);
   }
 
-  // Absolute https Location (apex host) — preferred by Google & OpenNext-safe
   const target = new URL(`${pathname}${url.search}`, SITE_ORIGIN);
-  const redirect = NextResponse.redirect(target.toString(), 301);
-  redirect.headers.set("x-lc-mw", "redirect");
-  redirect.headers.set("x-lc-scheme", scheme);
-  return redirect;
+  return NextResponse.redirect(target.toString(), 301);
 }
 
 export const config = {

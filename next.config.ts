@@ -5,6 +5,8 @@ initOpenNextCloudflareForDev();
 
 const nextConfig: NextConfig = {
   trailingSlash: false,
+  // Let middleware own trailing-slash + legacy path redirects in one hop
+  skipTrailingSlashRedirect: true,
   images: {
     // OpenNext on Cloudflare: /_next/image has no TTL without IMAGES binding.
     // Serve sized static assets directly so public/_headers Cache-Control applies.
