@@ -9,6 +9,7 @@ import { Menu, X } from "lucide-react";
 import { useLocalizedCms } from "@/components/CmsProvider";
 import { useLocale } from "@/components/LocaleProvider";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { normalizeInternalHref } from "@/lib/seo/urls";
 
 const SiteSearch = dynamic(
   () => import("@/components/SiteSearch").then((m) => m.SiteSearch),
@@ -55,19 +56,22 @@ export function Header() {
         </Link>
 
         <nav className="hidden items-center gap-0.5 xl:flex">
-          {navLinks.map((link) => (
+          {navLinks.map((link) => {
+            const href = normalizeInternalHref(link.href);
+            return (
             <Link
-              key={`${link.href}-${link.label}`}
-              href={link.href}
+              key={`${href}-${link.label}`}
+              href={href}
               className={`font-display px-3 py-2 text-[17px] font-black transition ${
-                pathname === link.href
+                pathname === href
                   ? "text-[var(--gold)]"
                   : "text-[#1a1a1a] hover:text-[var(--gold)]"
               }`}
             >
               {link.label}
             </Link>
-          ))}
+            );
+          })}
         </nav>
 
         <div className="hidden items-center gap-2 xl:flex">
@@ -95,17 +99,20 @@ export function Header() {
       {open && (
         <div className="border-t border-[#eee] bg-white xl:hidden">
           <nav className="container-site flex max-h-[70vh] flex-col gap-1 overflow-y-auto py-3">
-            {navLinks.map((link) => (
+            {navLinks.map((link) => {
+              const href = normalizeInternalHref(link.href);
+              return (
               <Link
-                key={`${link.href}-${link.label}-m`}
-                href={link.href}
+                key={`${href}-${link.label}-m`}
+                href={href}
                 className={`px-3 py-3 text-base font-semibold ${
-                  pathname === link.href ? "text-[var(--gold)]" : "text-[#333]"
+                  pathname === href ? "text-[var(--gold)]" : "text-[#333]"
                 }`}
               >
                 {link.label}
               </Link>
-            ))}
+              );
+            })}
             <Link href="/contact" className="btn-primary mt-2 justify-center">
               {t.requestQuote}
             </Link>

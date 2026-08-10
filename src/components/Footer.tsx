@@ -9,6 +9,7 @@ import { useLocalizedCms } from "@/components/CmsProvider";
 import { useLocale } from "@/components/LocaleProvider";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { trackWhatsAppClick } from "@/lib/analytics";
+import { normalizeInternalHref } from "@/lib/seo/urls";
 
 const ADMIN_LONG_PRESS_MS = 2500;
 const iconClass = "h-[18px] w-[18px]";
@@ -171,26 +172,32 @@ export function Footer() {
           <div>
             <FooterHeading>{footer.servicesTitle}</FooterHeading>
             <ul className="space-y-2.5 text-sm text-[#555]">
-              {footer.serviceLinks.map((link) => (
+              {footer.serviceLinks.map((link) => {
+                const href = normalizeInternalHref(link.href);
+                return (
                 <li key={link.label}>
-                  <Link href={link.href} className="transition hover:text-[var(--gold)]">
+                  <Link href={href} className="transition hover:text-[var(--gold)]">
                     {link.label}
                   </Link>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           </div>
 
           <div>
             <FooterHeading>{footer.companyTitle}</FooterHeading>
             <ul className="space-y-2.5 text-sm text-[#555]">
-              {footer.companyLinks.map((link) => (
-                <li key={link.href + link.label}>
-                  <Link href={link.href} className="transition hover:text-[var(--gold)]">
+              {footer.companyLinks.map((link) => {
+                const href = normalizeInternalHref(link.href);
+                return (
+                <li key={href + link.label}>
+                  <Link href={href} className="transition hover:text-[var(--gold)]">
                     {link.label}
                   </Link>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           </div>
 

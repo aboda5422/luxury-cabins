@@ -7,6 +7,7 @@ import { normalizeCities } from "@/lib/seo/cities";
 import { normalizeCatalogProducts, resolveProductSlug } from "@/lib/seo/products";
 import { normalizeRentalCategories } from "@/lib/seo/rentals";
 import { upgradeImageList, upgradeImagePath } from "@/lib/seo/image-paths";
+import { normalizeInternalHref } from "@/lib/seo/urls";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const CMS_FILE = path.join(DATA_DIR, "cms.json");
@@ -90,12 +91,38 @@ function mergeCms(defaults: CmsData, parsed: Partial<CmsData>): CmsData {
         parsed.home?.contactSubtitle ||
         defaults.contactPage.heroDescription,
     },
-    footer: { ...defaults.footer, ...(parsed.footer || {}) },
+    footer: (() => {
+      const merged = { ...defaults.footer, ...(parsed.footer || {}) };
+      const upgradeFooterLink = (link: { href: string; label: string }) => {
+        let href = normalizeInternalHref(link.href);
+        // Prefer final rental category URLs when CMS still points both to /rental
+        if (href === "/rental") {
+          if (link.label.includes("خيام") || /tent/i.test(link.label)) {
+            href = "/rental/european-tents";
+          } else if (link.label.includes("تأجير") || /rental|mobile/i.test(link.label)) {
+            href = "/rental/mobile-units";
+          }
+        }
+        return { ...link, href };
+      };
+      return {
+        ...merged,
+        serviceLinks: (merged.serviceLinks || []).map(upgradeFooterLink),
+        companyLinks: (merged.companyLinks || []).map((l) => ({
+          ...l,
+          href: normalizeInternalHref(l.href),
+        })),
+      };
+    })(),
     navLinks: ensureServicesNav(
-      parsed.navLinks?.length ? parsed.navLinks : defaults.navLinks,
+      (parsed.navLinks?.length ? parsed.navLinks : defaults.navLinks).map((l) => ({
+        ...l,
+        href: normalizeInternalHref(l.href),
+      })),
     ),
     services: (parsed.services?.length ? parsed.services : defaults.services).map((s) => ({
       ...s,
+      href: normalizeInternalHref(s.href),
       image: upgradeLocalImagePath(s.image, s.image),
     })),
     processSteps: parsed.processSteps?.length

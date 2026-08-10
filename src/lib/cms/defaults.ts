@@ -174,8 +174,8 @@ export function getDefaultCms(): CmsData {
       newsletterPlaceholder: "البريد الالكتروني",
       newsletterButton: "اشترك",
       serviceLinks: [
-        { href: "/rental", label: "تأجير الوحدات المتنقلة" },
-        { href: "/rental", label: "خيام أوروبية" },
+        { href: "/rental/mobile-units", label: "تأجير الوحدات المتنقلة" },
+        { href: "/rental/european-tents", label: "خيام أوروبية" },
         { href: "/manufacturing", label: "البيع والتصنيع" },
         { href: "/projects", label: "المشاريع" },
       ],

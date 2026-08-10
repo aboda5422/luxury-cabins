@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { ProductDetailClient } from "@/components/ProductDetailClient";
 import { readCms } from "@/lib/cms/store";
 import { breadcrumbSchema, productSchema } from "@/lib/seo/schema";
 import {
+  PRODUCT_SLUG_ALIASES,
   getProductBySlug,
   productH1,
   productPath,
@@ -11,6 +12,7 @@ import {
   productSeoTitle,
   productSlug,
 } from "@/lib/seo/products";
+import { absoluteUrl } from "@/lib/seo/urls";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -35,11 +37,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     keywords: product.seoKeywords?.length ? product.seoKeywords : undefined,
-    alternates: { canonical: path },
+    alternates: { canonical: absoluteUrl(path) },
     openGraph: {
       title,
       description,
-      url: path,
+      url: absoluteUrl(path),
       images: product.images?.[0] ? [{ url: product.images[0] }] : undefined,
     },
   };
@@ -47,11 +49,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProductDetailPage({ params }: Props) {
   const { slug } = await params;
+  const decoded = decodeURIComponent(slug).trim();
+  const aliasTarget = PRODUCT_SLUG_ALIASES[decoded];
+  if (aliasTarget) {
+    permanentRedirect(absoluteUrl(`/manufacturing/${aliasTarget}`));
+  }
+
   const cms = await readCms();
-  const product = getProductBySlug(cms.catalogProducts, slug);
+  const product = getProductBySlug(cms.catalogProducts, decoded);
   if (!product) notFound();
 
   const path = productPath(product);
+  if (productSlug(product) !== decoded) {
+    permanentRedirect(absoluteUrl(path));
+  }
+
   const heading = productH1(product);
 
   const schemas = [

@@ -3,6 +3,7 @@ import { HeroSection } from "@/components/HeroSection";
 import type { Metadata } from "next";
 import { readCms } from "@/lib/cms/store";
 import { siteConfig } from "@/lib/site";
+import { absoluteUrl } from "@/lib/seo/urls";
 
 const ServicesSection = dynamic(
   () => import("@/components/ServicesSection").then((m) => m.ServicesSection),
@@ -29,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const cms = await readCms();
   const cities = cms.site.cities || [];
   return {
-    alternates: { canonical: "/" },
+    alternates: { canonical: absoluteUrl("/") },
     keywords: [
       "كبائن",
       "وحدات متنقلة",

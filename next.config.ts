@@ -4,6 +4,7 @@ import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 initOpenNextCloudflareForDev();
 
 const nextConfig: NextConfig = {
+  trailingSlash: false,
   images: {
     // OpenNext on Cloudflare: /_next/image has no TTL without IMAGES binding.
     // Serve sized static assets directly so public/_headers Cache-Control applies.
@@ -50,29 +51,74 @@ const nextConfig: NextConfig = {
     ];
   },
   async redirects() {
+    const apex = "https://luxurycabins.com.sa";
     return [
       {
         source: "/manufacturing/Readycommercial%20units",
-        destination: "/manufacturing",
+        destination: `${apex}/manufacturing`,
         permanent: true,
       },
       {
         source: "/manufacturing/Readycommercial units",
-        destination: "/manufacturing",
+        destination: `${apex}/manufacturing`,
         permanent: true,
       },
       {
         source: "/manufacturing/Readycommercial-units",
-        destination: "/manufacturing",
+        destination: `${apex}/manufacturing`,
         permanent: true,
       },
-      // Legacy product ids → SEO slugs
-      { source: "/manufacturing/houses", destination: "/manufacturing/ready-houses", permanent: true },
-      { source: "/manufacturing/rooms", destination: "/manufacturing/ready-rooms", permanent: true },
-      { source: "/manufacturing/offices", destination: "/manufacturing/portable-offices", permanent: true },
-      // Removed products — keep old URLs from returning soft content
-      { source: "/manufacturing/portable-cabins", destination: "/manufacturing", permanent: true },
-      { source: "/manufacturing/guard-rooms", destination: "/manufacturing", permanent: true },
+      // Legacy product ids → SEO slugs (with and without trailing slash)
+      {
+        source: "/manufacturing/houses",
+        destination: `${apex}/manufacturing/ready-houses`,
+        permanent: true,
+      },
+      {
+        source: "/manufacturing/houses/",
+        destination: `${apex}/manufacturing/ready-houses`,
+        permanent: true,
+      },
+      {
+        source: "/manufacturing/rooms",
+        destination: `${apex}/manufacturing/ready-rooms`,
+        permanent: true,
+      },
+      {
+        source: "/manufacturing/rooms/",
+        destination: `${apex}/manufacturing/ready-rooms`,
+        permanent: true,
+      },
+      {
+        source: "/manufacturing/offices",
+        destination: `${apex}/manufacturing/portable-offices`,
+        permanent: true,
+      },
+      {
+        source: "/manufacturing/offices/",
+        destination: `${apex}/manufacturing/portable-offices`,
+        permanent: true,
+      },
+      {
+        source: "/manufacturing/portable-cabins",
+        destination: `${apex}/manufacturing`,
+        permanent: true,
+      },
+      {
+        source: "/manufacturing/portable-cabins/",
+        destination: `${apex}/manufacturing`,
+        permanent: true,
+      },
+      {
+        source: "/manufacturing/guard-rooms",
+        destination: `${apex}/manufacturing`,
+        permanent: true,
+      },
+      {
+        source: "/manufacturing/guard-rooms/",
+        destination: `${apex}/manufacturing`,
+        permanent: true,
+      },
     ];
   },
 };
