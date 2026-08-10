@@ -43,7 +43,7 @@ export function normalizeInternalHref(href: string): string {
     }
   }
 
-  let path = raw.startsWith("/") ? raw : `/${raw}`;
+  const path = raw.startsWith("/") ? raw : `/${raw}`;
   const qIndex = path.indexOf("?");
   const hIndex = path.indexOf("#");
   let pathname = path;
