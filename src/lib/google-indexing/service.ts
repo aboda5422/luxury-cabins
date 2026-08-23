@@ -1,4 +1,5 @@
 import { JWT } from "google-auth-library";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { SITE_ORIGIN } from "@/lib/seo/urls";
 import type { GoogleIndexResponse, GoogleIndexResult } from "./types";
 
@@ -11,14 +12,41 @@ type ServiceAccount = {
   private_key: string;
 };
 
-function loadServiceAccount(): ServiceAccount {
-  const raw = process.env.GOOGLE_INDEXING_SERVICE_ACCOUNT_JSON?.trim();
+async function readServiceAccountJson(): Promise<string | undefined> {
+  const fromProcess = process.env.GOOGLE_INDEXING_SERVICE_ACCOUNT_JSON?.trim();
+  if (fromProcess) return fromProcess;
+
+  try {
+    const { env } = await getCloudflareContext({ async: true });
+    const fromCf = (env as Record<string, unknown>)
+      ?.GOOGLE_INDEXING_SERVICE_ACCOUNT_JSON;
+    if (typeof fromCf === "string" && fromCf.trim()) return fromCf.trim();
+  } catch {
+    // Local Next.js / non-Cloudflare runtime
+  }
+  return undefined;
+}
+
+async function loadServiceAccount(): Promise<ServiceAccount> {
+  const raw = await readServiceAccountJson();
   if (!raw) {
     throw new Error("Missing GOOGLE_INDEXING_SERVICE_ACCOUNT_JSON");
   }
-  const parsed = JSON.parse(raw) as ServiceAccount;
+  let parsed: ServiceAccount;
+  try {
+    parsed = JSON.parse(raw) as ServiceAccount;
+  } catch {
+    throw new Error("Invalid GOOGLE_INDEXING_SERVICE_ACCOUNT_JSON (not valid JSON)");
+  }
   if (!parsed.client_email || !parsed.private_key) {
-    throw new Error("Invalid service account JSON");
+    throw new Error("Invalid service account JSON (missing client_email/private_key)");
+  }
+  // Cloudflare/secret paste sometimes stores literal "\\n" instead of newlines
+  if (parsed.private_key.includes("\\n") && !parsed.private_key.includes("\n")) {
+    parsed = {
+      ...parsed,
+      private_key: parsed.private_key.replace(/\\n/g, "\n"),
+    };
   }
   return parsed;
 }
@@ -122,7 +150,7 @@ export async function runGoogleIndexing(input: {
     throw new Error(`Too many URLs (max ${MAX_URLS_PER_REQUEST} per request)`);
   }
 
-  const sa = loadServiceAccount();
+  const sa = await loadServiceAccount();
   const accessToken = await getAccessToken(sa);
   const results: GoogleIndexResult[] = [];
 
