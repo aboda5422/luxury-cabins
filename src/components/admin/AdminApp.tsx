@@ -24,7 +24,9 @@ import {
   CircleHelp,
   Clock3,
   Database,
+  ExternalLink,
   FileText,
+  Globe,
   House,
   ImagePlus,
   Info,
@@ -42,6 +44,7 @@ import {
   ShieldCheck,
   Sparkles,
   Trash2,
+  Zap,
   ChevronUp,
   ChevronDown,
   Users2,
@@ -53,6 +56,8 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLocale } from "@/components/LocaleProvider";
 import { emptyServiceCity, slugifyCity } from "@/lib/seo/cities";
 import { buildSeoHealthReport } from "@/lib/seo/health";
+import type { GoogleIndexResponse } from "@/lib/google-indexing/types";
+import { SITE_ORIGIN } from "@/lib/seo/urls";
 
 type AdminAnalytics = AnalyticsData & {
   productsCount: number;
@@ -810,6 +815,9 @@ export function AdminApp() {
   const [analyticsError, setAnalyticsError] = useState("");
   const [toast, setToast] = useState<Toast | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [indexUrl, setIndexUrl] = useState(`${SITE_ORIGIN}/`);
+  const [indexBusy, setIndexBusy] = useState(false);
+  const [indexReport, setIndexReport] = useState<GoogleIndexResponse | null>(null);
 
   const dirty = useMemo(() => {
     if (!cms || !initialCms) return false;
@@ -839,6 +847,46 @@ export function AdminApp() {
 
   const showToast = (kind: Toast["kind"], message: string) => {
     setToast({ kind, message });
+  };
+
+  const runGoogleIndexing = async (mode: "url" | "sitemap") => {
+    setIndexBusy(true);
+    setIndexReport(null);
+    try {
+      const res = await fetch("/api/admin/google-indexing", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(
+          mode === "sitemap" ? { mode: "sitemap" } : { url: indexUrl.trim() },
+        ),
+      });
+      const data = (await res.json().catch(() => null)) as GoogleIndexResponse & {
+        error?: string;
+      };
+
+      if (res.status === 401) {
+        router.replace("/admin/login");
+        return;
+      }
+      if (!res.ok || data?.error) {
+        throw new Error(data?.error || "فشل طلب الفهرسة");
+      }
+
+      setIndexReport(data);
+      showToast(
+        data.ok ? "success" : "error",
+        data.ok
+          ? `تم الإرسال لجوجل — نجح ${data.succeeded} من ${data.submitted} رابط`
+          : `اكتمل مع أخطاء — نجح ${data.succeeded} من ${data.submitted}`,
+      );
+    } catch (error) {
+      showToast(
+        "error",
+        error instanceof Error ? error.message : "فشل طلب الفهرسة",
+      );
+    } finally {
+      setIndexBusy(false);
+    }
   };
 
   const persistCms = async (payload: CmsData) => {
@@ -2124,6 +2172,7 @@ export function AdminApp() {
     const infos = report.issues.filter((i) => i.severity === "info");
 
     return (
+      <div className="space-y-6">
       <SectionCard
         title="صحة SEO"
         description="فحص آلي قابل للتوسع لأي منتج أو مدينة جديدة — لا يغني عن Search Console."
@@ -2187,6 +2236,82 @@ export function AdminApp() {
         </div>
         <p className="mt-4 text-xs text-[#777]">آخر فحص محلي: {report.generatedAt}</p>
       </SectionCard>
+
+      <SectionCard
+        title="تسريع الفهرسة (Google Indexing API)"
+        description="أرسل روابط luxurycabins.com.sa مباشرة لجوجل. الحد اليومي الافتراضي ~200 طلب."
+      >
+        <div className="space-y-4">
+          <Field
+            label="رابط للفهرسة"
+            value={indexUrl}
+            onChange={setIndexUrl}
+            placeholder={`${SITE_ORIGIN}/manufacturing/ready-houses`}
+          />
+
+          <div className="flex flex-wrap gap-3">
+            <button
+              type="button"
+              disabled={indexBusy || !indexUrl.trim()}
+              onClick={() => runGoogleIndexing("url")}
+              className="inline-flex items-center gap-2 rounded-2xl bg-[#ffb400] px-5 py-3 text-sm font-black text-[#121212] transition hover:bg-[#ffc62b] disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {indexBusy ? (
+                <LoaderCircle className="h-4 w-4 animate-spin" />
+              ) : (
+                <Zap className="h-4 w-4" />
+              )}
+              إرسال هذا الرابط
+            </button>
+            <button
+              type="button"
+              disabled={indexBusy}
+              onClick={() => runGoogleIndexing("sitemap")}
+              className="inline-flex items-center gap-2 rounded-2xl border border-[#e3d7c0] bg-white px-5 py-3 text-sm font-bold text-[#1a1a1a] transition hover:border-[#ffb400] hover:text-[#b27a00] disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {indexBusy ? (
+                <LoaderCircle className="h-4 w-4 animate-spin" />
+              ) : (
+                <Globe className="h-4 w-4" />
+              )}
+              إرسال كل روابط sitemap
+            </button>
+            <a
+              href={`${SITE_ORIGIN}/sitemap.xml`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-2xl border border-[#e3d7c0] bg-white px-5 py-3 text-sm font-bold text-[#1a1a1a] transition hover:border-[#ffb400] hover:text-[#b27a00]"
+            >
+              <ExternalLink className="h-4 w-4" />
+              عرض sitemap.xml
+            </a>
+          </div>
+
+          {indexReport ? (
+            <div className="rounded-2xl border border-[#e4dbc9] bg-[#fffdfa] p-4">
+              <p className="text-sm font-bold text-[#222]">
+                النتيجة: نجح {indexReport.succeeded} / {indexReport.submitted}
+                {indexReport.failed > 0 ? (
+                  <span className="text-red-700"> — فشل {indexReport.failed}</span>
+                ) : null}
+              </p>
+              <div className="mt-3 max-h-56 space-y-1 overflow-auto text-xs font-mono">
+                {indexReport.results.map((r) => (
+                  <div
+                    key={r.url}
+                    className={r.ok ? "text-emerald-700" : "text-red-700"}
+                    dir="ltr"
+                  >
+                    {r.ok ? "✓" : "✗"} {r.url}
+                    {r.message ? ` — ${r.message}` : ""}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
+        </div>
+      </SectionCard>
+      </div>
     );
   };
 
