@@ -1,10 +1,10 @@
-import { JWT } from "google-auth-library";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { SITE_ORIGIN } from "@/lib/seo/urls";
 import type { GoogleIndexResponse, GoogleIndexResult } from "./types";
 
 const SITEMAP_URL = `${SITE_ORIGIN}/sitemap.xml`;
 const INDEXING_SCOPE = "https://www.googleapis.com/auth/indexing";
+const TOKEN_URL = "https://oauth2.googleapis.com/token";
 const MAX_URLS_PER_REQUEST = 100;
 
 type ServiceAccount = {
@@ -52,12 +52,22 @@ async function loadServiceAccount(): Promise<ServiceAccount> {
 }
 
 function normalizeUrl(input: string): string | null {
+  let value = (input || "").trim();
+  // Common paste mistakes from admin UI
+  value = value.replace(/^\/+/, "");
+  if (!/^https?:\/\//i.test(value)) {
+    value = value.startsWith("luxurycabins.com.sa")
+      ? `https://${value}`
+      : value.startsWith("/")
+        ? `${SITE_ORIGIN}${value}`
+        : value;
+  }
   try {
-    const url = new URL(input.trim());
+    const url = new URL(value);
     if (url.protocol !== "https:" && url.protocol !== "http:") return null;
     const siteHost = new URL(SITE_ORIGIN).hostname;
-    const allowedHosts = new Set([siteHost, `www.${siteHost}`]);
-    if (!allowedHosts.has(url.hostname)) return null;
+    const allowed = new Set([siteHost, `www.${siteHost}`]);
+    if (!allowed.has(url.hostname)) return null;
     url.protocol = "https:";
     url.hostname = siteHost;
     url.hash = "";
@@ -76,17 +86,80 @@ function parseSitemapLocs(xml: string): string[] {
   return [...new Set(urls)];
 }
 
+function base64UrlEncode(data: ArrayBuffer | Uint8Array | string): string {
+  const bytes =
+    typeof data === "string"
+      ? new TextEncoder().encode(data)
+      : data instanceof Uint8Array
+        ? data
+        : new Uint8Array(data);
+  let binary = "";
+  for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]!);
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+}
+
+function pemToArrayBuffer(pem: string): ArrayBuffer {
+  const b64 = pem
+    .replace(/-----BEGIN [^-]+-----/g, "")
+    .replace(/-----END [^-]+-----/g, "")
+    .replace(/\s+/g, "");
+  const binary = atob(b64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return bytes.buffer;
+}
+
+/** Workers-safe Google OAuth (no google-auth-library / Node crypto). */
 async function getAccessToken(sa: ServiceAccount): Promise<string> {
-  const client = new JWT({
-    email: sa.client_email,
-    key: sa.private_key,
-    scopes: [INDEXING_SCOPE],
+  const now = Math.floor(Date.now() / 1000);
+  const header = base64UrlEncode(JSON.stringify({ alg: "RS256", typ: "JWT" }));
+  const claim = base64UrlEncode(
+    JSON.stringify({
+      iss: sa.client_email,
+      sub: sa.client_email,
+      aud: TOKEN_URL,
+      iat: now,
+      exp: now + 3600,
+      scope: INDEXING_SCOPE,
+    }),
+  );
+  const unsigned = `${header}.${claim}`;
+
+  const key = await crypto.subtle.importKey(
+    "pkcs8",
+    pemToArrayBuffer(sa.private_key),
+    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const signature = await crypto.subtle.sign(
+    "RSASSA-PKCS1-v1_5",
+    key,
+    new TextEncoder().encode(unsigned),
+  );
+  const jwt = `${unsigned}.${base64UrlEncode(signature)}`;
+
+  const tokenRes = await fetch(TOKEN_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+      assertion: jwt,
+    }),
   });
-  const tokens = await client.authorize();
-  if (!tokens.access_token) {
-    throw new Error("Failed to obtain Google access token");
+  const tokenJson = (await tokenRes.json()) as {
+    access_token?: string;
+    error?: string;
+    error_description?: string;
+  };
+  if (!tokenRes.ok || !tokenJson.access_token) {
+    throw new Error(
+      tokenJson.error_description ||
+        tokenJson.error ||
+        `Failed to obtain Google access token (${tokenRes.status})`,
+    );
   }
-  return tokens.access_token;
+  return tokenJson.access_token;
 }
 
 async function publishUrl(accessToken: string, url: string): Promise<GoogleIndexResult> {
@@ -136,9 +209,9 @@ export async function runGoogleIndexing(input: {
     }
     urls = [normalized];
   } else if (Array.isArray(input.urls) && input.urls.length) {
-    urls = [...new Set(
-      input.urls.map((u) => normalizeUrl(u)).filter((u): u is string => !!u),
-    )];
+    urls = [
+      ...new Set(input.urls.map((u) => normalizeUrl(u)).filter((u): u is string => !!u)),
+    ];
     if (!urls.length) {
       throw new Error(`No valid URLs for ${SITE_ORIGIN}`);
     }

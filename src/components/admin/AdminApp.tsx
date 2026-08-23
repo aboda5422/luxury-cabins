@@ -815,7 +815,7 @@ export function AdminApp() {
   const [analyticsError, setAnalyticsError] = useState("");
   const [toast, setToast] = useState<Toast | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [indexUrl, setIndexUrl] = useState(`${SITE_ORIGIN}/`);
+  const [indexUrl, setIndexUrl] = useState(SITE_ORIGIN);
   const [indexBusy, setIndexBusy] = useState(false);
   const [indexReport, setIndexReport] = useState<GoogleIndexResponse | null>(null);
 
